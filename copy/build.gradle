@@ -1,2 +1,6 @@
-apply plugin: 'com.android.library'
-apply from: '../../common.gradle'
+plugins {
+  id 'com.android.library'
+  id 'org.jetbrains.kotlin.android'
+}
+
+apply from: '../common.gradle'
