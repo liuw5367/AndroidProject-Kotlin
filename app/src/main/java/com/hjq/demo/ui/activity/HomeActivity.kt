@@ -1,7 +1,8 @@
 package com.hjq.demo.ui.activity
 
 import android.app.Activity
-import android.content.*
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -11,7 +12,7 @@ import com.hjq.base.FragmentPagerAdapter
 import com.hjq.demo.R
 import com.hjq.demo.app.AppActivity
 import com.hjq.demo.app.AppFragment
-import com.hjq.demo.manager.*
+import com.hjq.demo.manager.ActivityManager
 import com.hjq.demo.other.DoubleClickHelper
 import com.hjq.demo.ui.adapter.NavigationAdapter
 import com.hjq.demo.ui.fragment.FindFragment
@@ -33,7 +34,10 @@ class HomeActivity : AppActivity(), NavigationAdapter.OnNavigationListener {
         private const val INTENT_KEY_IN_FRAGMENT_CLASS: String = "fragmentClass"
 
         @JvmOverloads
-        fun start(context: Context, fragmentClass: Class<out AppFragment<*>?>? = HomeFragment::class.java) {
+        fun start(
+            context: Context,
+            fragmentClass: Class<out AppFragment<*>?>? = HomeFragment::class.java
+        ) {
             val intent = Intent(context, HomeActivity::class.java)
             intent.putExtra(INTENT_KEY_IN_FRAGMENT_CLASS, fragmentClass)
             if (context !is Activity) {
@@ -54,14 +58,30 @@ class HomeActivity : AppActivity(), NavigationAdapter.OnNavigationListener {
 
     override fun initView() {
         navigationAdapter = NavigationAdapter(this).apply {
-            addItem(NavigationAdapter.MenuItem(getString(R.string.home_nav_index),
-                ContextCompat.getDrawable(this@HomeActivity, R.drawable.home_home_selector)))
-            addItem(NavigationAdapter.MenuItem(getString(R.string.home_nav_found),
-                ContextCompat.getDrawable(this@HomeActivity, R.drawable.home_found_selector)))
-            addItem(NavigationAdapter.MenuItem(getString(R.string.home_nav_message),
-                ContextCompat.getDrawable(this@HomeActivity, R.drawable.home_message_selector)))
-            addItem(NavigationAdapter.MenuItem(getString(R.string.home_nav_me),
-                ContextCompat.getDrawable(this@HomeActivity, R.drawable.home_me_selector)))
+            addItem(
+                NavigationAdapter.MenuItem(
+                    getString(R.string.home_nav_index),
+                    ContextCompat.getDrawable(this@HomeActivity, R.drawable.home_home_selector)
+                )
+            )
+            addItem(
+                NavigationAdapter.MenuItem(
+                    getString(R.string.home_nav_found),
+                    ContextCompat.getDrawable(this@HomeActivity, R.drawable.home_found_selector)
+                )
+            )
+            addItem(
+                NavigationAdapter.MenuItem(
+                    getString(R.string.home_nav_message),
+                    ContextCompat.getDrawable(this@HomeActivity, R.drawable.home_message_selector)
+                )
+            )
+            addItem(
+                NavigationAdapter.MenuItem(
+                    getString(R.string.home_nav_me),
+                    ContextCompat.getDrawable(this@HomeActivity, R.drawable.home_me_selector)
+                )
+            )
             setOnNavigationListener(this@HomeActivity)
             navigationView?.adapter = this
         }
@@ -120,6 +140,7 @@ class HomeActivity : AppActivity(), NavigationAdapter.OnNavigationListener {
                 viewPager?.currentItem = position
                 true
             }
+
             else -> false
         }
     }

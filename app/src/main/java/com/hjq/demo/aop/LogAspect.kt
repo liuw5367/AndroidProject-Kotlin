@@ -26,13 +26,15 @@ class LogAspect {
      * 构造方法切入点
      */
     @Pointcut("execution(@com.hjq.demo.aop.Log *.new(..))")
-    fun constructor() {}
+    fun constructor() {
+    }
 
     /**
      * 方法切入点
      */
     @Pointcut("execution(@com.hjq.demo.aop.Log * *(..))")
-    fun method() {}
+    fun method() {
+    }
 
     /**
      * 在连接点进行方法替换

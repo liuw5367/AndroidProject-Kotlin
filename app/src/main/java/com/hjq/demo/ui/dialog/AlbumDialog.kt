@@ -21,8 +21,9 @@ import com.hjq.demo.http.glide.GlideApp
  *    desc   : 相册专辑选取对话框
  */
 class AlbumDialog {
-    
-    class Builder(context: Context) : BaseDialog.Builder<Builder>(context), BaseAdapter.OnItemClickListener {
+
+    class Builder(context: Context) : BaseDialog.Builder<Builder>(context),
+        BaseAdapter.OnItemClickListener {
 
         private var listener: OnListener? = null
         private val recyclerView: RecyclerView? by lazy { findViewById(R.id.rv_album_list) }
@@ -70,7 +71,8 @@ class AlbumDialog {
 
         override fun createDialog(context: Context, themeId: Int): BaseDialog {
             val dialog = BottomSheetDialog(context, themeId)
-            dialog.getBottomSheetBehavior().peekHeight = getResources().displayMetrics.heightPixels / 2
+            dialog.getBottomSheetBehavior().peekHeight =
+                getResources().displayMetrics.heightPixels / 2
             return dialog
         }
     }
@@ -117,7 +119,8 @@ class AlbumDialog {
         /** 备注 */
         private val remark: String,
         /** 选中 */
-        private var select: Boolean) {
+        private var select: Boolean
+    ) {
 
         fun setName(name: String) {
             this.name = name

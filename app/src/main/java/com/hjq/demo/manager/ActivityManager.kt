@@ -6,7 +6,6 @@ import android.app.Application.ActivityLifecycleCallbacks
 import android.os.Bundle
 import androidx.collection.ArrayMap
 import timber.log.Timber
-import java.util.*
 
 /**
  *    author : Android 轮子哥

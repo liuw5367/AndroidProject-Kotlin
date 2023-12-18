@@ -12,6 +12,20 @@ import androidx.lifecycle.LifecycleOwner
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonToken
 import com.hjq.bar.TitleBar
+import com.hjq.demo.R
+import com.hjq.demo.aop.Log
+import com.hjq.demo.http.glide.GlideApp
+import com.hjq.demo.http.model.RequestHandler
+import com.hjq.demo.http.model.RequestServer
+import com.hjq.demo.manager.ActivityManager
+import com.hjq.demo.other.AppConfig
+import com.hjq.demo.other.CrashHandler
+import com.hjq.demo.other.DebugLoggerTree
+import com.hjq.demo.other.MaterialHeader
+import com.hjq.demo.other.SmartBallPulseFooter
+import com.hjq.demo.other.TitleBarStyle
+import com.hjq.demo.other.ToastLogInterceptor
+import com.hjq.demo.other.ToastStyle
 import com.hjq.gson.factory.GsonFactory
 import com.hjq.gson.factory.ParseExceptionCallback
 import com.hjq.http.EasyConfig
@@ -21,13 +35,6 @@ import com.hjq.http.model.HttpParams
 import com.hjq.http.request.HttpRequest
 import com.hjq.toast.Toaster
 import com.hjq.umeng.UmengClient
-import com.hjq.demo.R
-import com.hjq.demo.aop.Log
-import com.hjq.demo.http.glide.GlideApp
-import com.hjq.demo.http.model.RequestHandler
-import com.hjq.demo.http.model.RequestServer
-import com.hjq.demo.manager.ActivityManager
-import com.hjq.demo.other.*
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.tencent.bugly.crashreport.CrashReport
@@ -73,7 +80,12 @@ class AppApplication : Application() {
 
             // 设置全局的 Header 构建器
             SmartRefreshLayout.setDefaultRefreshHeaderCreator { context: Context, layout: RefreshLayout ->
-                MaterialHeader(context).setColorSchemeColors(ContextCompat.getColor(context, R.color.common_accent_color))
+                MaterialHeader(context).setColorSchemeColors(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.common_accent_color
+                    )
+                )
             }
             // 设置全局的 Footer 构建器
             SmartRefreshLayout.setDefaultRefreshFooterCreator { context: Context, layout: RefreshLayout ->
@@ -129,7 +141,11 @@ class AppApplication : Application() {
                 // 设置请求重试次数
                 .setRetryCount(1)
                 .setInterceptor(object : IRequestInterceptor {
-                    override fun interceptArguments(httpRequest: HttpRequest<*>, params: HttpParams, headers: HttpHeaders) {
+                    override fun interceptArguments(
+                        httpRequest: HttpRequest<*>,
+                        params: HttpParams,
+                        headers: HttpHeaders
+                    ) {
                         // 添加全局请求头
                         headers.put("token", "66666666666")
                         headers.put("deviceOaid", UmengClient.getDeviceOaid())
@@ -141,17 +157,30 @@ class AppApplication : Application() {
 
             // 设置 Json 解析容错监听
             GsonFactory.setParseExceptionCallback(object : ParseExceptionCallback {
-                override fun onParseObjectException(typeToken: TypeToken<*>?, fieldName: String?, jsonToken: JsonToken?) {
+                override fun onParseObjectException(
+                    typeToken: TypeToken<*>?,
+                    fieldName: String?,
+                    jsonToken: JsonToken?
+                ) {
                     // 上报到 Bugly 错误列表
                     // CrashReport.postCatchedException(IllegalArgumentException("类型解析异常：$typeToken#$fieldName，后台返回的类型为：$jsonToken"))
                 }
 
-                override fun onParseListException(typeToken: TypeToken<*>?, fieldName: String?, listItemJsonToken: JsonToken?) {
+                override fun onParseListException(
+                    typeToken: TypeToken<*>?,
+                    fieldName: String?,
+                    listItemJsonToken: JsonToken?
+                ) {
                     // 上报到 Bugly 错误列表
                     // CrashReport.postCatchedException(IllegalArgumentException("类型解析异常：$typeToken#$fieldName，后台返回的类型为：$jsonToken"))
                 }
 
-                override fun onParseMapException(typeToken: TypeToken<*>?, fieldName: String?, mapItemKey: String?, mapItemJsonToken: JsonToken?) {
+                override fun onParseMapException(
+                    typeToken: TypeToken<*>?,
+                    fieldName: String?,
+                    mapItemKey: String?,
+                    mapItemJsonToken: JsonToken?
+                ) {
                     // 上报到 Bugly 错误列表
                     // CrashReport.postCatchedException(IllegalArgumentException("类型解析异常：$typeToken#$fieldName，后台返回的类型为：$jsonToken"))
                 }
@@ -165,9 +194,11 @@ class AppApplication : Application() {
             }
 
             // 注册网络状态变化监听
-            val connectivityManager: ConnectivityManager? = ContextCompat.getSystemService(application, ConnectivityManager::class.java)
+            val connectivityManager: ConnectivityManager? =
+                ContextCompat.getSystemService(application, ConnectivityManager::class.java)
             if (connectivityManager != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                connectivityManager.registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
+                connectivityManager.registerDefaultNetworkCallback(object :
+                    ConnectivityManager.NetworkCallback() {
                     override fun onLost(network: Network) {
                         val topActivity: Activity? = ActivityManager.getInstance().getTopActivity()
                         if (topActivity !is LifecycleOwner) {

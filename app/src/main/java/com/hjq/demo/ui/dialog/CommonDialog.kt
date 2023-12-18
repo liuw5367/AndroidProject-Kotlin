@@ -1,7 +1,10 @@
 package com.hjq.demo.ui.dialog
 
-import android.content.*
-import android.view.*
+import android.content.Context
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
@@ -36,7 +39,9 @@ class CommonDialog {
         }
 
         fun setCustomView(@LayoutRes id: Int): B {
-            return setCustomView(LayoutInflater.from(getContext()).inflate(id, containerLayout, false))
+            return setCustomView(
+                LayoutInflater.from(getContext()).inflate(id, containerLayout, false)
+            )
         }
 
         fun setCustomView(view: View?): B {
@@ -59,7 +64,8 @@ class CommonDialog {
 
         fun setCancel(text: CharSequence?): B {
             cancelView?.text = text
-            lineView?.visibility = if (text == null || "" == text.toString()) View.GONE else View.VISIBLE
+            lineView?.visibility =
+                if (text == null || "" == text.toString()) View.GONE else View.VISIBLE
             return this as B
         }
 

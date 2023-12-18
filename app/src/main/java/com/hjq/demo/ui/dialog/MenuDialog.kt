@@ -1,7 +1,9 @@
 package com.hjq.demo.ui.dialog
 
-import android.content.*
-import android.view.*
+import android.content.Context
+import android.view.Gravity
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
@@ -11,7 +13,6 @@ import com.hjq.base.action.AnimAction
 import com.hjq.demo.R
 import com.hjq.demo.aop.SingleClick
 import com.hjq.demo.app.AppAdapter
-import java.util.*
 
 /**
  *    author : Android 轮子哥
@@ -110,7 +111,17 @@ class MenuDialog {
         /**
          * [View.OnLayoutChangeListener]
          */
-        override fun onLayoutChange(v: View, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int) {
+        override fun onLayoutChange(
+            v: View,
+            left: Int,
+            top: Int,
+            right: Int,
+            bottom: Int,
+            oldLeft: Int,
+            oldTop: Int,
+            oldRight: Int,
+            oldBottom: Int
+        ) {
             recyclerView?.removeOnLayoutChangeListener(this)
             // 这里一定要加延迟，如果不加在 Android 9.0 上面会导致 setLayoutParams 无效
             post(this)
@@ -144,7 +155,7 @@ class MenuDialog {
         }
     }
 
-    class MenuAdapter (context: Context) : AppAdapter<Any>(context) {
+    class MenuAdapter(context: Context) : AppAdapter<Any>(context) {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             return ViewHolder()

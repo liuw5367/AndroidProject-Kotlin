@@ -3,7 +3,7 @@ package com.hjq.demo.widget
 import android.animation.ValueAnimator
 import android.animation.ValueAnimator.AnimatorUpdateListener
 import android.app.Activity
-import android.content.*
+import android.content.Context
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.MediaPlayer.OnCompletionListener
@@ -13,9 +13,19 @@ import android.provider.Settings
 import android.provider.Settings.SettingNotFoundException
 import android.text.TextUtils
 import android.util.AttributeSet
-import android.view.*
-import android.widget.*
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewConfiguration
+import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
+import android.widget.TextView
+import android.widget.VideoView
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
@@ -29,7 +39,8 @@ import com.hjq.demo.ui.dialog.MessageDialog
 import com.hjq.widget.layout.SimpleLayout
 import com.hjq.widget.view.PlayButton
 import java.io.File
-import java.util.*
+import java.util.Formatter
+import java.util.Locale
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -42,7 +53,8 @@ import kotlin.math.roundToInt
  *    desc   : 视频播放控件
  */
 class PlayerView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0) :
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0
+) :
     SimpleLayout(context, attrs, defStyleAttr, defStyleRes), LifecycleEventObserver,
     OnSeekBarChangeListener, View.OnClickListener, ActivityAction, OnPreparedListener,
     MediaPlayer.OnInfoListener, OnCompletionListener, MediaPlayer.OnErrorListener {
@@ -550,6 +562,7 @@ class PlayerView @JvmOverloads constructor(
                 post(mShowMessageRunnable)
                 return true
             }
+
             MediaPlayer.MEDIA_INFO_BUFFERING_END -> {
                 lottieView.cancelAnimation()
                 messageView.setText(R.string.common_loading)
@@ -569,11 +582,16 @@ class PlayerView @JvmOverloads constructor(
             MediaPlayer.MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK -> {
                 activity.getString(R.string.common_video_error_not_support)
             }
+
             else -> {
                 activity.getString(R.string.common_video_error_unknown)
             }
         }
-        message += "\n" + String.format(activity.getString(R.string.common_video_error_supplement), what, extra)
+        message += "\n" + String.format(
+            activity.getString(R.string.common_video_error_supplement),
+            what,
+            extra
+        )
         MessageDialog.Builder(activity)
             .setMessage(message)
             .setConfirm(R.string.common_confirm)
@@ -667,7 +685,12 @@ class PlayerView @JvmOverloads constructor(
                     if (currentBrightness == WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE) {
                         currentBrightness = try {
                             // 这里需要注意，Settings.System.SCREEN_BRIGHTNESS 获取到的值在小米手机上面会超过 255
-                            min(Settings.System.getInt(context.contentResolver, Settings.System.SCREEN_BRIGHTNESS), 255) / 255f
+                            min(
+                                Settings.System.getInt(
+                                    context.contentResolver,
+                                    Settings.System.SCREEN_BRIGHTNESS
+                                ), 255
+                            ) / 255f
                         } catch (ignored: SettingNotFoundException) {
                             WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_OFF
                         }
@@ -677,6 +700,7 @@ class PlayerView @JvmOverloads constructor(
                 viewDownY = event.y
                 removeCallbacks(mHideControllerRunnable)
             }
+
             MotionEvent.ACTION_MOVE -> run {
                 // 计算偏移的距离（按下的位置 - 当前触摸的位置）
                 val distanceX: Float = viewDownX - event.x
@@ -710,7 +734,7 @@ class PlayerView @JvmOverloads constructor(
                 // 如果手指触摸方向是垂直的
                 if (touchOrientation == LinearLayout.VERTICAL) {
                     // 判断触摸点是在屏幕左边还是右边
-                    if (event.x.toInt() < width / 2){
+                    if (event.x.toInt() < width / 2) {
                         // 手指在屏幕左边
                         val delta: Float =
                             (distanceY / height) * WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
@@ -719,21 +743,28 @@ class PlayerView @JvmOverloads constructor(
                         }
 
                         // 更新系统亮度
-                        val brightness: Float = min(max(currentBrightness + delta,
-                            WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_OFF),
-                            WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL)
+                        val brightness: Float = min(
+                            max(
+                                currentBrightness + delta,
+                                WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_OFF
+                            ),
+                            WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
+                        )
                         window?.apply {
                             val attributes: WindowManager.LayoutParams = attributes
                             attributes.screenBrightness = brightness
-                            setAttributes(attributes) }
+                            setAttributes(attributes)
+                        }
                         val percent: Int = (brightness * 100).toInt()
                         @DrawableRes val iconId: Int = when {
                             percent > 100 / 3 * 2 -> {
                                 R.drawable.video_brightness_high_ic
                             }
+
                             percent > 100 / 3 -> {
                                 R.drawable.video_brightness_medium_ic
                             }
+
                             else -> {
                                 R.drawable.video_brightness_low_ic
                             }
@@ -759,12 +790,15 @@ class PlayerView @JvmOverloads constructor(
                         percent > 100 / 3 * 2 -> {
                             R.drawable.video_volume_high_ic
                         }
+
                         percent > 100 / 3 -> {
                             R.drawable.video_volume_medium_ic
                         }
+
                         percent != 0 -> {
                             R.drawable.video_volume_low_ic
                         }
+
                         else -> {
                             R.drawable.video_volume_mute_ic
                         }
@@ -775,9 +809,11 @@ class PlayerView @JvmOverloads constructor(
                     return@run
                 }
             }
+
             MotionEvent.ACTION_UP -> {
                 if (abs(viewDownX - event.x) <= ViewConfiguration.get(context).scaledTouchSlop &&
-                    abs(viewDownY - event.y) <= ViewConfiguration.get(context).scaledTouchSlop) {
+                    abs(viewDownY - event.y) <= ViewConfiguration.get(context).scaledTouchSlop
+                ) {
                     // 如果整个视频播放区域太大，触摸移动会导致触发点击事件，所以这里换成手动派发点击事件
                     if (isEnabled && isClickable) {
                         performClick()
@@ -793,6 +829,7 @@ class PlayerView @JvmOverloads constructor(
                 postDelayed(mHideControllerRunnable, CONTROLLER_TIME.toLong())
                 postDelayed(mHideMessageRunnable, DIALOG_TIME.toLong())
             }
+
             MotionEvent.ACTION_CANCEL -> {
                 touchOrientation = -1
                 currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
@@ -821,7 +858,8 @@ class PlayerView @JvmOverloads constructor(
             }
             playTime.text = conversionTime(progress)
             progressView.progress = progress
-            progressView.secondaryProgress = (videoView.bufferPercentage / 100f * videoView.duration).toInt()
+            progressView.secondaryProgress =
+                (videoView.bufferPercentage / 100f * videoView.duration).toInt()
             if (videoView.isPlaying) {
                 if (!lockMode && bottomLayout.visibility == GONE) {
                     bottomLayout.visibility = VISIBLE

@@ -26,20 +26,33 @@ import com.hjq.widget.R
 @Suppress("ClickableViewAccessibility")
 class PasswordEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null,
-    defStyleAttr: Int = android.R.attr.editTextStyle) :
+    defStyleAttr: Int = android.R.attr.editTextStyle
+) :
     RegexEditText(context, attrs, defStyleAttr),
     OnTouchListener, OnFocusChangeListener, TextWatcher {
 
     private var currentDrawable: Drawable
-    private val visibleDrawable: Drawable = DrawableCompat.wrap(ContextCompat.getDrawable(context, R.drawable.password_off_ic)!!)
+    private val visibleDrawable: Drawable =
+        DrawableCompat.wrap(ContextCompat.getDrawable(context, R.drawable.password_off_ic)!!)
     private val invisibleDrawable: Drawable
     private var touchListener: OnTouchListener? = null
     private var focusChangeListener: OnFocusChangeListener? = null
 
     init {
-        visibleDrawable.setBounds(0, 0, visibleDrawable.intrinsicWidth, visibleDrawable.intrinsicHeight)
-        invisibleDrawable = DrawableCompat.wrap(ContextCompat.getDrawable(context, R.drawable.password_on_ic)!!)
-        invisibleDrawable.setBounds(0, 0, invisibleDrawable.intrinsicWidth, invisibleDrawable.intrinsicHeight)
+        visibleDrawable.setBounds(
+            0,
+            0,
+            visibleDrawable.intrinsicWidth,
+            visibleDrawable.intrinsicHeight
+        )
+        invisibleDrawable =
+            DrawableCompat.wrap(ContextCompat.getDrawable(context, R.drawable.password_on_ic)!!)
+        invisibleDrawable.setBounds(
+            0,
+            0,
+            invisibleDrawable.intrinsicWidth,
+            invisibleDrawable.intrinsicHeight
+        )
         currentDrawable = visibleDrawable
 
         // 密码不可见
@@ -60,7 +73,12 @@ class PasswordEditText @JvmOverloads constructor(
         }
         currentDrawable.setVisible(visible, false)
         val drawables: Array<Drawable?> = compoundDrawablesRelative
-        setCompoundDrawablesRelative(drawables[0], drawables[1], if (visible) currentDrawable else null, drawables[3])
+        setCompoundDrawablesRelative(
+            drawables[0],
+            drawables[1],
+            if (visible) currentDrawable else null,
+            drawables[3]
+        )
     }
 
     private fun refreshDrawableStatus() {
@@ -96,11 +114,12 @@ class PasswordEditText @JvmOverloads constructor(
         val layoutDirection: Int = layoutDirection
         if (layoutDirection == LAYOUT_DIRECTION_LTR) {
             // 从左往右
-            touchDrawable = x > width - currentDrawable.intrinsicWidth - paddingEnd && x < width - paddingEnd
+            touchDrawable =
+                x > width - currentDrawable.intrinsicWidth - paddingEnd && x < width - paddingEnd
         } else if (layoutDirection == LAYOUT_DIRECTION_RTL) {
             // 从右往左
             touchDrawable = x > paddingStart &&
-                    x < paddingStart + currentDrawable.intrinsicWidth
+                x < paddingStart + currentDrawable.intrinsicWidth
         }
         if (currentDrawable.isVisible && touchDrawable) {
             if (event.action == MotionEvent.ACTION_UP) {

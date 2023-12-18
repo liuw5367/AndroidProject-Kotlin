@@ -1,8 +1,10 @@
 package com.hjq.demo.ui.popup
 
-import android.content.*
+import android.content.Context
 import android.util.TypedValue
-import android.view.*
+import android.view.Gravity
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hjq.base.BaseAdapter
@@ -11,7 +13,6 @@ import com.hjq.base.action.AnimAction
 import com.hjq.demo.R
 import com.hjq.demo.app.AppAdapter
 import com.hjq.demo.other.ArrowDrawable
-import java.util.*
 
 /**
  *    author : Android 轮子哥
@@ -105,16 +106,21 @@ class ListPopup {
 
             init {
                 textView.setTextColor(getColor(R.color.black50))
-                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getContext().resources.getDimension(R.dimen.sp_16))
+                textView.setTextSize(
+                    TypedValue.COMPLEX_UNIT_PX,
+                    getContext().resources.getDimension(R.dimen.sp_16)
+                )
             }
 
             override fun onBindView(position: Int) {
                 textView.text = getItem(position).toString()
                 textView.setPaddingRelative(
                     getContext().resources.getDimension(R.dimen.dp_12).toInt(),
-                    if (position == 0) getContext().resources.getDimension(R.dimen.dp_12).toInt() else 0,
+                    if (position == 0) getContext().resources.getDimension(R.dimen.dp_12)
+                        .toInt() else 0,
                     getContext().resources.getDimension(R.dimen.dp_12).toInt(),
-                    getContext().resources.getDimension(R.dimen.dp_10).toInt())
+                    getContext().resources.getDimension(R.dimen.dp_10).toInt()
+                )
             }
         }
     }

@@ -3,8 +3,13 @@ package com.hjq.base
 import android.content.Context
 import android.content.res.TypedArray
 import android.os.Bundle
-import android.view.*
+import android.view.Gravity
+import android.view.MotionEvent
+import android.view.View
 import android.view.View.OnTouchListener
+import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
 import android.widget.FrameLayout
 import androidx.annotation.LayoutRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -21,10 +26,14 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCa
  *    desc   : 在 BaseDialog 基础上加上 [com.google.android.material.bottomsheet.BottomSheetDialog] 特性
  */
 @Suppress("LeakingThis")
-open class BottomSheetDialog @JvmOverloads constructor(context: Context, themeResId: Int = R.style.BaseDialogTheme) :
+open class BottomSheetDialog @JvmOverloads constructor(
+    context: Context,
+    themeResId: Int = R.style.BaseDialogTheme
+) :
     BaseDialog(context, themeResId), OnTouchListener, View.OnClickListener {
 
-    private val bottomSheetBehavior: BottomSheetBehavior<FrameLayout> = BottomSheetBehavior(getContext(), null)
+    private val bottomSheetBehavior: BottomSheetBehavior<FrameLayout> =
+        BottomSheetBehavior(getContext(), null)
     private var cancelable: Boolean = true
     private var canceledOnTouchOutside: Boolean = true
     private var canceledOnTouchOutsideSet: Boolean = false
@@ -47,8 +56,8 @@ open class BottomSheetDialog @JvmOverloads constructor(context: Context, themeRe
         // 隐藏底部导航栏
         val decorView: View = window.decorView
         val uiOptions: Int = (decorView.systemUiVisibility or
-                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
         decorView.systemUiVisibility = uiOptions
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
     }
@@ -115,15 +124,18 @@ open class BottomSheetDialog @JvmOverloads constructor(context: Context, themeRe
     private fun wrapContentView(view: View): View {
         val rootLayout = CoordinatorLayout(context)
         rootLayout.layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+        )
         val touchView = View(context)
         touchView.isSoundEffectsEnabled = false
         touchView.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
         touchView.layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+        )
         val contentLayout = FrameLayout(context)
         val layoutParams: CoordinatorLayout.LayoutParams = CoordinatorLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        )
         layoutParams.gravity = Gravity.CENTER_HORIZONTAL or Gravity.TOP
         layoutParams.behavior = bottomSheetBehavior
         contentLayout.layoutParams = layoutParams
@@ -170,7 +182,10 @@ open class BottomSheetDialog @JvmOverloads constructor(context: Context, themeRe
 
     private inner class BehaviorAccessibilityDelegate : AccessibilityDelegateCompat() {
 
-        override fun onInitializeAccessibilityNodeInfo(host: View, info: AccessibilityNodeInfoCompat) {
+        override fun onInitializeAccessibilityNodeInfo(
+            host: View,
+            info: AccessibilityNodeInfoCompat
+        ) {
             super.onInitializeAccessibilityNodeInfo(host, info)
             if (cancelable) {
                 info.addAction(AccessibilityNodeInfoCompat.ACTION_DISMISS)

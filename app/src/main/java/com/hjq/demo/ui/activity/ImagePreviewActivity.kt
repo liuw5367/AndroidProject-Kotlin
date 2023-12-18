@@ -16,7 +16,6 @@ import com.hjq.demo.aop.Log
 import com.hjq.demo.app.AppActivity
 import com.hjq.demo.ui.adapter.ImagePreviewAdapter
 import me.relex.circleindicator.CircleIndicator3
-import java.util.*
 
 /**
  *    author : Android 轮子哥

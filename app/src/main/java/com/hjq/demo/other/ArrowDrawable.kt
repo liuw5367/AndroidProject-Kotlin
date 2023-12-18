@@ -1,7 +1,15 @@
 package com.hjq.demo.other
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.BlurMaskFilter
+import android.graphics.Canvas
+import android.graphics.ColorFilter
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.PixelFormat
+import android.graphics.PointF
+import android.graphics.Rect
+import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import android.view.Gravity
 import android.view.View
@@ -25,7 +33,8 @@ class ArrowDrawable private constructor(private val builder: Builder) : Drawable
 
     override fun draw(canvas: Canvas) {
         if (builder.shadowSize > 0) {
-            paint.maskFilter = BlurMaskFilter(builder.shadowSize.toFloat(), BlurMaskFilter.Blur.OUTER)
+            paint.maskFilter =
+                BlurMaskFilter(builder.shadowSize.toFloat(), BlurMaskFilter.Blur.OUTER)
             paint.color = builder.shadowColor
             canvas.drawPath(path, paint)
         }
@@ -57,14 +66,17 @@ class ArrowDrawable private constructor(private val builder: Builder) : Drawable
                 excludeShadowRectF.left += builder.arrowHeight.toFloat()
                 centerPointF.x = excludeShadowRectF.left
             }
+
             Gravity.RIGHT -> {
                 excludeShadowRectF.right -= builder.arrowHeight.toFloat()
                 centerPointF.x = excludeShadowRectF.right
             }
+
             Gravity.TOP -> {
                 excludeShadowRectF.top += builder.arrowHeight.toFloat()
                 centerPointF.y = excludeShadowRectF.top
             }
+
             Gravity.BOTTOM -> {
                 excludeShadowRectF.bottom -= builder.arrowHeight.toFloat()
                 centerPointF.y = excludeShadowRectF.bottom
@@ -84,12 +96,25 @@ class ArrowDrawable private constructor(private val builder: Builder) : Drawable
         centerPointF.y += builder.arrowOffsetY.toFloat()
         when (builder.arrowGravity) {
             Gravity.LEFT, Gravity.RIGHT, Gravity.CENTER_HORIZONTAL -> {
-                centerPointF.x = max(centerPointF.x, excludeShadowRectF.left + builder.radius + builder.arrowHeight)
-                centerPointF.x = min(centerPointF.x, excludeShadowRectF.right - builder.radius - builder.arrowHeight)
+                centerPointF.x = max(
+                    centerPointF.x,
+                    excludeShadowRectF.left + builder.radius + builder.arrowHeight
+                )
+                centerPointF.x = min(
+                    centerPointF.x,
+                    excludeShadowRectF.right - builder.radius - builder.arrowHeight
+                )
             }
+
             Gravity.TOP, Gravity.BOTTOM, Gravity.CENTER_VERTICAL -> {
-                centerPointF.y = max(centerPointF.y, excludeShadowRectF.top + builder.radius + builder.arrowHeight)
-                centerPointF.y = min(centerPointF.y, excludeShadowRectF.bottom - builder.radius - builder.arrowHeight)
+                centerPointF.y = max(
+                    centerPointF.y,
+                    excludeShadowRectF.top + builder.radius + builder.arrowHeight
+                )
+                centerPointF.y = min(
+                    centerPointF.y,
+                    excludeShadowRectF.bottom - builder.radius - builder.arrowHeight
+                )
             }
         }
         when (builder.arrowOrientation) {
@@ -97,6 +122,7 @@ class ArrowDrawable private constructor(private val builder: Builder) : Drawable
                 centerPointF.x = max(centerPointF.x, excludeShadowRectF.left)
                 centerPointF.x = min(centerPointF.x, excludeShadowRectF.right)
             }
+
             Gravity.TOP, Gravity.BOTTOM -> {
                 centerPointF.y = max(centerPointF.y, excludeShadowRectF.top)
                 centerPointF.y = min(centerPointF.y, excludeShadowRectF.bottom)
@@ -193,10 +219,14 @@ class ArrowDrawable private constructor(private val builder: Builder) : Drawable
          * 设置箭头方向（左上右下）
          */
         fun setArrowOrientation(orientation: Int): Builder = apply {
-            when (val finalOrientation: Int = Gravity.getAbsoluteGravity(orientation, context.resources.configuration.layoutDirection)) {
+            when (val finalOrientation: Int = Gravity.getAbsoluteGravity(
+                orientation,
+                context.resources.configuration.layoutDirection
+            )) {
                 Gravity.LEFT, Gravity.TOP, Gravity.RIGHT, Gravity.BOTTOM -> {
                     arrowOrientation = finalOrientation
                 }
+
                 else -> throw IllegalArgumentException("are you ok?")
             }
         }
@@ -220,9 +250,11 @@ class ArrowDrawable private constructor(private val builder: Builder) : Drawable
                 Gravity.LEFT, Gravity.RIGHT -> if (arrowOrientation == Gravity.LEFT || arrowOrientation == Gravity.RIGHT) {
                     throw IllegalArgumentException("are you ok?")
                 }
+
                 Gravity.TOP, Gravity.BOTTOM -> if (arrowOrientation == Gravity.TOP || arrowOrientation == Gravity.BOTTOM) {
                     throw IllegalArgumentException("are you ok?")
                 }
+
                 Gravity.CENTER_VERTICAL, Gravity.CENTER_HORIZONTAL -> {}
                 else -> {
                     throw IllegalArgumentException("are you ok?")
@@ -270,7 +302,8 @@ class ArrowDrawable private constructor(private val builder: Builder) : Drawable
             view.background = build()
             if (shadowSize > 0 || arrowHeight > 0) {
                 if ((view.paddingTop == 0) && (view.bottom == 0) &&
-                    (view.paddingLeft == 0) && (view.paddingRight == 0)) {
+                    (view.paddingLeft == 0) && (view.paddingRight == 0)
+                ) {
 
                     view.setPadding(shadowSize, shadowSize + arrowHeight, shadowSize, shadowSize)
                 }

@@ -11,6 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.gson.JsonSyntaxException;
+import com.hjq.demo.R;
+import com.hjq.demo.http.exception.ResultException;
+import com.hjq.demo.http.exception.TokenException;
 import com.hjq.gson.factory.GsonFactory;
 import com.hjq.http.EasyLog;
 import com.hjq.http.config.IRequestHandler;
@@ -24,9 +27,6 @@ import com.hjq.http.exception.ResponseException;
 import com.hjq.http.exception.ServerException;
 import com.hjq.http.exception.TimeoutException;
 import com.hjq.http.request.HttpRequest;
-import com.hjq.demo.R;
-import com.hjq.demo.http.exception.ResultException;
-import com.hjq.demo.http.exception.TokenException;
 
 import java.io.IOException;
 import java.io.InputStream;

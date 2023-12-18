@@ -2,10 +2,14 @@ package com.hjq.demo.other
 
 import android.app.Activity
 import android.app.Application.ActivityLifecycleCallbacks
-import android.graphics.*
-import android.os.*
-import android.view.*
+import android.graphics.Rect
+import android.os.Build
+import android.os.Bundle
+import android.view.View
+import android.view.ViewTreeObserver
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import android.view.Window
+import android.view.WindowManager
 
 /**
  *    author : Android 轮子哥
@@ -37,9 +41,10 @@ class KeyboardWatcher private constructor(private var activity: Activity) :
         contentView.viewTreeObserver.addOnGlobalLayoutListener(this)
 
         // 获取 status_bar_height 资源的 ID
-        val resourceId: Int = activity.resources.getIdentifier("status_bar_height", "dimen", "android")
+        val resourceId: Int =
+            activity.resources.getIdentifier("status_bar_height", "dimen", "android")
         if (resourceId > 0) {
-            //根据资源 ID 获取响应的尺寸值
+            // 根据资源 ID 获取响应的尺寸值
             statusBarHeight = activity.resources.getDimensionPixelSize(resourceId)
         }
     }
@@ -49,7 +54,7 @@ class KeyboardWatcher private constructor(private var activity: Activity) :
      */
     override fun onGlobalLayout() {
         val r = Rect()
-        //r will be populated with the coordinates of your view that area still visible.
+        // r will be populated with the coordinates of your view that area still visible.
         contentView.getWindowVisibleDisplayFrame(r)
         val heightDiff: Int = contentView.rootView.height - (r.bottom - r.top)
         if (!softKeyboardOpened && heightDiff > contentView.rootView.height / 4) {

@@ -1,6 +1,6 @@
 package com.hjq.demo.ui.adapter
 
-import android.content.*
+import android.content.Context
 import android.view.ViewGroup
 import android.widget.TextView
 import com.hjq.demo.R

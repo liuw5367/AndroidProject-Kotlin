@@ -2,9 +2,16 @@ package com.hjq.widget.layout
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.*
+import android.view.MotionEvent
+import android.view.VelocityTracker
+import android.view.View
+import android.view.ViewConfiguration
 import android.widget.LinearLayout
-import androidx.core.view.*
+import androidx.core.view.NestedScrollingChild
+import androidx.core.view.NestedScrollingChildHelper
+import androidx.core.view.NestedScrollingParent
+import androidx.core.view.NestedScrollingParentHelper
+import androidx.core.view.ViewCompat
 import kotlin.math.abs
 
 /**
@@ -14,8 +21,10 @@ import kotlin.math.abs
  *    desc   : 支持嵌套滚动的 LinearLayout
  */
 class NestedLinearLayout @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0) :
-    LinearLayout(context, attrs, defStyleAttr, defStyleRes), NestedScrollingChild, NestedScrollingParent {
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0
+) :
+    LinearLayout(context, attrs, defStyleAttr, defStyleRes), NestedScrollingChild,
+    NestedScrollingParent {
 
     companion object {
         private const val INVALID_POINTER: Int = -1
@@ -54,6 +63,7 @@ class NestedLinearLayout @JvmOverloads constructor(
                 activePointerId = event.getPointerId(0)
                 startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL)
             }
+
             MotionEvent.ACTION_MOVE -> run {
                 val activePointerIndex: Int = event.findPointerIndex(activePointerId)
                 if (activePointerIndex == -1) {
@@ -83,6 +93,7 @@ class NestedLinearLayout @JvmOverloads constructor(
                     }
                 }
             }
+
             MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> {
                 if (beingDragged) {
                     velocityTracker?.computeCurrentVelocity(1000, maximumVelocity)
@@ -98,11 +109,13 @@ class NestedLinearLayout @JvmOverloads constructor(
                 activePointerId = INVALID_POINTER
                 endDrag()
             }
+
             MotionEvent.ACTION_POINTER_DOWN -> {
                 val index: Int = event.actionIndex
                 lastMotionY = event.getY(index).toInt()
                 activePointerId = event.getPointerId(index)
             }
+
             MotionEvent.ACTION_POINTER_UP -> {
                 onSecondaryPointerUp(event)
                 lastMotionY = event.getY(event.findPointerIndex(activePointerId)).toInt()
@@ -114,7 +127,7 @@ class NestedLinearLayout @JvmOverloads constructor(
 
     private fun onSecondaryPointerUp(ev: MotionEvent) {
         val pointerIndex: Int = ((ev.action and MotionEvent.ACTION_POINTER_INDEX_MASK)
-                shr MotionEvent.ACTION_POINTER_INDEX_SHIFT)
+            shr MotionEvent.ACTION_POINTER_INDEX_SHIFT)
         val pointerId: Int = ev.getPointerId(pointerIndex)
         if (pointerId == activePointerId) {
             val newPointerIndex: Int = if (pointerIndex == 0) 1 else 0
@@ -175,15 +188,36 @@ class NestedLinearLayout @JvmOverloads constructor(
         return childHelper.hasNestedScrollingParent()
     }
 
-    override fun dispatchNestedScroll(dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int, offsetInWindow: IntArray?): Boolean {
-        return childHelper.dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, offsetInWindow)
+    override fun dispatchNestedScroll(
+        dxConsumed: Int,
+        dyConsumed: Int,
+        dxUnconsumed: Int,
+        dyUnconsumed: Int,
+        offsetInWindow: IntArray?
+    ): Boolean {
+        return childHelper.dispatchNestedScroll(
+            dxConsumed,
+            dyConsumed,
+            dxUnconsumed,
+            dyUnconsumed,
+            offsetInWindow
+        )
     }
 
-    override fun dispatchNestedPreScroll(dx: Int, dy: Int, consumed: IntArray?, offsetInWindow: IntArray?): Boolean {
+    override fun dispatchNestedPreScroll(
+        dx: Int,
+        dy: Int,
+        consumed: IntArray?,
+        offsetInWindow: IntArray?
+    ): Boolean {
         return childHelper.dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow)
     }
 
-    override fun dispatchNestedFling(velocityX: Float, velocityY: Float, consumed: Boolean): Boolean {
+    override fun dispatchNestedFling(
+        velocityX: Float,
+        velocityY: Float,
+        consumed: Boolean
+    ): Boolean {
         return childHelper.dispatchNestedFling(velocityX, velocityY, consumed)
     }
 
@@ -206,7 +240,13 @@ class NestedLinearLayout @JvmOverloads constructor(
         stopNestedScroll()
     }
 
-    override fun onNestedScroll(target: View, dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int) {
+    override fun onNestedScroll(
+        target: View,
+        dxConsumed: Int,
+        dyConsumed: Int,
+        dxUnconsumed: Int,
+        dyUnconsumed: Int
+    ) {
         dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, null)
     }
 
@@ -214,7 +254,12 @@ class NestedLinearLayout @JvmOverloads constructor(
         dispatchNestedPreScroll(dx, dy, consumed, null)
     }
 
-    override fun onNestedFling(target: View, velocityX: Float, velocityY: Float, consumed: Boolean): Boolean {
+    override fun onNestedFling(
+        target: View,
+        velocityX: Float,
+        velocityY: Float,
+        consumed: Boolean
+    ): Boolean {
         return dispatchNestedFling(velocityX, velocityY, consumed)
     }
 

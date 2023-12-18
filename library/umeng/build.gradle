@@ -3,7 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
-apply from : '../../common.gradle'
+apply from: '../../common.gradle'
 
 android {
 
@@ -21,12 +21,12 @@ android {
 
         // 清单占位符
         addManifestPlaceholders([
-                'UM_KEY' : UMENG_APP_KEY,
+                'UM_KEY'           : UMENG_APP_KEY,
                 'UM_MESSAGE_SECRET': UMENG_MESSAGE_SECRET,
-                'QQ_ID' : QQ_APP_ID,
-                'QQ_SECRET' : QQ_APP_SECRET,
-                'WX_ID' : WX_APP_ID,
-                'WX_SECRET' : WX_APP_SECRET
+                'QQ_ID'            : QQ_APP_ID,
+                'QQ_SECRET'        : QQ_APP_SECRET,
+                'WX_ID'            : WX_APP_ID,
+                'WX_SECRET'        : WX_APP_SECRET
         ])
     }
 }

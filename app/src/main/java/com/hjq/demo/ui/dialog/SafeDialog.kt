@@ -9,11 +9,11 @@ import com.hjq.demo.R
 import com.hjq.demo.aop.SingleClick
 import com.hjq.demo.http.api.GetCodeApi
 import com.hjq.demo.http.api.VerifyCodeApi
+import com.hjq.demo.http.model.HttpData
 import com.hjq.http.EasyHttp
 import com.hjq.http.listener.OnHttpListener
 import com.hjq.toast.Toaster
 import com.hjq.widget.view.CountdownView
-import com.hjq.demo.http.model.HttpData
 
 /**
  *    author : Android 轮子哥
@@ -42,7 +42,8 @@ class SafeDialog {
             // 为了保护用户的隐私，不明文显示中间四个数字
             phoneView?.text = String.format(
                 "%s****%s", phoneNumber.substring(0, 3),
-                phoneNumber.substring(phoneNumber.length - 4))
+                phoneNumber.substring(phoneNumber.length - 4)
+            )
         }
 
         fun setCode(code: String?): Builder = apply {
@@ -82,6 +83,7 @@ class SafeDialog {
                             }
                         })
                 }
+
                 R.id.tv_ui_confirm -> {
                     if (codeView?.text.toString().length != getResources().getInteger(R.integer.sms_code_length)) {
                         Toaster.show(R.string.common_code_error_hint)
@@ -103,7 +105,11 @@ class SafeDialog {
 
                             override fun onHttpSuccess(result: HttpData<Void?>?) {
                                 autoDismiss()
-                                listener?.onConfirm(getDialog(), phoneNumber, codeView?.text.toString())
+                                listener?.onConfirm(
+                                    getDialog(),
+                                    phoneNumber,
+                                    codeView?.text.toString()
+                                )
                             }
 
                             override fun onHttpFail(throwable: Throwable?) {
@@ -111,6 +117,7 @@ class SafeDialog {
                             }
                         })
                 }
+
                 R.id.tv_ui_cancel -> {
                     autoDismiss()
                     listener?.onCancel(getDialog())

@@ -1,7 +1,7 @@
 package com.hjq.demo.http.model
 
-import com.hjq.http.config.IRequestBodyStrategy
 import com.hjq.demo.other.AppConfig
+import com.hjq.http.config.IRequestBodyStrategy
 import com.hjq.http.config.IRequestServer
 import com.hjq.http.model.RequestBodyType
 

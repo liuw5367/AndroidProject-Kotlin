@@ -1,20 +1,21 @@
 package com.hjq.demo.ui.activity
 
-import android.animation.*
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Intent
-import android.view.*
+import android.view.View
 import com.airbnb.lottie.LottieAnimationView
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import com.hjq.demo.R
 import com.hjq.demo.app.AppActivity
 import com.hjq.demo.http.api.UserInfoApi
+import com.hjq.demo.http.model.HttpData
 import com.hjq.demo.other.AppConfig
 import com.hjq.http.EasyHttp
 import com.hjq.http.listener.OnHttpListener
 import com.hjq.widget.view.SlantedTextView
-import com.hjq.demo.http.model.HttpData
-import java.util.*
+import java.util.Locale
 
 /**
  *    author : Android 轮子哥
@@ -76,7 +77,7 @@ class SplashActivity : AppActivity() {
 
     override fun onBackPressed() {
         // 禁用返回键
-        //super.onBackPressed();
+        // super.onBackPressed();
     }
 
     override fun initActivity() {
@@ -86,7 +87,8 @@ class SplashActivity : AppActivity() {
             val intent: Intent? = intent
             // 如果当前 Activity 是通过桌面图标启动进入的
             if (((intent != null) && intent.hasCategory(Intent.CATEGORY_LAUNCHER)
-                        && (Intent.ACTION_MAIN == intent.action))) {
+                    && (Intent.ACTION_MAIN == intent.action))
+            ) {
                 // 对当前 Activity 执行销毁操作，避免重复实例化入口
                 finish()
                 return

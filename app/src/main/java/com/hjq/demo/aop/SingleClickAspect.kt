@@ -27,7 +27,8 @@ class SingleClickAspect {
      * 方法切入点
      */
     @Pointcut("execution(@com.hjq.demo.aop.SingleClick * *(..))")
-    fun method() {}
+    fun method() {
+    }
 
     /**
      * 在连接点进行方法替换

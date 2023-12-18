@@ -11,8 +11,12 @@ import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
-import com.hjq.base.action.*
-import java.util.*
+import com.hjq.base.action.ActivityAction
+import com.hjq.base.action.BundleAction
+import com.hjq.base.action.ClickAction
+import com.hjq.base.action.HandlerAction
+import com.hjq.base.action.KeyboardAction
+import java.util.Random
 import kotlin.math.pow
 
 /**
@@ -155,7 +159,11 @@ abstract class BaseActivity : AppCompatActivity(), ActivityAction,
     }
 
     @Suppress("deprecation")
-    open fun startActivityForResult(intent: Intent, options: Bundle?, callback: OnActivityCallback?) {
+    open fun startActivityForResult(
+        intent: Intent,
+        options: Bundle?,
+        callback: OnActivityCallback?
+    ) {
         // 请求码必须在 2 的 16 次方以内
         val requestCode: Int = Random().nextInt(2.0.pow(16.0).toInt())
         activityCallbacks.put(requestCode, callback)

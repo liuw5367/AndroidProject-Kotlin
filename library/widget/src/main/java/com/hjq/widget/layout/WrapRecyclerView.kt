@@ -10,7 +10,6 @@ import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
-import java.util.*
 
 /**
  *    author : Android 轮子哥
@@ -19,7 +18,8 @@ import java.util.*
  *    desc   : 支持添加头部和底部的 RecyclerView
  */
 class WrapRecyclerView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) :
     RecyclerView(context, attrs, defStyleAttr) {
 
     /** 原有的适配器 */
@@ -131,7 +131,7 @@ class WrapRecyclerView @JvmOverloads constructor(
 
             override fun getSpanSize(position: Int): Int {
                 return if (((position < wrapAdapter.getHeaderViewsCount()
-                            || position >= wrapAdapter.getHeaderViewsCount() + (if (realAdapter == null) 0 else realAdapter!!.itemCount)))
+                        || position >= wrapAdapter.getHeaderViewsCount() + (if (realAdapter == null) 0 else realAdapter!!.itemCount)))
                 ) layoutManager.spanCount else 1
             }
         }
@@ -228,7 +228,8 @@ class WrapRecyclerView @JvmOverloads constructor(
                 HEADER_VIEW_TYPE -> newWrapViewHolder(headerViews[getPosition()]!!)
                 FOOTER_VIEW_TYPE -> newWrapViewHolder(footerViews[getPosition() - getHeaderViewsCount() - (if (realAdapter != null) realAdapter!!.itemCount else 0)]!!)
                 else -> {
-                    val itemViewType: Int = realAdapter!!.getItemViewType(getPosition() - getHeaderViewsCount())
+                    val itemViewType: Int =
+                        realAdapter!!.getItemViewType(getPosition() - getHeaderViewsCount())
                     if (itemViewType == HEADER_VIEW_TYPE || itemViewType == FOOTER_VIEW_TYPE) {
                         throw IllegalStateException("Please do not use this type as itemType")
                     }
@@ -243,7 +244,10 @@ class WrapRecyclerView @JvmOverloads constructor(
             }
             when (getItemViewType(position)) {
                 HEADER_VIEW_TYPE, FOOTER_VIEW_TYPE -> {}
-                else -> realAdapter!!.onBindViewHolder(holder, getPosition() - getHeaderViewsCount())
+                else -> realAdapter!!.onBindViewHolder(
+                    holder,
+                    getPosition() - getHeaderViewsCount()
+                )
             }
         }
 
@@ -378,30 +382,47 @@ class WrapRecyclerView @JvmOverloads constructor(
     /**
      * 数据改变监听器
      */
-    private class WrapAdapterDataObserver constructor(private val wrapAdapter: WrapRecyclerAdapter) : AdapterDataObserver() {
+    private class WrapAdapterDataObserver constructor(private val wrapAdapter: WrapRecyclerAdapter) :
+        AdapterDataObserver() {
 
         override fun onChanged() {
             wrapAdapter.notifyDataSetChanged()
         }
 
         override fun onItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any?) {
-            wrapAdapter.notifyItemRangeChanged(wrapAdapter.getHeaderViewsCount() + positionStart, itemCount, payload)
+            wrapAdapter.notifyItemRangeChanged(
+                wrapAdapter.getHeaderViewsCount() + positionStart,
+                itemCount,
+                payload
+            )
         }
 
         override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
-            wrapAdapter.notifyItemRangeChanged(wrapAdapter.getHeaderViewsCount() + positionStart, itemCount)
+            wrapAdapter.notifyItemRangeChanged(
+                wrapAdapter.getHeaderViewsCount() + positionStart,
+                itemCount
+            )
         }
 
         override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-            wrapAdapter.notifyItemRangeInserted(wrapAdapter.getHeaderViewsCount() + positionStart, itemCount)
+            wrapAdapter.notifyItemRangeInserted(
+                wrapAdapter.getHeaderViewsCount() + positionStart,
+                itemCount
+            )
         }
 
         override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
-            wrapAdapter.notifyItemRangeRemoved(wrapAdapter.getHeaderViewsCount() + positionStart, itemCount)
+            wrapAdapter.notifyItemRangeRemoved(
+                wrapAdapter.getHeaderViewsCount() + positionStart,
+                itemCount
+            )
         }
 
         override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
-            wrapAdapter.notifyItemMoved(wrapAdapter.getHeaderViewsCount() + fromPosition, wrapAdapter.getHeaderViewsCount() + toPosition)
+            wrapAdapter.notifyItemMoved(
+                wrapAdapter.getHeaderViewsCount() + fromPosition,
+                wrapAdapter.getHeaderViewsCount() + toPosition
+            )
         }
     }
 }

@@ -26,7 +26,8 @@ class CheckNetAspect {
      * 方法切入点
      */
     @Pointcut("execution(@com.hjq.demo.aop.CheckNet * *(..))")
-    fun method() {}
+    fun method() {
+    }
 
     /**
      * 在连接点进行方法替换
@@ -35,7 +36,8 @@ class CheckNetAspect {
     @Throws(Throwable::class)
     fun aroundJoinPoint(joinPoint: ProceedingJoinPoint, checkNet: CheckNet) {
         val application: Application = ActivityManager.getInstance().getApplication()
-        val manager: ConnectivityManager? = ContextCompat.getSystemService(application, ConnectivityManager::class.java)
+        val manager: ConnectivityManager? =
+            ContextCompat.getSystemService(application, ConnectivityManager::class.java)
         if (manager != null) {
             val info: NetworkInfo? = manager.activeNetworkInfo
             // 判断网络是否连接
@@ -44,7 +46,7 @@ class CheckNetAspect {
                 return
             }
         }
-        //执行原方法
+        // 执行原方法
         joinPoint.proceed()
     }
 }

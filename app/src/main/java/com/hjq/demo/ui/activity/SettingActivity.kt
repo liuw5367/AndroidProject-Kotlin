@@ -10,6 +10,7 @@ import com.hjq.demo.aop.SingleClick
 import com.hjq.demo.app.AppActivity
 import com.hjq.demo.http.api.LogoutApi
 import com.hjq.demo.http.glide.GlideApp
+import com.hjq.demo.http.model.HttpData
 import com.hjq.demo.manager.ActivityManager
 import com.hjq.demo.manager.CacheDataManager
 import com.hjq.demo.other.AppConfig
@@ -20,7 +21,6 @@ import com.hjq.http.EasyHttp
 import com.hjq.http.listener.OnHttpListener
 import com.hjq.widget.layout.SettingBar
 import com.hjq.widget.view.SwitchButton
-import com.hjq.demo.http.model.HttpData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -46,9 +46,11 @@ class SettingActivity : AppActivity(), SwitchButton.OnCheckedChangeListener {
     override fun initView() {
         // 设置切换按钮的监听
         autoSwitchView?.setOnCheckedChangeListener(this)
-        setOnClickListener(R.id.sb_setting_language, R.id.sb_setting_update, R.id.sb_setting_phone,
+        setOnClickListener(
+            R.id.sb_setting_language, R.id.sb_setting_update, R.id.sb_setting_phone,
             R.id.sb_setting_password, R.id.sb_setting_agreement, R.id.sb_setting_about,
-            R.id.sb_setting_cache, R.id.sb_setting_auto, R.id.sb_setting_exit)
+            R.id.sb_setting_cache, R.id.sb_setting_auto, R.id.sb_setting_exit
+        )
     }
 
     override fun initData() {
@@ -72,13 +74,17 @@ class SettingActivity : AppActivity(), SwitchButton.OnCheckedChangeListener {
 
                         override fun onSelected(dialog: BaseDialog?, position: Int, data: String) {
                             languageView?.setRightText(data)
-                            BrowserActivity.start(this@SettingActivity, "https://github.com/getActivity/MultiLanguages")
+                            BrowserActivity.start(
+                                this@SettingActivity,
+                                "https://github.com/getActivity/MultiLanguages"
+                            )
                         }
                     })
                     .setGravity(Gravity.BOTTOM)
                     .setAnimStyle(AnimAction.ANIM_BOTTOM)
                     .show()
             }
+
             R.id.sb_setting_update -> {
 
                 // 本地的版本码和服务器的进行比较
@@ -94,6 +100,7 @@ class SettingActivity : AppActivity(), SwitchButton.OnCheckedChangeListener {
                     toast(R.string.update_no_update)
                 }
             }
+
             R.id.sb_setting_phone -> {
 
                 SafeDialog.Builder(this)
@@ -105,6 +112,7 @@ class SettingActivity : AppActivity(), SwitchButton.OnCheckedChangeListener {
                     })
                     .show()
             }
+
             R.id.sb_setting_password -> {
 
                 SafeDialog.Builder(this)
@@ -116,14 +124,17 @@ class SettingActivity : AppActivity(), SwitchButton.OnCheckedChangeListener {
                     })
                     .show()
             }
+
             R.id.sb_setting_agreement -> {
 
                 BrowserActivity.start(this, "https://github.com/getActivity/Donate")
             }
+
             R.id.sb_setting_about -> {
 
                 startActivity(AboutActivity::class.java)
             }
+
             R.id.sb_setting_auto -> {
 
                 autoSwitchView?.let {
@@ -131,6 +142,7 @@ class SettingActivity : AppActivity(), SwitchButton.OnCheckedChangeListener {
                     it.setChecked(!it.isChecked())
                 }
             }
+
             R.id.sb_setting_cache -> {
 
                 // 清除内存缓存（必须在主线程）
@@ -145,6 +157,7 @@ class SettingActivity : AppActivity(), SwitchButton.OnCheckedChangeListener {
                     }
                 }
             }
+
             R.id.sb_setting_exit -> {
 
                 if (true) {
@@ -164,7 +177,8 @@ class SettingActivity : AppActivity(), SwitchButton.OnCheckedChangeListener {
                         override fun onHttpSuccess(result: HttpData<Void?>?) {
                             startActivity(LoginActivity::class.java)
                             // 进行内存优化，销毁除登录页之外的所有界面
-                            ActivityManager.getInstance().finishAllActivities(LoginActivity::class.java)
+                            ActivityManager.getInstance()
+                                .finishAllActivities(LoginActivity::class.java)
                         }
 
                         override fun onHttpFail(throwable: Throwable?) {

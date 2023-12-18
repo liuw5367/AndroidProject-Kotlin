@@ -2,7 +2,13 @@ package com.hjq.widget.view
 
 import android.content.Context
 import android.content.res.TypedArray
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.RadialGradient
+import android.graphics.RectF
+import android.graphics.Shader
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.AttributeSet
@@ -19,7 +25,8 @@ import com.hjq.widget.R
  */
 class SwitchButton @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0, defStyleRes: Int = 0) :
+    defStyleAttr: Int = 0, defStyleRes: Int = 0
+) :
     View(context, attrs, defStyleAttr, defStyleRes) {
 
     companion object {
@@ -106,23 +113,29 @@ class SwitchButton @JvmOverloads constructor(
         when (MeasureSpec.getMode(finalWidthMeasureSpec)) {
             MeasureSpec.AT_MOST, MeasureSpec.UNSPECIFIED -> {
                 finalWidthMeasureSpec = MeasureSpec.makeMeasureSpec(
-                    (resources.getDimension(R.dimen.dp_56) + paddingLeft + paddingRight).toInt(), MeasureSpec.EXACTLY)
+                    (resources.getDimension(R.dimen.dp_56) + paddingLeft + paddingRight).toInt(),
+                    MeasureSpec.EXACTLY
+                )
             }
+
             MeasureSpec.EXACTLY -> {}
         }
         when (MeasureSpec.getMode(finalHeightMeasureSpec)) {
             MeasureSpec.AT_MOST, MeasureSpec.UNSPECIFIED -> {
                 finalHeightMeasureSpec = MeasureSpec.makeMeasureSpec(
-                        ((MeasureSpec.getSize(finalWidthMeasureSpec) * aspectRatio).toInt() + paddingTop + paddingBottom),
-                    MeasureSpec.EXACTLY)
+                    ((MeasureSpec.getSize(finalWidthMeasureSpec) * aspectRatio).toInt() + paddingTop + paddingBottom),
+                    MeasureSpec.EXACTLY
+                )
             }
+
             MeasureSpec.EXACTLY -> {}
         }
         setMeasuredDimension(finalWidthMeasureSpec, finalHeightMeasureSpec)
     }
 
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
-        canVisibleDrawing = width > paddingLeft + paddingRight && height > paddingTop + paddingBottom
+        canVisibleDrawing =
+            width > paddingLeft + paddingRight && height > paddingTop + paddingBottom
         if (canVisibleDrawing) {
             val actuallyDrawingAreaWidth: Int = width - paddingLeft - paddingRight
             val actuallyDrawingAreaHeight: Int = height - paddingTop - paddingBottom
@@ -133,17 +146,20 @@ class SwitchButton @JvmOverloads constructor(
             if (actuallyDrawingAreaWidth * aspectRatio < actuallyDrawingAreaHeight) {
                 actuallyDrawingAreaLeft = paddingLeft
                 actuallyDrawingAreaRight = width - paddingRight
-                val heightExtraSize: Int = (actuallyDrawingAreaHeight - actuallyDrawingAreaWidth * aspectRatio).toInt()
+                val heightExtraSize: Int =
+                    (actuallyDrawingAreaHeight - actuallyDrawingAreaWidth * aspectRatio).toInt()
                 actuallyDrawingAreaTop = paddingTop + heightExtraSize / 2
                 actuallyDrawingAreaBottom = getHeight() - paddingBottom - (heightExtraSize / 2)
             } else {
-                val widthExtraSize: Int = (actuallyDrawingAreaWidth - actuallyDrawingAreaHeight / aspectRatio).toInt()
+                val widthExtraSize: Int =
+                    (actuallyDrawingAreaWidth - actuallyDrawingAreaHeight / aspectRatio).toInt()
                 actuallyDrawingAreaLeft = paddingLeft + widthExtraSize / 2
                 actuallyDrawingAreaRight = getWidth() - paddingRight - (widthExtraSize / 2)
                 actuallyDrawingAreaTop = paddingTop
                 actuallyDrawingAreaBottom = getHeight() - paddingBottom
             }
-            shadowReservedHeight = ((actuallyDrawingAreaBottom - actuallyDrawingAreaTop) * 0.07f).toInt().toFloat()
+            shadowReservedHeight =
+                ((actuallyDrawingAreaBottom - actuallyDrawingAreaTop) * 0.07f).toInt().toFloat()
             val left: Float = actuallyDrawingAreaLeft.toFloat()
             val top: Float = actuallyDrawingAreaTop + shadowReservedHeight
             this.actuallyDrawingAreaRight = actuallyDrawingAreaRight.toFloat()
@@ -187,8 +203,10 @@ class SwitchButton @JvmOverloads constructor(
             val red: Int = shadowColor shr 16 and 0xFF
             val green: Int = shadowColor shr 8 and 0xFF
             val blue: Int = shadowColor and 0xFF
-            shadowGradient = RadialGradient(bCenterX, bCenterY, radius, Color.argb(200, red, green, blue),
-                Color.argb(25, red, green, blue), Shader.TileMode.CLAMP)
+            shadowGradient = RadialGradient(
+                bCenterX, bCenterY, radius, Color.argb(200, red, green, blue),
+                Color.argb(25, red, green, blue), Shader.TileMode.CLAMP
+            )
         }
     }
 
@@ -215,6 +233,7 @@ class SwitchButton @JvmOverloads constructor(
                     result = onLeftX - (onLeftX - on2LeftX) * percent
                 }
             }
+
             2 -> {
                 if (checkedState == STATE_SWITCH_ON) {
                     // off2 -> on
@@ -224,10 +243,12 @@ class SwitchButton @JvmOverloads constructor(
                     result = on2LeftX - (on2LeftX - offLeftX) * percent
                 }
             }
+
             3 -> {
                 // off -> on
                 result = onLeftX - (onLeftX - offLeftX) * percent
             }
+
             -1 -> {
                 if (checkedState == STATE_SWITCH_ON2) {
                     // on -> on2
@@ -237,6 +258,7 @@ class SwitchButton @JvmOverloads constructor(
                     result = offLeftX
                 }
             }
+
             -2 -> {
                 if (checkedState == STATE_SWITCH_OFF) {
                     // on2 -> off
@@ -246,10 +268,12 @@ class SwitchButton @JvmOverloads constructor(
                     result = off2LeftX + (onLeftX - off2LeftX) * percent
                 }
             }
+
             -3 -> {
                 // on -> off
                 result = offLeftX + (onLeftX - offLeftX) * percent
             }
+
             else -> {
                 if (checkedState == STATE_SWITCH_OFF) {
                     //  off -> off
@@ -279,7 +303,8 @@ class SwitchButton @JvmOverloads constructor(
         val dbAnim: Float = interpolator.getInterpolation(anim2)
         // Draw background animation
         val scale: Float = scale * (if (isOn) dsAnim else 1 - dsAnim)
-        val scaleOffset: Float = (actuallyDrawingAreaRight - centerX - radius) * (if (isOn) 1 - dsAnim else dsAnim)
+        val scaleOffset: Float =
+            (actuallyDrawingAreaRight - centerX - radius) * (if (isOn) 1 - dsAnim else dsAnim)
         canvas.save()
         canvas.scale(scale, scale, centerX + scaleOffset, centerY)
         if (isEnabled) {
@@ -332,12 +357,14 @@ class SwitchButton @JvmOverloads constructor(
                             setChecked(checked = true, callback = false)
                             listener?.onCheckedChanged(this, true)
                         }
+
                         STATE_SWITCH_ON -> {
                             setChecked(checked = false, callback = false)
                             listener?.onCheckedChanged(this, false)
                         }
                     }
                 }
+
                 MotionEvent.ACTION_DOWN -> {}
             }
         }
@@ -363,11 +390,22 @@ class SwitchButton @JvmOverloads constructor(
         setColor(newColorPrimary, newColorPrimaryDark, offColor, offDarkColor)
     }
 
-    fun setColor(newColorPrimary: Int, newColorPrimaryDark: Int, newColorOff: Int, newColorOffDark: Int) {
+    fun setColor(
+        newColorPrimary: Int,
+        newColorPrimaryDark: Int,
+        newColorOff: Int,
+        newColorOffDark: Int
+    ) {
         setColor(newColorPrimary, newColorPrimaryDark, newColorOff, newColorOffDark, shadowColor)
     }
 
-    fun setColor(newColorPrimary: Int, newColorPrimaryDark: Int, newColorOff: Int, newColorOffDark: Int, newColorShadow: Int) {
+    fun setColor(
+        newColorPrimary: Int,
+        newColorPrimaryDark: Int,
+        newColorOff: Int,
+        newColorOffDark: Int,
+        newColorShadow: Int
+    ) {
         accentColor = newColorPrimary
         primaryDarkColor = newColorPrimaryDark
         offColor = newColorOff
@@ -408,7 +446,7 @@ class SwitchButton @JvmOverloads constructor(
             return
         }
         if (((newState == STATE_SWITCH_ON && (checkedState == STATE_SWITCH_OFF || checkedState == STATE_SWITCH_OFF2))
-                    || (newState == STATE_SWITCH_OFF && (checkedState == STATE_SWITCH_ON || checkedState == STATE_SWITCH_ON2)))
+                || (newState == STATE_SWITCH_OFF && (checkedState == STATE_SWITCH_ON || checkedState == STATE_SWITCH_ON2)))
         ) {
             anim1 = 1f
         }

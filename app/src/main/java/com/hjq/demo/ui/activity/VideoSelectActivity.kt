@@ -9,8 +9,8 @@ import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
 import android.provider.MediaStore
-import android.view.*
-import android.view.animation.*
+import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.hjq.bar.TitleBar
@@ -36,7 +36,7 @@ import com.tencent.bugly.crashreport.CrashReport
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
-import java.util.*
+import java.util.Objects
 
 /**
  *    author : Android 轮子哥
@@ -74,7 +74,8 @@ class VideoSelectActivity : AppActivity(), StatusAction, Runnable, BaseAdapter.O
                         listener.onCancel()
                         return
                     }
-                    val list: ArrayList<VideoBean>? = data.getParcelableArrayListExtra(INTENT_KEY_OUT_VIDEO_LIST)
+                    val list: ArrayList<VideoBean>? =
+                        data.getParcelableArrayListExtra(INTENT_KEY_OUT_VIDEO_LIST)
                     if (list == null || list.isEmpty()) {
                         listener.onCancel()
                         return
@@ -174,12 +175,24 @@ class VideoSelectActivity : AppActivity(), StatusAction, Runnable, BaseAdapter.O
                 continue
             }
             count += list.size
-            data.add(AlbumInfo(list[0].getVideoPath(), key,
-                String.format(getString(R.string.video_select_total),
-                list.size), adapter.getData() === list))
+            data.add(
+                AlbumInfo(
+                    list[0].getVideoPath(), key,
+                    String.format(
+                        getString(R.string.video_select_total),
+                        list.size
+                    ), adapter.getData() === list
+                )
+            )
         }
-        data.add(0, AlbumInfo(allVideo[0].getVideoPath(), getString(R.string.video_select_all),
-            String.format(getString(R.string.video_select_total), count), adapter.getData() === allVideo))
+        data.add(
+            0, AlbumInfo(
+                allVideo[0].getVideoPath(),
+                getString(R.string.video_select_all),
+                String.format(getString(R.string.video_select_total), count),
+                adapter.getData() === allVideo
+            )
+        )
         if (albumDialog == null) {
             albumDialog = AlbumDialog.Builder(this)
                 .setListener(object : AlbumDialog.OnListener {
@@ -195,7 +208,8 @@ class VideoSelectActivity : AppActivity(), StatusAction, Runnable, BaseAdapter.O
                         }
                         // 执行列表动画
                         recyclerView?.layoutAnimation = AnimationUtils.loadLayoutAnimation(
-                            this@VideoSelectActivity, R.anim.layout_from_right)
+                            this@VideoSelectActivity, R.anim.layout_from_right
+                        )
                         recyclerView?.scheduleLayoutAnimation()
                     }
                 })
@@ -256,7 +270,10 @@ class VideoSelectActivity : AppActivity(), StatusAction, Runnable, BaseAdapter.O
                 }
 
                 // 完成选择
-                setResult(RESULT_OK, Intent().putParcelableArrayListExtra(INTENT_KEY_OUT_VIDEO_LIST, selectVideo))
+                setResult(
+                    RESULT_OK,
+                    Intent().putParcelableArrayListExtra(INTENT_KEY_OUT_VIDEO_LIST, selectVideo)
+                )
                 finish()
             }
         }
@@ -274,8 +291,9 @@ class VideoSelectActivity : AppActivity(), StatusAction, Runnable, BaseAdapter.O
                 .setVideoSource(File(getVideoPath()))
                 .setActivityOrientation(
                     if (getVideoWidth() > getVideoHeight())
-                    ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE else
-                        ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                        ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE else
+                        ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                )
                 .start(this@VideoSelectActivity)
         }
     }
@@ -286,7 +304,11 @@ class VideoSelectActivity : AppActivity(), StatusAction, Runnable, BaseAdapter.O
      * @param itemView          被点击的条目对象
      * @param position          被点击的条目位置
      */
-    override fun onItemLongClick(recyclerView: RecyclerView?, itemView: View?, position: Int): Boolean {
+    override fun onItemLongClick(
+        recyclerView: RecyclerView?,
+        itemView: View?,
+        position: Int
+    ): Boolean {
         if (selectVideo.size < maxSelect) {
             // 长按的时候模拟选中
             itemView?.findViewById<View?>(R.id.fl_video_select_check)?.let {
@@ -345,15 +367,34 @@ class VideoSelectActivity : AppActivity(), StatusAction, Runnable, BaseAdapter.O
         allVideo.clear()
         val contentUri: Uri = MediaStore.Files.getContentUri("external")
         val sortOrder: String = MediaStore.Files.FileColumns.DATE_MODIFIED + " DESC"
-        val selection: String = "(" + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)" + " AND " + MediaStore.MediaColumns.SIZE + ">0"
+        val selection: String =
+            "(" + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)" + " AND " + MediaStore.MediaColumns.SIZE + ">0"
         val contentResolver: ContentResolver = contentResolver
-        val projections: Array<String?> = arrayOf(MediaStore.Files.FileColumns._ID, MediaStore.MediaColumns.DATA,
-            MediaStore.MediaColumns.DISPLAY_NAME, MediaStore.MediaColumns.DATE_MODIFIED, MediaStore.MediaColumns.MIME_TYPE,
-            MediaStore.MediaColumns.WIDTH, MediaStore.MediaColumns.HEIGHT, MediaStore.MediaColumns.SIZE, MediaStore.Video.Media.DURATION)
+        val projections: Array<String?> = arrayOf(
+            MediaStore.Files.FileColumns._ID,
+            MediaStore.MediaColumns.DATA,
+            MediaStore.MediaColumns.DISPLAY_NAME,
+            MediaStore.MediaColumns.DATE_MODIFIED,
+            MediaStore.MediaColumns.MIME_TYPE,
+            MediaStore.MediaColumns.WIDTH,
+            MediaStore.MediaColumns.HEIGHT,
+            MediaStore.MediaColumns.SIZE,
+            MediaStore.Video.Media.DURATION
+        )
         var cursor: Cursor? = null
-        if (XXPermissions.isGranted(this, Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE)) {
-            cursor = contentResolver.query(contentUri, projections, selection,
-                arrayOf<String?>(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString()), sortOrder)
+        if (XXPermissions.isGranted(
+                this,
+                Permission.READ_EXTERNAL_STORAGE,
+                Permission.WRITE_EXTERNAL_STORAGE
+            )
+        ) {
+            cursor = contentResolver.query(
+                contentUri,
+                projections,
+                selection,
+                arrayOf<String?>(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString()),
+                sortOrder
+            )
         }
         if (cursor != null && cursor.moveToFirst()) {
             val pathIndex: Int = cursor.getColumnIndex(MediaStore.MediaColumns.DATA)
@@ -416,7 +457,8 @@ class VideoSelectActivity : AppActivity(), StatusAction, Runnable, BaseAdapter.O
 
             // 执行列表动画
             recyclerView?.layoutAnimation = AnimationUtils.loadLayoutAnimation(
-                this@VideoSelectActivity, R.anim.layout_fall_down)
+                this@VideoSelectActivity, R.anim.layout_fall_down
+            )
             recyclerView?.scheduleLayoutAnimation()
             if (allVideo.isEmpty()) {
                 // 显示空布局
@@ -515,15 +557,18 @@ class VideoSelectActivity : AppActivity(), StatusAction, Runnable, BaseAdapter.O
                 try {
                     val retriever = MediaMetadataRetriever()
                     retriever.setDataSource(videoPath)
-                    val widthMetadata: String? = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH)
+                    val widthMetadata: String? =
+                        retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH)
                     if (widthMetadata != null && "" != widthMetadata) {
                         videoWidth = widthMetadata.toInt()
                     }
-                    val heightMetadata: String? = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)
+                    val heightMetadata: String? =
+                        retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)
                     if (heightMetadata != null && "" != heightMetadata) {
                         videoHeight = heightMetadata.toInt()
                     }
-                    val durationMetadata: String? = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+                    val durationMetadata: String? =
+                        retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
                     if (durationMetadata != null && "" != durationMetadata) {
                         videoDuration = durationMetadata.toLong()
                     }

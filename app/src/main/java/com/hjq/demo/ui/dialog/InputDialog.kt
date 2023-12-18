@@ -78,6 +78,7 @@ class InputDialog {
                     autoDismiss()
                     listener?.onConfirm(getDialog(), inputView?.text?.toString() ?: "")
                 }
+
                 R.id.tv_ui_cancel -> {
                     autoDismiss()
                     listener?.onCancel(getDialog())

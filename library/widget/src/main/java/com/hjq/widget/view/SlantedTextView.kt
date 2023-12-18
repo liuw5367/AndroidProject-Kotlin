@@ -2,7 +2,15 @@ package com.hjq.widget.view
 
 import android.content.Context
 import android.content.res.TypedArray
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
+import android.graphics.Rect
+import android.graphics.RectF
+import android.graphics.Typeface
 import android.text.TextPaint
 import android.text.TextUtils
 import android.util.AttributeSet
@@ -21,7 +29,8 @@ import kotlin.math.max
  */
 @Suppress("RtlHardcoded")
 class SlantedTextView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) :
     View(context, attrs, defStyleAttr) {
 
     companion object {
@@ -62,12 +71,28 @@ class SlantedTextView @JvmOverloads constructor(
         textPaint.isAntiAlias = true
         val array: TypedArray = context.obtainStyledAttributes(attrs, R.styleable.SlantedTextView)
         setText(array.getString(R.styleable.SlantedTextView_android_text))
-        setTextSize(TypedValue.COMPLEX_UNIT_PX, array.getDimensionPixelSize(R.styleable.SlantedTextView_android_textSize,
-            resources.getDimension(R.dimen.sp_12).toInt()).toFloat())
+        setTextSize(
+            TypedValue.COMPLEX_UNIT_PX, array.getDimensionPixelSize(
+                R.styleable.SlantedTextView_android_textSize,
+                resources.getDimension(R.dimen.sp_12).toInt()
+            ).toFloat()
+        )
         setTextColor(array.getColor(R.styleable.SlantedTextView_android_textColor, Color.WHITE))
-        setTextStyle(Typeface.defaultFromStyle(array.getInt(R.styleable.SlantedTextView_android_textStyle, Typeface.NORMAL)))
+        setTextStyle(
+            Typeface.defaultFromStyle(
+                array.getInt(
+                    R.styleable.SlantedTextView_android_textStyle,
+                    Typeface.NORMAL
+                )
+            )
+        )
         setGravity(array.getInt(R.styleable.SlantedTextView_android_gravity, Gravity.END))
-        setColorBackground(array.getColor(R.styleable.SlantedTextView_android_colorBackground, getAccentColor()))
+        setColorBackground(
+            array.getColor(
+                R.styleable.SlantedTextView_android_colorBackground,
+                getAccentColor()
+            )
+        )
         setTriangle(array.getBoolean(R.styleable.SlantedTextView_triangle, false))
         array.recycle()
     }
@@ -86,6 +111,7 @@ class SlantedTextView @JvmOverloads constructor(
             MeasureSpec.EXACTLY -> {
                 height = MeasureSpec.getSize(heightMeasureSpec)
             }
+
             MeasureSpec.AT_MOST, MeasureSpec.UNSPECIFIED -> {
                 height = textBounds.height() + paddingTop + paddingBottom
             }
@@ -117,6 +143,7 @@ class SlantedTextView @JvmOverloads constructor(
                     path.lineTo((width - textHeight).toFloat(), 0f)
                 }
             }
+
             Gravity.NO_GRAVITY, Gravity.RIGHT, Gravity.RIGHT or Gravity.TOP -> {
                 if (triangle) {
                     path.lineTo(width.toFloat(), 0f)
@@ -127,6 +154,7 @@ class SlantedTextView @JvmOverloads constructor(
                     path.lineTo(textHeight * 1f, 0f)
                 }
             }
+
             Gravity.BOTTOM, Gravity.LEFT or Gravity.BOTTOM -> {
                 if (triangle) {
                     path.lineTo(width.toFloat(), height.toFloat())
@@ -137,6 +165,7 @@ class SlantedTextView @JvmOverloads constructor(
                     path.lineTo(0f, textHeight.toFloat())
                 }
             }
+
             Gravity.RIGHT or Gravity.BOTTOM -> {
                 if (triangle) {
                     path.moveTo(0f, height.toFloat())
@@ -149,6 +178,7 @@ class SlantedTextView @JvmOverloads constructor(
                     path.lineTo(width.toFloat(), 0f)
                 }
             }
+
             else -> {
                 throw IllegalArgumentException("are you ok?")
             }
@@ -186,6 +216,7 @@ class SlantedTextView @JvmOverloads constructor(
                 centerY = height / 2f
                 angle = -ROTATE_ANGLE.toFloat()
             }
+
             Gravity.NO_GRAVITY, Gravity.RIGHT, Gravity.RIGHT or Gravity.TOP -> {
                 rect = Rect(offset, 0, width + offset, height)
                 rectF = RectF(rect)
@@ -199,6 +230,7 @@ class SlantedTextView @JvmOverloads constructor(
                 centerY = height / 2f
                 angle = ROTATE_ANGLE.toFloat()
             }
+
             Gravity.BOTTOM, Gravity.LEFT or Gravity.BOTTOM -> {
                 rect = Rect(0, offset, width, height + offset)
                 rectF = RectF(rect)
@@ -212,6 +244,7 @@ class SlantedTextView @JvmOverloads constructor(
                 centerY = height / 2f + offset
                 angle = ROTATE_ANGLE.toFloat()
             }
+
             Gravity.RIGHT or Gravity.BOTTOM -> {
                 rect = Rect(offset, offset, width + offset, height + offset)
                 rectF = RectF(rect)
@@ -225,6 +258,7 @@ class SlantedTextView @JvmOverloads constructor(
                 centerY = height / 2f + offset
                 angle = -ROTATE_ANGLE.toFloat()
             }
+
             else -> {
                 throw IllegalArgumentException("are you ok?")
             }
@@ -342,7 +376,8 @@ class SlantedTextView @JvmOverloads constructor(
     fun setGravity(gravity: Int) {
         if (this.gravity != gravity) {
             // 适配布局反方向
-            this.gravity = Gravity.getAbsoluteGravity(gravity, resources.configuration.layoutDirection)
+            this.gravity =
+                Gravity.getAbsoluteGravity(gravity, resources.configuration.layoutDirection)
             invalidate()
         }
     }

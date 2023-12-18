@@ -1,7 +1,7 @@
 package com.hjq.widget.view
 
 import android.animation.ValueAnimator
-import android.content.*
+import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
 
@@ -12,7 +12,8 @@ import androidx.appcompat.widget.AppCompatImageView
  *    desc   : 带悬浮动画的按钮
  */
 class FloatActionButton @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) :
     AppCompatImageView(context, attrs, defStyleAttr) {
 
     companion object {

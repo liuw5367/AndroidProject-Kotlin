@@ -17,7 +17,13 @@ import kotlin.math.min
  *    desc   : 选择器布局管理器
  */
 class PickerLayoutManager private constructor(
-    context: Context, orientation: Int, reverseLayout: Boolean, maxItem: Int, scale: Float, alpha: Boolean) :
+    context: Context,
+    orientation: Int,
+    reverseLayout: Boolean,
+    maxItem: Int,
+    scale: Float,
+    alpha: Boolean
+) :
     LinearLayoutManager(context, orientation, reverseLayout) {
 
     private val linearSnapHelper: LinearSnapHelper = LinearSnapHelper()
@@ -51,9 +57,22 @@ class PickerLayoutManager private constructor(
         return maxItem == 0
     }
 
-    override fun onMeasure(recycler: Recycler, state: RecyclerView.State, widthSpec: Int, heightSpec: Int) {
-        var width: Int = chooseSize(widthSpec, paddingLeft + paddingRight, ViewCompat.getMinimumWidth(recyclerView!!))
-        var height: Int = chooseSize(heightSpec, paddingTop + paddingBottom, ViewCompat.getMinimumHeight(recyclerView!!))
+    override fun onMeasure(
+        recycler: Recycler,
+        state: RecyclerView.State,
+        widthSpec: Int,
+        heightSpec: Int
+    ) {
+        var width: Int = chooseSize(
+            widthSpec,
+            paddingLeft + paddingRight,
+            ViewCompat.getMinimumWidth(recyclerView!!)
+        )
+        var height: Int = chooseSize(
+            heightSpec,
+            paddingTop + paddingBottom,
+            ViewCompat.getMinimumHeight(recyclerView!!)
+        )
         if (state.itemCount != 0 && maxItem != 0) {
             val itemView: View = recycler.getViewForPosition(0)
             measureChildWithMargins(itemView, widthSpec, heightSpec)
@@ -95,7 +114,11 @@ class PickerLayoutManager private constructor(
         }
     }
 
-    override fun scrollHorizontallyBy(dx: Int, recycler: Recycler?, state: RecyclerView.State?): Int {
+    override fun scrollHorizontallyBy(
+        dx: Int,
+        recycler: Recycler?,
+        state: RecyclerView.State?
+    ): Int {
         scaleHorizontalChildView()
         return super.scrollHorizontallyBy(dx, recycler, state)
     }
@@ -130,7 +153,8 @@ class PickerLayoutManager private constructor(
         val mid: Float = height / 2.0f
         for (i in 0 until childCount) {
             val childView: View = getChildAt(i) ?: continue
-            val childMid: Float = (getDecoratedTop(childView) + getDecoratedBottom(childView)) / 2.0f
+            val childMid: Float =
+                (getDecoratedTop(childView) + getDecoratedBottom(childView)) / 2.0f
             val scale: Float = 1.0f + (-1 * (1 - scale)) * (min(mid, abs(mid - childMid))) / mid
             childView.scaleX = scale
             childView.scaleY = scale
@@ -218,7 +242,8 @@ class PickerLayoutManager private constructor(
          * 构建布局管理器
          */
         fun build(): PickerLayoutManager {
-            val layoutManager = PickerLayoutManager(context, orientation, reverseLayout, maxItem, scale, alpha)
+            val layoutManager =
+                PickerLayoutManager(context, orientation, reverseLayout, maxItem, scale, alpha)
             layoutManager.setOnPickerListener(listener)
             return layoutManager
         }

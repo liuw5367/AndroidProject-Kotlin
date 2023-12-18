@@ -1,8 +1,10 @@
 package com.hjq.demo.ui.activity
 
 import android.content.Intent
-import android.view.*
-import android.widget.*
+import android.view.Gravity
+import android.view.KeyEvent
+import android.view.View
+import android.widget.Button
 import com.hjq.bar.TitleBar
 import com.hjq.base.BaseDialog
 import com.hjq.base.BasePopupWindow
@@ -11,14 +13,26 @@ import com.hjq.demo.R
 import com.hjq.demo.aop.SingleClick
 import com.hjq.demo.app.AppActivity
 import com.hjq.demo.manager.DialogManager
-import com.hjq.demo.ui.dialog.*
+import com.hjq.demo.ui.dialog.AddressDialog
+import com.hjq.demo.ui.dialog.DateDialog
+import com.hjq.demo.ui.dialog.InputDialog
+import com.hjq.demo.ui.dialog.MenuDialog
+import com.hjq.demo.ui.dialog.MessageDialog
+import com.hjq.demo.ui.dialog.PayPasswordDialog
+import com.hjq.demo.ui.dialog.SafeDialog
+import com.hjq.demo.ui.dialog.SelectDialog
+import com.hjq.demo.ui.dialog.ShareDialog
+import com.hjq.demo.ui.dialog.TimeDialog
+import com.hjq.demo.ui.dialog.TipsDialog
+import com.hjq.demo.ui.dialog.UpdateDialog
+import com.hjq.demo.ui.dialog.WaitDialog
 import com.hjq.demo.ui.popup.ListPopup
 import com.hjq.umeng.Platform
 import com.hjq.umeng.UmengClient
 import com.hjq.umeng.UmengShare.OnShareListener
 import com.umeng.socialize.media.UMImage
 import com.umeng.socialize.media.UMWeb
-import java.util.*
+import java.util.Calendar
 
 /**
  *    author : Android 轮子哥
@@ -36,7 +50,8 @@ class DialogActivity : AppActivity() {
     }
 
     override fun initView() {
-        setOnClickListener(R.id.btn_dialog_message, R.id.btn_dialog_input,
+        setOnClickListener(
+            R.id.btn_dialog_message, R.id.btn_dialog_input,
             R.id.btn_dialog_bottom_menu, R.id.btn_dialog_center_menu,
             R.id.btn_dialog_single_select, R.id.btn_dialog_more_select,
             R.id.btn_dialog_succeed_toast, R.id.btn_dialog_fail_toast,
@@ -80,6 +95,7 @@ class DialogActivity : AppActivity() {
                     })
                     .show()
             }
+
             R.id.btn_dialog_input -> {
 
                 // 输入对话框
@@ -108,6 +124,7 @@ class DialogActivity : AppActivity() {
                     })
                     .show()
             }
+
             R.id.btn_dialog_bottom_menu -> {
 
                 val data = ArrayList<String>()
@@ -135,6 +152,7 @@ class DialogActivity : AppActivity() {
                     .show()
 
             }
+
             R.id.btn_dialog_center_menu -> {
 
                 val data = ArrayList<String>()
@@ -162,6 +180,7 @@ class DialogActivity : AppActivity() {
                     .show()
 
             }
+
             R.id.btn_dialog_single_select -> {
 
                 // 单选对话框
@@ -185,6 +204,7 @@ class DialogActivity : AppActivity() {
                     .show()
 
             }
+
             R.id.btn_dialog_more_select -> {
 
                 // 多选对话框
@@ -208,6 +228,7 @@ class DialogActivity : AppActivity() {
                     .show()
 
             }
+
             R.id.btn_dialog_succeed_toast -> {
 
                 // 成功对话框
@@ -217,6 +238,7 @@ class DialogActivity : AppActivity() {
                     .show()
 
             }
+
             R.id.btn_dialog_fail_toast -> {
 
                 // 失败对话框
@@ -226,6 +248,7 @@ class DialogActivity : AppActivity() {
                     .show()
 
             }
+
             R.id.btn_dialog_warn_toast -> {
 
                 // 警告对话框
@@ -235,6 +258,7 @@ class DialogActivity : AppActivity() {
                     .show()
 
             }
+
             R.id.btn_dialog_wait -> {
 
                 if (waitDialog == null) {
@@ -250,6 +274,7 @@ class DialogActivity : AppActivity() {
                 }
 
             }
+
             R.id.btn_dialog_pay -> {
 
                 // 支付密码输入对话框
@@ -272,6 +297,7 @@ class DialogActivity : AppActivity() {
                     .show()
 
             }
+
             R.id.btn_dialog_address -> {
 
                 // 选择地区对话框
@@ -284,7 +310,12 @@ class DialogActivity : AppActivity() {
                     //.setIgnoreArea()
                     .setListener(object : AddressDialog.OnListener {
 
-                        override fun onSelected(dialog: BaseDialog?, province: String, city: String, area: String) {
+                        override fun onSelected(
+                            dialog: BaseDialog?,
+                            province: String,
+                            city: String,
+                            area: String
+                        ) {
                             toast(province + city + area)
                         }
 
@@ -295,6 +326,7 @@ class DialogActivity : AppActivity() {
                     .show()
 
             }
+
             R.id.btn_dialog_date -> {
 
                 // 日期选择对话框
@@ -318,9 +350,16 @@ class DialogActivity : AppActivity() {
                     //.setIgnoreDay()
                     .setListener(object : DateDialog.OnListener {
 
-                        override fun onSelected(dialog: BaseDialog?, year: Int, month: Int, day: Int) {
-                            toast(year.toString() + getString(R.string.common_year) + month +
-                                    getString(R.string.common_month) + day + getString(R.string.common_day))
+                        override fun onSelected(
+                            dialog: BaseDialog?,
+                            year: Int,
+                            month: Int,
+                            day: Int
+                        ) {
+                            toast(
+                                year.toString() + getString(R.string.common_year) + month +
+                                    getString(R.string.common_month) + day + getString(R.string.common_day)
+                            )
 
                             // 如果不指定时分秒则默认为现在的时间
                             val calendar: Calendar = Calendar.getInstance()
@@ -329,7 +368,7 @@ class DialogActivity : AppActivity() {
                             calendar.set(Calendar.MONTH, month - 1)
                             calendar.set(Calendar.DAY_OF_MONTH, day)
                             toast("时间戳：" + calendar.timeInMillis)
-                            //toast(new SimpleDateFormat("yyyy年MM月dd日 kk:mm:ss").format(calendar.getTime()));
+                            // toast(new SimpleDateFormat("yyyy年MM月dd日 kk:mm:ss").format(calendar.getTime()));
                         }
 
                         override fun onCancel(dialog: BaseDialog?) {
@@ -339,6 +378,7 @@ class DialogActivity : AppActivity() {
                     .show()
 
             }
+
             R.id.btn_dialog_time -> {
 
                 // 时间选择对话框
@@ -361,10 +401,17 @@ class DialogActivity : AppActivity() {
                     //.setIgnoreSecond()
                     .setListener(object : TimeDialog.OnListener {
 
-                        override fun onSelected(dialog: BaseDialog?, hour: Int, minute: Int, second: Int) {
-                            toast(hour.toString() + getString(R.string.common_hour) + minute + getString(
-                                R.string.common_minute
-                            ) + second + getString(R.string.common_second))
+                        override fun onSelected(
+                            dialog: BaseDialog?,
+                            hour: Int,
+                            minute: Int,
+                            second: Int
+                        ) {
+                            toast(
+                                hour.toString() + getString(R.string.common_hour) + minute + getString(
+                                    R.string.common_minute
+                                ) + second + getString(R.string.common_second)
+                            )
 
                             // 如果不指定年月日则默认为今天的日期
                             val calendar: Calendar = Calendar.getInstance()
@@ -372,7 +419,7 @@ class DialogActivity : AppActivity() {
                             calendar.set(Calendar.MINUTE, minute)
                             calendar.set(Calendar.SECOND, second)
                             toast("时间戳：" + calendar.timeInMillis)
-                            //toast(new SimpleDateFormat("yyyy年MM月dd日 kk:mm:ss").format(calendar.getTime()));
+                            // toast(new SimpleDateFormat("yyyy年MM月dd日 kk:mm:ss").format(calendar.getTime()));
                         }
 
                         override fun onCancel(dialog: BaseDialog?) {
@@ -382,6 +429,7 @@ class DialogActivity : AppActivity() {
                     .show()
 
             }
+
             R.id.btn_dialog_share -> {
 
                 toast("记得改好第三方 AppID 和 Secret，否则会调不起来哦")
@@ -410,6 +458,7 @@ class DialogActivity : AppActivity() {
                     .show()
 
             }
+
             R.id.btn_dialog_update -> {
 
                 // 升级对话框
@@ -427,6 +476,7 @@ class DialogActivity : AppActivity() {
                     .show()
 
             }
+
             R.id.btn_dialog_safe -> {
 
                 // 身份校验对话框
@@ -442,17 +492,20 @@ class DialogActivity : AppActivity() {
                     })
                     .show()
             }
+
             R.id.btn_dialog_custom -> {
 
                 // 自定义对话框
                 BaseDialog.Builder(this)
                     .setContentView(R.layout.custom_dialog)
                     .setAnimStyle(AnimAction.ANIM_SCALE) //.setText(id, "我是预设置的文本")
-                    .setOnClickListener(R.id.btn_dialog_custom_ok, object : BaseDialog.OnClickListener<Button> {
-                        override fun onClick(dialog: BaseDialog?, view: Button) {
-                            dialog?.dismiss()
-                        }
-                    })
+                    .setOnClickListener(
+                        R.id.btn_dialog_custom_ok,
+                        object : BaseDialog.OnClickListener<Button> {
+                            override fun onClick(dialog: BaseDialog?, view: Button) {
+                                dialog?.dismiss()
+                            }
+                        })
                     .setOnCreateListener(object : BaseDialog.OnCreateListener {
 
                         override fun onCreate(dialog: BaseDialog?) {
@@ -487,6 +540,7 @@ class DialogActivity : AppActivity() {
                     .show()
 
             }
+
             R.id.btn_dialog_multi -> {
 
                 val dialog1: BaseDialog = MessageDialog.Builder(this)
@@ -526,7 +580,11 @@ class DialogActivity : AppActivity() {
             })
             .setListener(object : ListPopup.OnListener<String> {
 
-                override fun onSelected(popupWindow: BasePopupWindow?, position: Int, data: String) {
+                override fun onSelected(
+                    popupWindow: BasePopupWindow?,
+                    position: Int,
+                    data: String
+                ) {
                     toast("点击了：$data")
                 }
             })

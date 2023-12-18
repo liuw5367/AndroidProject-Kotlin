@@ -2,8 +2,8 @@ package com.hjq.demo.http.exception;
 
 import androidx.annotation.NonNull;
 
-import com.hjq.http.exception.HttpException;
 import com.hjq.demo.http.model.HttpData;
+import com.hjq.http.exception.HttpException;
 
 /**
  * author : Android 轮子哥

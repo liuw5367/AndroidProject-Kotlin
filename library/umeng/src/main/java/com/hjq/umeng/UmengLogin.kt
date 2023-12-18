@@ -62,7 +62,10 @@ class UmengLogin {
     /**
      * 为什么要包起来？因为友盟会将监听回调（UMAuthListener）持有成静态的，回调完没有及时释放
      */
-    class LoginListenerWrapper internal constructor(platform: SHARE_MEDIA, private var listener: OnLoginListener?) : UMAuthListener {
+    class LoginListenerWrapper internal constructor(
+        platform: SHARE_MEDIA,
+        private var listener: OnLoginListener?
+    ) : UMAuthListener {
 
         private var platform: Platform = when (platform) {
             SHARE_MEDIA.QQ -> Platform.QQ
@@ -86,7 +89,11 @@ class UmengLogin {
          * @param action        行为序号，开发者用不上
          * @param data          用户资料返回
          */
-        override fun onComplete(platform: SHARE_MEDIA, action: Int, data: MutableMap<String?, String?>?) {
+        override fun onComplete(
+            platform: SHARE_MEDIA,
+            action: Int,
+            data: MutableMap<String?, String?>?
+        ) {
             listener?.onSucceed(this.platform, LoginData(data))
             listener = null
         }

@@ -14,7 +14,8 @@ import kotlin.math.abs
  *    desc   : 禁用水平滑动的ViewPager（一般用于 APP 首页的 ViewPager + Fragment）
  */
 class NoScrollViewPager @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null) :
+    context: Context, attrs: AttributeSet? = null
+) :
     ViewPager(context, attrs) {
 
     override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {

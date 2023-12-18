@@ -2,12 +2,12 @@ package com.hjq.demo.manager
 
 import android.app.Activity
 import android.app.Application.ActivityLifecycleCallbacks
-import android.os.*
+import android.os.Build
+import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.*
+import android.view.View
 import android.widget.TextView
-import java.util.*
 
 /**
  *    author : Android 轮子哥
@@ -148,17 +148,17 @@ class InputTextManager private constructor(view: View, alpha: Boolean) : TextWat
             return
         }
         if (enabled) {
-            //启用View的事件
+            // 启用View的事件
             view.isEnabled = true
             if (alpha) {
-                //设置不透明
+                // 设置不透明
                 view.alpha = 1f
             }
         } else {
-            //禁用View的事件
+            // 禁用View的事件
             view.isEnabled = false
             if (alpha) {
-                //设置半透明
+                // 设置半透明
                 view.alpha = 0.5f
             }
         }

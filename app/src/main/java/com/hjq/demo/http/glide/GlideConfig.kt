@@ -57,16 +57,20 @@ class GlideConfig : AppGlideModule() {
         builder.setBitmapPool(LruBitmapPool(customBitmapPoolSize))
         builder.setDefaultRequestOptions(
             RequestOptions()
-            // 设置默认加载中占位图
-            .placeholder(R.drawable.image_loading_ic)
-            // 设置默认加载出错占位图
-            .error(R.drawable.image_error_ic)
+                // 设置默认加载中占位图
+                .placeholder(R.drawable.image_loading_ic)
+                // 设置默认加载出错占位图
+                .error(R.drawable.image_error_ic)
         )
     }
 
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
         // Glide 默认使用的是 HttpURLConnection 来做网络请求，这里切换成更高效的 OkHttp
-        registry.replace(GlideUrl::class.java, InputStream::class.java, OkHttpLoader.Factory(EasyConfig.getInstance().client))
+        registry.replace(
+            GlideUrl::class.java,
+            InputStream::class.java,
+            OkHttpLoader.Factory(EasyConfig.getInstance().client)
+        )
     }
 
     override fun isManifestParsingEnabled(): Boolean {

@@ -19,7 +19,7 @@ import com.hjq.demo.widget.StatusLayout.OnRetryListener
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
-import java.util.*
+import java.util.Locale
 
 /**
  *    author : Android 轮子哥
@@ -90,7 +90,12 @@ class BrowserFragment : AppFragment<AppActivity>(), StatusAction, OnRefreshListe
         /**
          * 网页加载错误时回调，这个方法会在 onPageFinished 之前调用
          */
-        override fun onReceivedError(view: WebView, errorCode: Int, description: String, failingUrl: String) {
+        override fun onReceivedError(
+            view: WebView,
+            errorCode: Int,
+            description: String,
+            failingUrl: String
+        ) {
             // 这里为什么要用延迟呢？因为加载出错之后会先调用 onReceivedError 再调用 onPageFinished
             post {
                 showError(object : OnRetryListener {

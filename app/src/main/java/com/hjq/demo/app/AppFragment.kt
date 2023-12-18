@@ -2,8 +2,8 @@ package com.hjq.demo.app
 
 import com.hjq.base.BaseFragment
 import com.hjq.demo.action.ToastAction
-import com.hjq.http.listener.OnHttpListener
 import com.hjq.demo.http.model.HttpData
+import com.hjq.http.listener.OnHttpListener
 import okhttp3.Call
 
 /**

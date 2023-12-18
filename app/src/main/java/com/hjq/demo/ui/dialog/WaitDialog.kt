@@ -1,7 +1,7 @@
 package com.hjq.demo.ui.dialog
 
-import android.content.*
-import android.view.*
+import android.content.Context
+import android.view.View
 import android.widget.TextView
 import androidx.annotation.StringRes
 import com.hjq.base.BaseDialog

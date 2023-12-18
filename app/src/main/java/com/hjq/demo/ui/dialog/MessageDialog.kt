@@ -53,6 +53,7 @@ class MessageDialog {
                     autoDismiss()
                     listener?.onConfirm(getDialog())
                 }
+
                 R.id.tv_ui_cancel -> {
                     autoDismiss()
                     listener?.onCancel(getDialog())

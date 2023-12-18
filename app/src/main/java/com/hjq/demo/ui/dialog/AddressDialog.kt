@@ -1,11 +1,14 @@
 package com.hjq.demo.ui.dialog
 
-import android.content.*
+import android.content.Context
 import android.graphics.Color
 import android.text.TextUtils
 import android.util.TypedValue
-import android.view.*
-import android.widget.*
+import android.view.Gravity
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
@@ -15,7 +18,7 @@ import com.hjq.base.BaseDialog
 import com.hjq.demo.R
 import com.hjq.demo.aop.SingleClick
 import com.hjq.demo.app.AppAdapter
-import com.hjq.demo.ui.adapter.*
+import com.hjq.demo.ui.adapter.TabAdapter
 import com.hjq.demo.ui.adapter.TabAdapter.OnTabListener
 import com.hjq.demo.ui.dialog.AddressDialog.RecyclerViewAdapter.OnSelectListener
 import com.tencent.bugly.crashreport.CrashReport
@@ -25,7 +28,6 @@ import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
-import java.util.*
 
 /**
  *    author : Android 轮子哥
@@ -79,7 +81,12 @@ class AddressDialog {
                     }
                 }
 
-                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+                override fun onPageScrolled(
+                    position: Int,
+                    positionOffset: Float,
+                    positionOffsetPixels: Int
+                ) {
+                }
             }
 
             // 显示省份列表
@@ -188,6 +195,7 @@ class AddressDialog {
                         selectedAddress(type + 1, 0, false)
                     }
                 }
+
                 1 -> {
                     // 记录当前选择的城市
                     city = adapter.getItem(type)!![position]!!.getName()!!
@@ -207,6 +215,7 @@ class AddressDialog {
                         viewPager2?.setCurrentItem(type + 1, smoothScroll)
                     }
                 }
+
                 2 -> {
                     // 记录当前选择的区域
                     area = adapter.getItem(type)!![position]!!.getName()!!
@@ -256,6 +265,7 @@ class AddressDialog {
                             adapter.removeItem(1)
                         }
                     }
+
                     1 -> {
                         run {
                             area = ""
@@ -266,6 +276,7 @@ class AddressDialog {
                             adapter.removeItem(2)
                         }
                     }
+
                     2 -> area = ""
                 }
             }
@@ -298,7 +309,7 @@ class AddressDialog {
             return ViewHolder()
         }
 
-        inner class ViewHolder : AppViewHolder (RecyclerView(getContext())), OnItemClickListener {
+        inner class ViewHolder : AppViewHolder(RecyclerView(getContext())), OnItemClickListener {
 
             private val adapter: AddressAdapter
 
@@ -340,13 +351,20 @@ class AddressDialog {
             textView.gravity = Gravity.CENTER_VERTICAL
             textView.setBackgroundResource(R.drawable.transparent_selector)
             textView.setTextColor(Color.parseColor("#222222"))
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.sp_14))
+            textView.setTextSize(
+                TypedValue.COMPLEX_UNIT_PX,
+                getResources().getDimension(R.dimen.sp_14)
+            )
             textView.layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
-            textView.setPadding(getResources().getDimension(R.dimen.dp_20).toInt(), getResources().getDimension(R.dimen.dp_10).toInt(),
-                getResources().getDimension(R.dimen.dp_20).toInt(), getResources().getDimension(R.dimen.dp_10).toInt())
+            textView.setPadding(
+                getResources().getDimension(R.dimen.dp_20).toInt(),
+                getResources().getDimension(R.dimen.dp_10).toInt(),
+                getResources().getDimension(R.dimen.dp_20).toInt(),
+                getResources().getDimension(R.dimen.dp_10).toInt()
+            )
             return ViewHolder(textView)
         }
 
@@ -364,7 +382,8 @@ class AddressDialog {
         /** （省\市\区）的名称 */
         private val name: String?,
         /** 下一级的 Json */
-        private val next: JSONObject?) {
+        private val next: JSONObject?
+    ) {
 
         fun getName(): String? {
             return name

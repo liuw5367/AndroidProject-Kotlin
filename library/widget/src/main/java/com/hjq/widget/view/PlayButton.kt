@@ -1,11 +1,17 @@
 package com.hjq.widget.view
 
 import android.animation.ValueAnimator
-import android.content.*
+import android.content.Context
 import android.content.res.TypedArray
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.CornerPathEffect
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.PathMeasure
+import android.graphics.RectF
 import android.util.AttributeSet
-import android.view.*
+import android.view.View
 import android.view.animation.AnticipateInterpolator
 import com.hjq.widget.R
 
@@ -16,7 +22,8 @@ import com.hjq.widget.R
  *    desc   : 播放暂停动效的按钮
  */
 class PlayButton @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) :
     View(context, attrs, defStyleAttr) {
 
     companion object {
@@ -99,12 +106,20 @@ class PlayButton @JvmOverloads constructor(
         var finalHeightMeasureSpec: Int = heightMeasureSpec
         when (MeasureSpec.getMode(finalWidthMeasureSpec)) {
             MeasureSpec.AT_MOST, MeasureSpec.UNSPECIFIED ->
-                finalWidthMeasureSpec = MeasureSpec.makeMeasureSpec(resources.getDimension(R.dimen.dp_60).toInt(), MeasureSpec.EXACTLY)
+                finalWidthMeasureSpec = MeasureSpec.makeMeasureSpec(
+                    resources.getDimension(R.dimen.dp_60).toInt(),
+                    MeasureSpec.EXACTLY
+                )
+
             MeasureSpec.EXACTLY -> {}
         }
         when (MeasureSpec.getMode(finalHeightMeasureSpec)) {
             MeasureSpec.AT_MOST, MeasureSpec.UNSPECIFIED ->
-                finalHeightMeasureSpec = MeasureSpec.makeMeasureSpec(resources.getDimension(R.dimen.dp_60).toInt(), MeasureSpec.EXACTLY)
+                finalHeightMeasureSpec = MeasureSpec.makeMeasureSpec(
+                    resources.getDimension(R.dimen.dp_60).toInt(),
+                    MeasureSpec.EXACTLY
+                )
+
             MeasureSpec.EXACTLY -> {}
         }
         setMeasuredDimension(finalWidthMeasureSpec, finalHeightMeasureSpec)
@@ -116,48 +131,75 @@ class PlayButton @JvmOverloads constructor(
         when {
             fraction < 0 -> {
                 // 弹性部分
-                canvas.drawLine((centerX + circleRadius).toFloat(),
-                    centerY - 1.6f * circleRadius + 10 * circleRadius * fraction, (centerX + circleRadius).toFloat(),
-                    centerY + (1.6f * circleRadius) + (10 * circleRadius * fraction), paint)
-                canvas.drawLine((centerX - circleRadius).toFloat(), centerY - 1.6f * circleRadius, (
-                            centerX - circleRadius).toFloat(), centerY + 1.6f * circleRadius, paint)
+                canvas.drawLine(
+                    (centerX + circleRadius).toFloat(),
+                    centerY - 1.6f * circleRadius + 10 * circleRadius * fraction,
+                    (centerX + circleRadius).toFloat(),
+                    centerY + (1.6f * circleRadius) + (10 * circleRadius * fraction),
+                    paint
+                )
+                canvas.drawLine(
+                    (centerX - circleRadius).toFloat(), centerY - 1.6f * circleRadius, (
+                        centerX - circleRadius).toFloat(), centerY + 1.6f * circleRadius, paint
+                )
                 canvas.drawArc(bgRectF!!, -105f, 360f, false, paint)
             }
+
             fraction <= 0.3 -> {
                 // 右侧直线和下方曲线
-                canvas.drawLine((centerX + circleRadius).toFloat(),
-                    centerY - 1.6f * circleRadius + circleRadius * 3.2f / 0.3f * fraction, (centerX + circleRadius).toFloat(),
-                    centerY + 1.6f * circleRadius, paint)
-                canvas.drawLine((centerX - circleRadius).toFloat(), centerY - 1.6f * circleRadius, (
-                            centerX - circleRadius).toFloat(), centerY + 1.6f * circleRadius, paint)
+                canvas.drawLine(
+                    (centerX + circleRadius).toFloat(),
+                    centerY - 1.6f * circleRadius + circleRadius * 3.2f / 0.3f * fraction,
+                    (centerX + circleRadius).toFloat(),
+                    centerY + 1.6f * circleRadius,
+                    paint
+                )
+                canvas.drawLine(
+                    (centerX - circleRadius).toFloat(), centerY - 1.6f * circleRadius, (
+                        centerX - circleRadius).toFloat(), centerY + 1.6f * circleRadius, paint
+                )
                 if (fraction != 0f) {
                     canvas.drawArc(rectF!!, 0f, 180f / 0.3f * fraction, false, paint)
                 }
                 canvas.drawArc(bgRectF!!, -105 + 360 * fraction, 360 * (1 - fraction), false, paint)
             }
+
             fraction <= 0.6 -> {
                 // 下方曲线和三角形
-                canvas.drawArc(rectF!!, 180f / 0.3f * (fraction - 0.3f),
-                    180 - 180f / 0.3f * (fraction - 0.3f), false, paint)
+                canvas.drawArc(
+                    rectF!!, 180f / 0.3f * (fraction - 0.3f),
+                    180 - 180f / 0.3f * (fraction - 0.3f), false, paint
+                )
                 dstPath.reset()
-                pathMeasure.getSegment(0.02f * pathLength,
+                pathMeasure.getSegment(
+                    0.02f * pathLength,
                     0.38f * pathLength + 0.42f * pathLength / 0.3f * (fraction - 0.3f),
-                    dstPath, true)
+                    dstPath, true
+                )
                 canvas.drawPath(dstPath, paint)
                 canvas.drawArc(bgRectF!!, -105 + 360 * fraction, 360 * (1 - fraction), false, paint)
             }
+
             fraction <= 0.8 -> {
                 // 三角形
                 dstPath.reset()
-                pathMeasure.getSegment(0.02f * pathLength + 0.2f * pathLength / 0.2f * (fraction - 0.6f),
-                    0.8f * pathLength + 0.2f * pathLength / 0.2f * (fraction - 0.6f), dstPath, true)
+                pathMeasure.getSegment(
+                    0.02f * pathLength + 0.2f * pathLength / 0.2f * (fraction - 0.6f),
+                    0.8f * pathLength + 0.2f * pathLength / 0.2f * (fraction - 0.6f), dstPath, true
+                )
                 canvas.drawPath(dstPath, paint)
                 canvas.drawArc(bgRectF!!, -105 + 360 * fraction, 360 * (1 - fraction), false, paint)
             }
+
             else -> {
                 // 弹性部分
                 dstPath.reset()
-                pathMeasure.getSegment(10 * circleRadius * (fraction - 1), pathLength, dstPath, true)
+                pathMeasure.getSegment(
+                    10 * circleRadius * (fraction - 1),
+                    pathLength,
+                    dstPath,
+                    true
+                )
                 canvas.drawPath(dstPath, paint)
             }
         }

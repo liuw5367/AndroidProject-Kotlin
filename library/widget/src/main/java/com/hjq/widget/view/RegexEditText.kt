@@ -1,8 +1,10 @@
 package com.hjq.widget.view
 
-import android.content.*
+import android.content.Context
 import android.content.res.TypedArray
-import android.text.*
+import android.text.InputFilter
+import android.text.Spanned
+import android.text.TextUtils
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatEditText
 import com.hjq.widget.R
@@ -145,8 +147,10 @@ open class RegexEditText @JvmOverloads constructor(
      * @param destEnd       在原内容上的终点坐标
      * @return              返回字符串将会加入到内容中
      */
-    override fun filter(source: CharSequence?, start: Int, end: Int,
-        dest: Spanned?, destStart: Int, destEnd: Int): CharSequence? {
+    override fun filter(
+        source: CharSequence?, start: Int, end: Int,
+        dest: Spanned?, destStart: Int, destEnd: Int
+    ): CharSequence? {
 
         if (pattern == null) {
             return source

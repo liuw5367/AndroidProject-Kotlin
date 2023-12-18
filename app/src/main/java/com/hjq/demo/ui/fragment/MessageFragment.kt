@@ -60,6 +60,7 @@ class MessageFragment : TitleBarFragment<HomeActivity>() {
                         .into(it)
                 }
             }
+
             R.id.btn_message_image2 -> {
 
                 imageView?.let {
@@ -70,6 +71,7 @@ class MessageFragment : TitleBarFragment<HomeActivity>() {
                         .into(it)
                 }
             }
+
             R.id.btn_message_image3 -> {
 
                 imageView?.let {
@@ -80,31 +82,37 @@ class MessageFragment : TitleBarFragment<HomeActivity>() {
                         .into(it)
                 }
             }
+
             R.id.btn_message_toast -> {
 
                 toast("我是吐司")
 
             }
+
             R.id.btn_message_permission -> {
 
                 requestPermission()
             }
+
             R.id.btn_message_setting -> {
 
                 XXPermissions.startPermissionActivity(this)
             }
+
             R.id.btn_message_black -> {
 
                 getStatusBarConfig()
                     .statusBarDarkFont(true)
                     .init()
             }
+
             R.id.btn_message_white -> {
 
                 getStatusBarConfig()
                     .statusBarDarkFont(false)
                     .init()
             }
+
             R.id.btn_message_tab -> {
 
                 HomeActivity.start(getAttachActivity()!!, HomeFragment::class.java)

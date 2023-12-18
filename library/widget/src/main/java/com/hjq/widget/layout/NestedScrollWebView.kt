@@ -16,7 +16,8 @@ import kotlin.math.max
  *    desc   : 支持嵌套滚动的 WebView
  */
 open class NestedScrollWebView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0)  :
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0
+) :
     WebView(context, attrs, defStyleAttr, defStyleRes), NestedScrollingChild {
 
     @Suppress("LeakingThis")
@@ -48,6 +49,7 @@ open class NestedScrollWebView @JvmOverloads constructor(
                 startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL)
                 result = super.onTouchEvent(event)
             }
+
             MotionEvent.ACTION_MOVE -> {
                 var deltaY: Int = lastMotionY - y
                 if (dispatchNestedPreScroll(0, deltaY, scrollConsumed, scrollOffset)) {
@@ -77,10 +79,20 @@ open class NestedScrollWebView @JvmOverloads constructor(
                 } else {
                     if (!change) {
                         change = true
-                        super.onTouchEvent(MotionEvent.obtain(0, 0, MotionEvent.ACTION_CANCEL, 0f, 0f, 0))
+                        super.onTouchEvent(
+                            MotionEvent.obtain(
+                                0,
+                                0,
+                                MotionEvent.ACTION_CANCEL,
+                                0f,
+                                0f,
+                                0
+                            )
+                        )
                     }
                 }
             }
+
             MotionEvent.ACTION_POINTER_DOWN, MotionEvent.ACTION_POINTER_UP, MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                 stopNestedScroll()
                 result = super.onTouchEvent(event)
@@ -112,15 +124,36 @@ open class NestedScrollWebView @JvmOverloads constructor(
         return childHelper.hasNestedScrollingParent()
     }
 
-    override fun dispatchNestedScroll(dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int, offsetInWindow: IntArray?): Boolean {
-        return childHelper.dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, offsetInWindow)
+    override fun dispatchNestedScroll(
+        dxConsumed: Int,
+        dyConsumed: Int,
+        dxUnconsumed: Int,
+        dyUnconsumed: Int,
+        offsetInWindow: IntArray?
+    ): Boolean {
+        return childHelper.dispatchNestedScroll(
+            dxConsumed,
+            dyConsumed,
+            dxUnconsumed,
+            dyUnconsumed,
+            offsetInWindow
+        )
     }
 
-    override fun dispatchNestedPreScroll(dx: Int, dy: Int, consumed: IntArray?, offsetInWindow: IntArray?): Boolean {
+    override fun dispatchNestedPreScroll(
+        dx: Int,
+        dy: Int,
+        consumed: IntArray?,
+        offsetInWindow: IntArray?
+    ): Boolean {
         return childHelper.dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow)
     }
 
-    override fun dispatchNestedFling(velocityX: Float, velocityY: Float, consumed: Boolean): Boolean {
+    override fun dispatchNestedFling(
+        velocityX: Float,
+        velocityY: Float,
+        consumed: Boolean
+    ): Boolean {
         return childHelper.dispatchNestedFling(velocityX, velocityY, consumed)
     }
 

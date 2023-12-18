@@ -1,7 +1,8 @@
 package com.hjq.demo.ui.dialog
 
-import android.content.*
-import android.view.*
+import android.content.Context
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hjq.base.BaseDialog
@@ -9,7 +10,7 @@ import com.hjq.demo.R
 import com.hjq.demo.aop.SingleClick
 import com.hjq.demo.app.AppAdapter
 import com.hjq.demo.manager.PickerLayoutManager
-import java.util.*
+import java.util.Calendar
 
 /**
  *    author : Android 轮子哥
@@ -166,9 +167,12 @@ class TimeDialog {
             when (view.id) {
                 R.id.tv_ui_confirm -> {
                     autoDismiss()
-                    listener?.onSelected(getDialog(), hourManager.getPickedPosition(),
-                        minuteManager.getPickedPosition(), secondManager.getPickedPosition())
+                    listener?.onSelected(
+                        getDialog(), hourManager.getPickedPosition(),
+                        minuteManager.getPickedPosition(), secondManager.getPickedPosition()
+                    )
                 }
+
                 R.id.tv_ui_cancel -> {
                     autoDismiss()
                     listener?.onCancel(getDialog())

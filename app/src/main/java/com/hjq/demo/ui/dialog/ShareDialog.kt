@@ -21,7 +21,13 @@ import com.hjq.umeng.UmengClient
 import com.hjq.umeng.UmengShare.OnShareListener
 import com.umeng.socialize.ShareAction
 import com.umeng.socialize.ShareContent
-import com.umeng.socialize.media.*
+import com.umeng.socialize.media.UMEmoji
+import com.umeng.socialize.media.UMImage
+import com.umeng.socialize.media.UMMin
+import com.umeng.socialize.media.UMQQMini
+import com.umeng.socialize.media.UMVideo
+import com.umeng.socialize.media.UMWeb
+import com.umeng.socialize.media.UMusic
 
 /**
  *    author : Android 轮子哥
@@ -31,7 +37,8 @@ import com.umeng.socialize.media.*
  */
 class ShareDialog {
 
-    class Builder(activity: Activity) : BaseDialog.Builder<Builder>(activity), BaseAdapter.OnItemClickListener {
+    class Builder(activity: Activity) : BaseDialog.Builder<Builder>(activity),
+        BaseAdapter.OnItemClickListener {
 
         private val recyclerView: RecyclerView? by lazy { findViewById(R.id.rv_share_list) }
 
@@ -43,11 +50,39 @@ class ShareDialog {
         init {
             setContentView(R.layout.share_dialog)
             val data: MutableList<ShareBean> = ArrayList()
-            data.add(ShareBean(getDrawable(R.drawable.share_wechat_ic)!!, getString(R.string.share_platform_wechat)!!, Platform.WECHAT))
-            data.add(ShareBean(getDrawable(R.drawable.share_moment_ic)!!, getString(R.string.share_platform_moment)!!, Platform.CIRCLE))
-            data.add(ShareBean(getDrawable(R.drawable.share_qq_ic)!!, getString(R.string.share_platform_qq)!!, Platform.QQ))
-            data.add(ShareBean(getDrawable(R.drawable.share_qzone_ic)!!, getString(R.string.share_platform_qzone)!!, Platform.QZONE))
-            copyLink = ShareBean(getDrawable(R.drawable.share_link_ic)!!, getString(R.string.share_platform_link)!!, null)
+            data.add(
+                ShareBean(
+                    getDrawable(R.drawable.share_wechat_ic)!!,
+                    getString(R.string.share_platform_wechat)!!,
+                    Platform.WECHAT
+                )
+            )
+            data.add(
+                ShareBean(
+                    getDrawable(R.drawable.share_moment_ic)!!,
+                    getString(R.string.share_platform_moment)!!,
+                    Platform.CIRCLE
+                )
+            )
+            data.add(
+                ShareBean(
+                    getDrawable(R.drawable.share_qq_ic)!!,
+                    getString(R.string.share_platform_qq)!!,
+                    Platform.QQ
+                )
+            )
+            data.add(
+                ShareBean(
+                    getDrawable(R.drawable.share_qzone_ic)!!,
+                    getString(R.string.share_platform_qzone)!!,
+                    Platform.QZONE
+                )
+            )
+            copyLink = ShareBean(
+                getDrawable(R.drawable.share_link_ic)!!,
+                getString(R.string.share_platform_link)!!,
+                null
+            )
             adapter = ShareAdapter(activity)
             adapter.setData(data)
             adapter.setOnItemClickListener(this)
@@ -134,7 +169,8 @@ class ShareDialog {
             val platform = adapter.getItem(position).sharePlatform
             if (platform != null) {
                 if (getContext().packageName.endsWith(".debug") &&
-                    (platform === Platform.WECHAT || platform === Platform.CIRCLE)) {
+                    (platform === Platform.WECHAT || platform === Platform.CIRCLE)
+                ) {
                     Toaster.show("当前 buildType 不支持进行微信分享")
                     return
                 }
@@ -143,7 +179,8 @@ class ShareDialog {
                 if (shareAction.shareContent.shareType == ShareContent.WEB_STYLE) {
                     // 复制到剪贴板
                     getSystemService(ClipboardManager::class.java).setPrimaryClip(
-                        ClipData.newPlainText("url", shareAction.shareContent.mMedia.toUrl()))
+                        ClipData.newPlainText("url", shareAction.shareContent.mMedia.toUrl())
+                    )
                     Toaster.show(R.string.share_platform_copy_hint)
                 }
             }
@@ -157,11 +194,14 @@ class ShareDialog {
             when (shareAction.shareContent.shareType) {
                 ShareContent.WEB_STYLE -> if (!adapter.containsItem(copyLink)) {
                     adapter.addItem(copyLink)
-                    recyclerView?.layoutManager = GridLayoutManager(getContext(), adapter.getCount())
+                    recyclerView?.layoutManager =
+                        GridLayoutManager(getContext(), adapter.getCount())
                 }
+
                 else -> if (adapter.containsItem(copyLink)) {
                     adapter.removeItem(copyLink)
-                    recyclerView?.layoutManager = GridLayoutManager(getContext(), adapter.getCount())
+                    recyclerView?.layoutManager =
+                        GridLayoutManager(getContext(), adapter.getCount())
                 }
             }
         }
@@ -187,7 +227,7 @@ class ShareDialog {
         }
     }
 
-    class ShareBean (
+    class ShareBean(
 
         /** 分享图标 */
         val shareIcon: Drawable,

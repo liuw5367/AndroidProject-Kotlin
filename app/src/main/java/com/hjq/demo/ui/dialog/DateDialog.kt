@@ -1,7 +1,8 @@
 package com.hjq.demo.ui.dialog
 
-import android.content.*
-import android.view.*
+import android.content.Context
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hjq.base.BaseDialog
@@ -11,7 +12,9 @@ import com.hjq.demo.app.AppAdapter
 import com.hjq.demo.manager.PickerLayoutManager
 import com.hjq.demo.manager.PickerLayoutManager.OnPickerListener
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 /**
  *    author : Android 轮子哥
@@ -20,7 +23,7 @@ import java.util.*
  *    desc   : 日期选择对话框
  */
 class DateDialog {
-    
+
     class Builder @JvmOverloads constructor(
         context: Context, private val
         startYear: Int = Calendar.getInstance(Locale.CHINA)[Calendar.YEAR] - 100,
@@ -167,9 +170,12 @@ class DateDialog {
             when (view.id) {
                 R.id.tv_ui_confirm -> {
                     autoDismiss()
-                    listener?.onSelected(getDialog(), startYear + yearManager.getPickedPosition(),
-                        monthManager.getPickedPosition() + 1, dayManager.getPickedPosition() + 1)
+                    listener?.onSelected(
+                        getDialog(), startYear + yearManager.getPickedPosition(),
+                        monthManager.getPickedPosition() + 1, dayManager.getPickedPosition() + 1
+                    )
                 }
+
                 R.id.tv_ui_cancel -> {
                     autoDismiss()
                     listener?.onCancel(getDialog())

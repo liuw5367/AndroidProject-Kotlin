@@ -38,6 +38,7 @@ class StatusActivity : AppActivity(), StatusAction {
                             showLoading()
                             postDelayed({ showComplete() }, 2500)
                         }
+
                         1 -> {
                             showError(object : OnRetryListener {
                                 override fun onRetry(layout: StatusLayout) {
@@ -46,10 +47,15 @@ class StatusActivity : AppActivity(), StatusAction {
                                 }
                             })
                         }
+
                         2 -> showEmpty()
                         3 -> {
-                            showLayout(ContextCompat.getDrawable(this@StatusActivity,
-                                    R.drawable.status_order_ic), "暂无订单", null)
+                            showLayout(
+                                ContextCompat.getDrawable(
+                                    this@StatusActivity,
+                                    R.drawable.status_order_ic
+                                ), "暂无订单", null
+                            )
                         }
                     }
                 }

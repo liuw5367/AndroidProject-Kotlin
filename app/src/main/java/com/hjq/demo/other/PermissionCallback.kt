@@ -1,17 +1,16 @@
 package com.hjq.demo.other
 
 import android.app.Activity
-import android.content.*
-import android.os.*
+import android.content.Context
+import android.os.Build
 import com.hjq.base.BaseDialog
-import com.hjq.demo.manager.*
+import com.hjq.demo.R
+import com.hjq.demo.manager.ActivityManager
 import com.hjq.demo.ui.dialog.MessageDialog
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
 import com.hjq.toast.Toaster
-import java.util.*
-import com.hjq.demo.R
 
 /**
  *    author : Android 轮子哥
@@ -74,23 +73,27 @@ abstract class PermissionCallback : OnPermissionCallback {
                         hints.add(hint)
                     }
                 }
+
                 Permission.CAMERA -> {
                     val hint: String = context.getString(R.string.common_permission_camera)
                     if (!hints.contains(hint)) {
                         hints.add(hint)
                     }
                 }
+
                 Permission.RECORD_AUDIO -> {
                     val hint: String = context.getString(R.string.common_permission_microphone)
                     if (!hints.contains(hint)) {
                         hints.add(hint)
                     }
                 }
+
                 Permission.ACCESS_FINE_LOCATION,
                 Permission.ACCESS_COARSE_LOCATION,
                 Permission.ACCESS_BACKGROUND_LOCATION -> {
                     val hint: String = if (!permissions.contains(Permission.ACCESS_FINE_LOCATION) &&
-                        !permissions.contains(Permission.ACCESS_COARSE_LOCATION)) {
+                        !permissions.contains(Permission.ACCESS_COARSE_LOCATION)
+                    ) {
                         context.getString(R.string.common_permission_location_background)
                     } else {
                         context.getString(R.string.common_permission_location)
@@ -99,6 +102,7 @@ abstract class PermissionCallback : OnPermissionCallback {
                         hints.add(hint)
                     }
                 }
+
                 Permission.READ_PHONE_STATE,
                 Permission.CALL_PHONE,
                 Permission.ADD_VOICEMAIL,
@@ -110,6 +114,7 @@ abstract class PermissionCallback : OnPermissionCallback {
                         hints.add(hint)
                     }
                 }
+
                 Permission.GET_ACCOUNTS,
                 Permission.READ_CONTACTS,
                 Permission.WRITE_CONTACTS -> {
@@ -118,6 +123,7 @@ abstract class PermissionCallback : OnPermissionCallback {
                         hints.add(hint)
                     }
                 }
+
                 Permission.READ_CALENDAR,
                 Permission.WRITE_CALENDAR -> {
                     val hint: String = context.getString(R.string.common_permission_calendar)
@@ -125,26 +131,32 @@ abstract class PermissionCallback : OnPermissionCallback {
                         hints.add(hint)
                     }
                 }
+
                 Permission.READ_CALL_LOG,
                 Permission.WRITE_CALL_LOG,
                 Permission.PROCESS_OUTGOING_CALLS -> {
-                    val hint: String = context.getString(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) R.string.common_permission_call_log else R.string.common_permission_phone)
+                    val hint: String =
+                        context.getString(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) R.string.common_permission_call_log else R.string.common_permission_phone)
                     if (!hints.contains(hint)) {
                         hints.add(hint)
                     }
                 }
+
                 Permission.BODY_SENSORS -> {
                     val hint: String = context.getString(R.string.common_permission_sensors)
                     if (!hints.contains(hint)) {
                         hints.add(hint)
                     }
                 }
+
                 Permission.ACTIVITY_RECOGNITION -> {
-                    val hint: String = context.getString(R.string.common_permission_activity_recognition)
+                    val hint: String =
+                        context.getString(R.string.common_permission_activity_recognition)
                     if (!hints.contains(hint)) {
                         hints.add(hint)
                     }
                 }
+
                 Permission.SEND_SMS,
                 Permission.RECEIVE_SMS,
                 Permission.READ_SMS,
@@ -155,24 +167,28 @@ abstract class PermissionCallback : OnPermissionCallback {
                         hints.add(hint)
                     }
                 }
+
                 Permission.REQUEST_INSTALL_PACKAGES -> {
                     val hint: String = context.getString(R.string.common_permission_install)
                     if (!hints.contains(hint)) {
                         hints.add(hint)
                     }
                 }
+
                 Permission.NOTIFICATION_SERVICE -> {
                     val hint: String = context.getString(R.string.common_permission_notification)
                     if (!hints.contains(hint)) {
                         hints.add(hint)
                     }
                 }
+
                 Permission.SYSTEM_ALERT_WINDOW -> {
                     val hint: String = context.getString(R.string.common_permission_window)
                     if (!hints.contains(hint)) {
                         hints.add(hint)
                     }
                 }
+
                 Permission.WRITE_SETTINGS -> {
                     val hint: String = context.getString(R.string.common_permission_setting)
                     if (!hints.contains(hint)) {

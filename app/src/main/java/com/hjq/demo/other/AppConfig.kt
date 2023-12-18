@@ -1,6 +1,7 @@
 package com.hjq.demo.other
 
 import com.hjq.demo.BuildConfig
+
 /**
  *    author : Android 轮子哥
  *    github : https://github.com/getActivity/AndroidProject-Kotlin

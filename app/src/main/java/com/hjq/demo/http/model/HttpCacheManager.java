@@ -8,14 +8,15 @@ import com.hjq.http.request.HttpRequest;
 import com.tencent.mmkv.MMKV;
 
 /**
- *    author : Android 轮子哥
- *    github : https://github.com/getActivity/EasyHttp
- *    time   : 2022/03/22
- *    desc   : Http 缓存管理器
+ * author : Android 轮子哥
+ * github : https://github.com/getActivity/EasyHttp
+ * time   : 2022/03/22
+ * desc   : Http 缓存管理器
  */
 public final class HttpCacheManager {
 
-    private static final MMKV HTTP_CACHE_CONTENT = MMKV.mmkvWithID("http_cache_content");;
+    private static final MMKV HTTP_CACHE_CONTENT = MMKV.mmkvWithID("http_cache_content");
+    ;
 
     private static final MMKV HTTP_CACHE_TIME = MMKV.mmkvWithID("http_cache_time");
 

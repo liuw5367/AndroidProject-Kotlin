@@ -1,6 +1,6 @@
 package com.hjq.widget.view
 
-import android.content.*
+import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
@@ -13,7 +13,8 @@ import com.hjq.widget.R
  *    desc   : 长按缩放松手恢复的 ImageView
  */
 class ScaleImageView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) :
     AppCompatImageView(context, attrs, defStyleAttr) {
 
     private var scaleSize: Float = 1.2f

@@ -2,22 +2,43 @@ package com.hjq.base
 
 import android.app.Activity
 import android.app.Application.ActivityLifecycleCallbacks
-import android.content.*
+import android.content.Context
+import android.content.DialogInterface
 import android.graphics.drawable.Drawable
-import android.os.*
+import android.os.Build
+import android.os.Bundle
 import android.util.SparseArray
-import android.view.*
+import android.view.Gravity
+import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
-import androidx.annotation.*
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
+import androidx.annotation.FloatRange
+import androidx.annotation.IdRes
+import androidx.annotation.LayoutRes
+import androidx.annotation.StringRes
+import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatDialog
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
-import com.hjq.base.action.*
+import com.hjq.base.action.ActivityAction
+import com.hjq.base.action.AnimAction
+import com.hjq.base.action.ClickAction
+import com.hjq.base.action.HandlerAction
+import com.hjq.base.action.KeyboardAction
+import com.hjq.base.action.ResourcesAction
 import java.lang.ref.SoftReference
-import java.util.*
 
 /**
  *    author : Android 轮子哥
@@ -26,7 +47,10 @@ import java.util.*
  *    desc   : Dialog 技术基类
  */
 @Suppress("LeakingThis")
-open class BaseDialog constructor(context: Context, @StyleRes themeResId: Int = R.style.BaseDialogTheme) :
+open class BaseDialog constructor(
+    context: Context,
+    @StyleRes themeResId: Int = R.style.BaseDialogTheme
+) :
     AppCompatDialog(context, themeResId), LifecycleOwner, ActivityAction, ResourcesAction,
     HandlerAction, ClickAction, AnimAction, KeyboardAction, DialogInterface.OnShowListener,
     DialogInterface.OnCancelListener, DialogInterface.OnDismissListener {
@@ -141,7 +165,10 @@ open class BaseDialog constructor(context: Context, @StyleRes themeResId: Int = 
         removeCallbacks()
         val focusView: View? = currentFocus
         if (focusView != null) {
-            getSystemService(InputMethodManager::class.java).hideSoftInputFromWindow(focusView.windowToken, 0)
+            getSystemService(InputMethodManager::class.java).hideSoftInputFromWindow(
+                focusView.windowToken,
+                0
+            )
         }
         super.dismiss()
     }
@@ -194,9 +221,12 @@ open class BaseDialog constructor(context: Context, @StyleRes themeResId: Int = 
      *
      * @param listener       按键监听器对象
      */
-    @Deprecated("请使用 {@link #setOnKeyListener(BaseDialog.OnKeyListener)}", ReplaceWith(
-        "super.setOnKeyListener(listener)",
-        "androidx.appcompat.app.AppCompatDialog"))
+    @Deprecated(
+        "请使用 {@link #setOnKeyListener(BaseDialog.OnKeyListener)}", ReplaceWith(
+            "super.setOnKeyListener(listener)",
+            "androidx.appcompat.app.AppCompatDialog"
+        )
+    )
     override fun setOnKeyListener(listener: DialogInterface.OnKeyListener?) {
         super.setOnKeyListener(listener)
     }
@@ -525,7 +555,8 @@ open class BaseDialog constructor(context: Context, @StyleRes themeResId: Int = 
          */
         open fun setGravity(gravity: Int): B {
             // 适配布局反方向
-            this.gravity = Gravity.getAbsoluteGravity(gravity, getResources().configuration.layoutDirection)
+            this.gravity =
+                Gravity.getAbsoluteGravity(gravity, getResources().configuration.layoutDirection)
             if (isCreated()) {
                 dialog?.setGravity(gravity)
             }
@@ -714,7 +745,8 @@ open class BaseDialog constructor(context: Context, @StyleRes themeResId: Int = 
             }
             clickArray!!.put(id, listener as OnClickListener<View>)
             if (isCreated()) {
-                dialog?.findViewById<View?>(id)?.setOnClickListener(ViewClickWrapper(dialog, listener))
+                dialog?.findViewById<View?>(id)
+                    ?.setOnClickListener(ViewClickWrapper(dialog, listener))
             }
             return this as B
         }
@@ -784,8 +816,8 @@ open class BaseDialog constructor(context: Context, @StyleRes themeResId: Int = 
                 clickArray?.let { array ->
                     var i = 0
                     while (i < array.size()) {
-                        contentView!!.findViewById<View?>(array.keyAt(i))?.
-                        setOnClickListener(ViewClickWrapper(dialog, array.valueAt(i)))
+                        contentView!!.findViewById<View?>(array.keyAt(i))
+                            ?.setOnClickListener(ViewClickWrapper(dialog, array.valueAt(i)))
                         i++
                     }
                 }
@@ -914,7 +946,10 @@ open class BaseDialog constructor(context: Context, @StyleRes themeResId: Int = 
     /**
      * Dialog 生命周期绑定
      */
-    private class DialogLifecycle(private var activity: Activity?, private var dialog: BaseDialog?) :
+    private class DialogLifecycle(
+        private var activity: Activity?,
+        private var dialog: BaseDialog?
+    ) :
         ActivityLifecycleCallbacks, OnShowListener, OnDismissListener {
 
         companion object {
@@ -1037,9 +1072,9 @@ open class BaseDialog constructor(context: Context, @StyleRes themeResId: Int = 
         SoftReference<T?>(referent), DialogInterface.OnShowListener,
         DialogInterface.OnCancelListener,
         DialogInterface.OnDismissListener
-            where T : DialogInterface.OnShowListener,
-                  T : DialogInterface.OnCancelListener,
-                  T : DialogInterface.OnDismissListener {
+        where T : DialogInterface.OnShowListener,
+              T : DialogInterface.OnCancelListener,
+              T : DialogInterface.OnDismissListener {
 
         override fun onShow(dialog: DialogInterface?) {
             get()?.onShow(dialog)
@@ -1059,7 +1094,8 @@ open class BaseDialog constructor(context: Context, @StyleRes themeResId: Int = 
      */
     private class ViewClickWrapper constructor(
         private val dialog: BaseDialog?,
-        private val listener: OnClickListener<View>?) : View.OnClickListener {
+        private val listener: OnClickListener<View>?
+    ) : View.OnClickListener {
 
         override fun onClick(view: View) {
             listener?.onClick(dialog, view)
@@ -1105,7 +1141,8 @@ open class BaseDialog constructor(context: Context, @StyleRes themeResId: Int = 
     /**
      * 按键监听包装类
      */
-    private class KeyListenerWrapper constructor(private val listener: OnKeyListener?) : DialogInterface.OnKeyListener {
+    private class KeyListenerWrapper constructor(private val listener: OnKeyListener?) :
+        DialogInterface.OnKeyListener {
 
         override fun onKey(dialog: DialogInterface?, keyCode: Int, event: KeyEvent?): Boolean {
             // 在横竖屏切换后监听对象会为空
@@ -1135,7 +1172,8 @@ open class BaseDialog constructor(context: Context, @StyleRes themeResId: Int = 
      */
     private class ShowPostDelayedWrapper constructor(
         private val runnable: Runnable?,
-        private val delayMillis: Long) : OnShowListener {
+        private val delayMillis: Long
+    ) : OnShowListener {
 
         override fun onShow(dialog: BaseDialog?) {
             if (runnable == null) {
@@ -1151,7 +1189,8 @@ open class BaseDialog constructor(context: Context, @StyleRes themeResId: Int = 
      */
     private class ShowPostAtTimeWrapper constructor(
         private val runnable: Runnable,
-        private val uptimeMillis: Long) : OnShowListener {
+        private val uptimeMillis: Long
+    ) : OnShowListener {
 
         override fun onShow(dialog: BaseDialog?) {
             dialog?.removeOnShowListener(this)

@@ -5,7 +5,13 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Context
 import android.content.res.TypedArray
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.PathMeasure
+import android.graphics.PorterDuff
+import android.graphics.RectF
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.animation.AccelerateInterpolator
@@ -21,7 +27,8 @@ import kotlin.math.sqrt
  *    desc   : 带提交动画按钮
  */
 class SubmitButton @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) :
     AppCompatButton(context, attrs, defStyleAttr) {
 
     companion object {
@@ -97,10 +104,14 @@ class SubmitButton @JvmOverloads constructor(
     init {
         // 关闭硬件加速
         setLayerType(LAYER_TYPE_SOFTWARE, null)
-        val typedArray: TypedArray = context.obtainStyledAttributes(attrs, R.styleable.SubmitButton, defStyleAttr, 0)
-        progressColor = typedArray.getColor(R.styleable.SubmitButton_progressColor, getAccentColor())
-        succeedColor = typedArray.getColor(R.styleable.SubmitButton_succeedColor, Color.parseColor("#19CC95"))
-        errorColor = typedArray.getColor(R.styleable.SubmitButton_errorColor, Color.parseColor("#FC8E34"))
+        val typedArray: TypedArray =
+            context.obtainStyledAttributes(attrs, R.styleable.SubmitButton, defStyleAttr, 0)
+        progressColor =
+            typedArray.getColor(R.styleable.SubmitButton_progressColor, getAccentColor())
+        succeedColor =
+            typedArray.getColor(R.styleable.SubmitButton_succeedColor, Color.parseColor("#19CC95"))
+        errorColor =
+            typedArray.getColor(R.styleable.SubmitButton_errorColor, Color.parseColor("#FC8E34"))
         progressStyle = typedArray.getInt(R.styleable.SubmitButton_progressStyle, STYLE_LOADING)
         typedArray.recycle()
 
@@ -159,6 +170,7 @@ class SubmitButton @JvmOverloads constructor(
             STATE_NONE -> {
                 super.onDraw(canvas)
             }
+
             STATE_SUBMIT, STATE_LOADING -> {
                 // 清除画布之前绘制的背景
                 canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
@@ -166,6 +178,7 @@ class SubmitButton @JvmOverloads constructor(
                 drawButton(canvas)
                 drawLoading(canvas)
             }
+
             STATE_RESULT -> {
                 // 清除画布之前绘制的背景
                 canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
@@ -181,10 +194,20 @@ class SubmitButton @JvmOverloads constructor(
      */
     private fun drawButton(canvas: Canvas) {
         buttonPath.reset()
-        circleLeft.set(-viewWidth / 2f, -viewHeight / 2f, -viewWidth / 2f + viewHeight, viewHeight / 2f)
+        circleLeft.set(
+            -viewWidth / 2f,
+            -viewHeight / 2f,
+            -viewWidth / 2f + viewHeight,
+            viewHeight / 2f
+        )
         buttonPath.arcTo(circleLeft, 90f, 180f)
         buttonPath.lineTo(viewWidth / 2f - viewHeight / 2f, -viewHeight / 2f)
-        circleRight.set(viewWidth / 2f - viewHeight, -viewHeight / 2f, viewWidth / 2f, viewHeight / 2f)
+        circleRight.set(
+            viewWidth / 2f - viewHeight,
+            -viewHeight / 2f,
+            viewWidth / 2f,
+            viewHeight / 2f
+        )
         buttonPath.arcTo(circleRight, 270f, 180f)
         buttonPath.lineTo(-viewWidth / 2f + viewHeight / 2f, viewHeight / 2f)
         canvas.drawPath(buttonPath, backgroundPaint)
@@ -195,7 +218,12 @@ class SubmitButton @JvmOverloads constructor(
      */
     private fun drawLoading(canvas: Canvas) {
         dstPath.reset()
-        circleMid.set(-maxViewHeight / 2f, -maxViewHeight / 2f, maxViewHeight / 2f, maxViewHeight / 2f)
+        circleMid.set(
+            -maxViewHeight / 2f,
+            -maxViewHeight / 2f,
+            maxViewHeight / 2f,
+            maxViewHeight / 2f
+        )
         loadPath.addArc(circleMid, 270f, 359.999f)
         pathMeasure.setPath(loadPath, true)
         var startD = 0f
@@ -294,7 +322,8 @@ class SubmitButton @JvmOverloads constructor(
             })
             addUpdateListener { animation: ValueAnimator ->
                 viewWidth = animation.animatedValue as Int
-                resultPaint.alpha = ((viewWidth - viewHeight) * 255) / (maxViewWidth - maxViewHeight)
+                resultPaint.alpha =
+                    ((viewWidth - viewHeight) * 255) / (maxViewWidth - maxViewHeight)
                 if (viewWidth == viewHeight) {
                     if (succeed) {
                         backgroundPaint.color = succeedColor

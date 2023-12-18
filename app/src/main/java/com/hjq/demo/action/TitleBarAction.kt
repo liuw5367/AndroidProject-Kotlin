@@ -1,7 +1,6 @@
 package com.hjq.demo.action
 
 import android.graphics.drawable.Drawable
-import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
 import com.hjq.bar.OnTitleBarListener

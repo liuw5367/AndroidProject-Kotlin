@@ -3,7 +3,8 @@ package com.hjq.demo.ui.dialog
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +14,7 @@ import com.hjq.demo.R
 import com.hjq.demo.aop.SingleClick
 import com.hjq.demo.app.AppAdapter
 import com.hjq.demo.widget.PasswordView
-import java.util.*
+import java.util.LinkedList
 
 /**
  *    author : Android 轮子哥
@@ -96,6 +97,7 @@ class PayPasswordDialog {
                     if (recordList.size != 0) {
                         recordList.removeLast()
                     }
+
                 KeyboardAdapter.TYPE_EMPTY -> {}
                 else -> {
                     // 判断密码是否已经输入完毕

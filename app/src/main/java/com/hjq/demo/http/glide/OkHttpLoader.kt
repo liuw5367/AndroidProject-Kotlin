@@ -22,11 +22,17 @@ class OkHttpLoader private constructor(private val factory: Call.Factory) :
         return true
     }
 
-    override fun buildLoadData(model: GlideUrl, width: Int, height: Int, options: Options): LoadData<InputStream?> {
+    override fun buildLoadData(
+        model: GlideUrl,
+        width: Int,
+        height: Int,
+        options: Options
+    ): LoadData<InputStream?> {
         return LoadData(model, OkHttpFetcher(factory, model))
     }
 
-    class Factory constructor(private val factory: Call.Factory) : ModelLoaderFactory<GlideUrl, InputStream> {
+    class Factory constructor(private val factory: Call.Factory) :
+        ModelLoaderFactory<GlideUrl, InputStream> {
 
         override fun build(multiFactory: MultiModelLoaderFactory): ModelLoader<GlideUrl, InputStream> {
             return OkHttpLoader(factory)

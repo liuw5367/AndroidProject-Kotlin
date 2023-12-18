@@ -67,7 +67,8 @@ class MaterialHeader @JvmOverloads constructor(context: Context, attrs: Attribut
             Color.parseColor("#FF4444"),
             Color.parseColor("#669900"),
             Color.parseColor("#AA66CC"),
-            Color.parseColor("#FF8800"))
+            Color.parseColor("#FF8800")
+        )
         circleView = CircleImageView(context, CIRCLE_BG_LIGHT)
         circleView.setImageDrawable(progressDrawable)
         circleView.alpha = 0f
@@ -77,24 +78,47 @@ class MaterialHeader @JvmOverloads constructor(context: Context, attrs: Attribut
         bezierPaint = Paint()
         bezierPaint.isAntiAlias = true
         bezierPaint.style = Paint.Style.FILL
-        val typedArray: TypedArray = context.obtainStyledAttributes(attrs, R.styleable.MaterialHeader)
-        showBezierWave = typedArray.getBoolean(R.styleable.MaterialHeader_srlShowBezierWave, showBezierWave)
-        scrollableWhenRefreshing = typedArray.getBoolean(R.styleable.MaterialHeader_srlScrollableWhenRefreshing, scrollableWhenRefreshing)
-        bezierPaint.color = typedArray.getColor(R.styleable.MaterialHeader_srlPrimaryColor, Color.parseColor("#11BBFF"))
+        val typedArray: TypedArray =
+            context.obtainStyledAttributes(attrs, R.styleable.MaterialHeader)
+        showBezierWave =
+            typedArray.getBoolean(R.styleable.MaterialHeader_srlShowBezierWave, showBezierWave)
+        scrollableWhenRefreshing = typedArray.getBoolean(
+            R.styleable.MaterialHeader_srlScrollableWhenRefreshing,
+            scrollableWhenRefreshing
+        )
+        bezierPaint.color = typedArray.getColor(
+            R.styleable.MaterialHeader_srlPrimaryColor,
+            Color.parseColor("#11BBFF")
+        )
         if (typedArray.hasValue(R.styleable.MaterialHeader_srlShadowRadius)) {
-            val radius: Int = typedArray.getDimensionPixelOffset(R.styleable.MaterialHeader_srlShadowRadius, 0)
-            val color: Int = typedArray.getColor(R.styleable.MaterialHeader_mhShadowColor, Color.parseColor("#000000"))
+            val radius: Int =
+                typedArray.getDimensionPixelOffset(R.styleable.MaterialHeader_srlShadowRadius, 0)
+            val color: Int = typedArray.getColor(
+                R.styleable.MaterialHeader_mhShadowColor,
+                Color.parseColor("#000000")
+            )
             bezierPaint.setShadowLayer(radius.toFloat(), 0f, 0f, color)
             setLayerType(LAYER_TYPE_SOFTWARE, null)
         }
-        showBezierWave = typedArray.getBoolean(R.styleable.MaterialHeader_mhShowBezierWave, showBezierWave)
-        scrollableWhenRefreshing = typedArray.getBoolean(R.styleable.MaterialHeader_mhScrollableWhenRefreshing, scrollableWhenRefreshing)
+        showBezierWave =
+            typedArray.getBoolean(R.styleable.MaterialHeader_mhShowBezierWave, showBezierWave)
+        scrollableWhenRefreshing = typedArray.getBoolean(
+            R.styleable.MaterialHeader_mhScrollableWhenRefreshing,
+            scrollableWhenRefreshing
+        )
         if (typedArray.hasValue(R.styleable.MaterialHeader_mhPrimaryColor)) {
-            bezierPaint.color = typedArray.getColor(R.styleable.MaterialHeader_mhPrimaryColor, Color.parseColor("#11BBFF"))
+            bezierPaint.color = typedArray.getColor(
+                R.styleable.MaterialHeader_mhPrimaryColor,
+                Color.parseColor("#11BBFF")
+            )
         }
         if (typedArray.hasValue(R.styleable.MaterialHeader_mhShadowRadius)) {
-            val radius: Int = typedArray.getDimensionPixelOffset(R.styleable.MaterialHeader_mhShadowRadius, 0)
-            val color: Int = typedArray.getColor(R.styleable.MaterialHeader_mhShadowColor, Color.parseColor("#000000"))
+            val radius: Int =
+                typedArray.getDimensionPixelOffset(R.styleable.MaterialHeader_mhShadowRadius, 0)
+            val color: Int = typedArray.getColor(
+                R.styleable.MaterialHeader_mhShadowColor,
+                Color.parseColor("#000000")
+            )
             bezierPaint.setShadowLayer(radius.toFloat(), 0f, 0f, color)
             setLayerType(LAYER_TYPE_SOFTWARE, null)
         }
@@ -102,10 +126,15 @@ class MaterialHeader @JvmOverloads constructor(context: Context, attrs: Attribut
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec))
+        super.setMeasuredDimension(
+            MeasureSpec.getSize(widthMeasureSpec),
+            MeasureSpec.getSize(heightMeasureSpec)
+        )
 
-        circleView.measure(MeasureSpec.makeMeasureSpec(circleDiameter, MeasureSpec.EXACTLY),
-            MeasureSpec.makeMeasureSpec(circleDiameter, MeasureSpec.EXACTLY))
+        circleView.measure(
+            MeasureSpec.makeMeasureSpec(circleDiameter, MeasureSpec.EXACTLY),
+            MeasureSpec.makeMeasureSpec(circleDiameter, MeasureSpec.EXACTLY)
+        )
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
@@ -117,15 +146,22 @@ class MaterialHeader @JvmOverloads constructor(context: Context, attrs: Attribut
         val circleHeight: Int = circleView.measuredHeight
         if (isInEditMode && headHeight > 0) {
             val circleTop: Int = headHeight - circleHeight / 2
-            circleView.layout((width / 2 - circleWidth / 2), circleTop,
-                (width / 2 + circleWidth / 2), circleTop + circleHeight)
+            circleView.layout(
+                (width / 2 - circleWidth / 2), circleTop,
+                (width / 2 + circleWidth / 2), circleTop + circleHeight
+            )
             progressDrawable.showArrow(true)
             progressDrawable.setStartEndTrim(0f, MAX_PROGRESS_ANGLE)
             progressDrawable.setArrowScale(1f)
             circleView.alpha = 1f
             circleView.visibility = VISIBLE
         } else {
-            circleView.layout((width / 2 - circleWidth / 2), -circleHeight, (width / 2 + circleWidth / 2), 0)
+            circleView.layout(
+                (width / 2 - circleWidth / 2),
+                -circleHeight,
+                (width / 2 + circleWidth / 2),
+                0
+            )
         }
     }
 
@@ -135,7 +171,12 @@ class MaterialHeader @JvmOverloads constructor(context: Context, attrs: Attribut
             bezierPath.reset()
             bezierPath.lineTo(0f, headHeight.toFloat())
             // 绘制贝塞尔曲线
-            bezierPath.quadTo(measuredWidth / 2f, headHeight + waveHeight * 1.9f, measuredWidth.toFloat(), headHeight.toFloat())
+            bezierPath.quadTo(
+                measuredWidth / 2f,
+                headHeight + waveHeight * 1.9f,
+                measuredWidth.toFloat(),
+                headHeight.toFloat()
+            )
             bezierPath.lineTo(measuredWidth.toFloat(), 0f)
             canvas.drawPath(bezierPath, bezierPaint)
         }
@@ -152,7 +193,13 @@ class MaterialHeader @JvmOverloads constructor(context: Context, attrs: Attribut
         }
     }
 
-    override fun onMoving(dragging: Boolean, percent: Float, offset: Int, height: Int, maxDragHeight: Int) {
+    override fun onMoving(
+        dragging: Boolean,
+        percent: Float,
+        offset: Int,
+        height: Int,
+        maxDragHeight: Int
+    ) {
         if (refreshState == RefreshState.Refreshing) {
             return
         }
@@ -167,13 +214,17 @@ class MaterialHeader @JvmOverloads constructor(context: Context, attrs: Attribut
                 val dragPercent: Float = min(1f, abs(originalDragPercent))
                 val adjustedPercent: Float = max(dragPercent - .4, 0.0).toFloat() * 5 / 3
                 val extraOs: Float = (abs(offset) - height).toFloat()
-                val tensionSlingshotPercent: Float = max(0f, (min(extraOs, height.toFloat() * 2) / height.toFloat()))
-                val tensionPercent: Float = ((tensionSlingshotPercent / 4) - (tensionSlingshotPercent / 4).toDouble().pow(2.0)).toFloat() * 2f
+                val tensionSlingshotPercent: Float =
+                    max(0f, (min(extraOs, height.toFloat() * 2) / height.toFloat()))
+                val tensionPercent: Float =
+                    ((tensionSlingshotPercent / 4) - (tensionSlingshotPercent / 4).toDouble()
+                        .pow(2.0)).toFloat() * 2f
                 val strokeStart: Float = adjustedPercent * .8f
                 progressDrawable.showArrow(true)
                 progressDrawable.setStartEndTrim(0f, min(MAX_PROGRESS_ANGLE, strokeStart))
                 progressDrawable.setArrowScale(min(1f, adjustedPercent))
-                val rotation: Float = (-0.25f + (.4f * adjustedPercent) + (tensionPercent * 2)) * .5f
+                val rotation: Float =
+                    (-0.25f + (.4f * adjustedPercent) + (tensionPercent * 2)) * .5f
                 progressDrawable.setProgressRotation(rotation)
             }
             val targetY: Float = offset / 2f + circleDiameter / 2f
@@ -186,7 +237,11 @@ class MaterialHeader @JvmOverloads constructor(context: Context, attrs: Attribut
         progressDrawable.start()
     }
 
-    override fun onStateChanged(refreshLayout: RefreshLayout, oldState: RefreshState, newState: RefreshState) {
+    override fun onStateChanged(
+        refreshLayout: RefreshLayout,
+        oldState: RefreshState,
+        newState: RefreshState
+    ) {
         refreshState = newState
         if (newState == RefreshState.PullDownToRefresh) {
             finished = false
@@ -246,7 +301,8 @@ class MaterialHeader @JvmOverloads constructor(context: Context, attrs: Attribut
         if (style != BALL_STYLE_LARGE && style != BALL_STYLE_DEFAULT) {
             return@apply
         }
-        circleDiameter = if (style == BALL_STYLE_LARGE) resources.getDimension(R.dimen.dp_56).toInt() else resources.getDimension(R.dimen.dp_40).toInt()
+        circleDiameter = if (style == BALL_STYLE_LARGE) resources.getDimension(R.dimen.dp_56)
+            .toInt() else resources.getDimension(R.dimen.dp_40).toInt()
         // force the bounds of the progress circle inside the circle view to
         // update by setting it to null before updating its size and then
         // re-setting it

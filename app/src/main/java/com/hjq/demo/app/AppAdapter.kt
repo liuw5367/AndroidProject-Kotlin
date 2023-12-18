@@ -5,7 +5,6 @@ import android.view.View
 import androidx.annotation.IntRange
 import androidx.annotation.LayoutRes
 import com.hjq.base.BaseAdapter
-import java.util.*
 
 /**
  *    author : Android 轮子哥

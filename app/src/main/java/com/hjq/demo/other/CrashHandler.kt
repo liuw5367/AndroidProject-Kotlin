@@ -1,7 +1,8 @@
 package com.hjq.demo.other
 
-import android.app.*
-import android.content.*
+import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Process
 import com.hjq.demo.ui.activity.CrashActivity
 import com.hjq.demo.ui.activity.RestartActivity
@@ -31,7 +32,8 @@ class CrashHandler private constructor(private val application: Application) :
         }
     }
 
-    private val nextHandler: Thread.UncaughtExceptionHandler? = Thread.getDefaultUncaughtExceptionHandler()
+    private val nextHandler: Thread.UncaughtExceptionHandler? =
+        Thread.getDefaultUncaughtExceptionHandler()
 
     init {
         if ((javaClass.name == nextHandler?.javaClass?.name)) {
@@ -43,7 +45,8 @@ class CrashHandler private constructor(private val application: Application) :
     @Suppress("ApplySharedPref")
     override fun uncaughtException(thread: Thread, throwable: Throwable) {
         val sharedPreferences: SharedPreferences = application.getSharedPreferences(
-            CRASH_FILE_NAME, Context.MODE_PRIVATE)
+            CRASH_FILE_NAME, Context.MODE_PRIVATE
+        )
         val currentCrashTime: Long = System.currentTimeMillis()
         val lastCrashTime: Long = sharedPreferences.getLong(KEY_CRASH_TIME, 0)
         // 记录当前崩溃的时间，以便下次崩溃时进行比对
@@ -62,7 +65,8 @@ class CrashHandler private constructor(private val application: Application) :
 
         // 不去触发系统的崩溃处理（com.android.internal.os.RuntimeInit$KillApplicationHandler）
         if (nextHandler != null && !nextHandler.javaClass.name
-                .startsWith("com.android.internal.os")) {
+                .startsWith("com.android.internal.os")
+        ) {
             nextHandler.uncaughtException(thread, throwable)
         }
 

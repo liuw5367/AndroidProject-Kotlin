@@ -1,6 +1,6 @@
 package com.hjq.widget.view
 
-import android.content.*
+import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
@@ -14,7 +14,8 @@ import com.hjq.widget.R
  *    desc   : 支持限定 Drawable 大小的 TextView
  */
 class DrawableTextView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) :
     AppCompatTextView(context, attrs, defStyleAttr) {
 
     private var drawableWidth: Int
@@ -62,7 +63,12 @@ class DrawableTextView @JvmOverloads constructor(
         refreshDrawablesSize()
     }
 
-    override fun setCompoundDrawables(left: Drawable?, top: Drawable?, right: Drawable?, bottom: Drawable?) {
+    override fun setCompoundDrawables(
+        left: Drawable?,
+        top: Drawable?,
+        right: Drawable?,
+        bottom: Drawable?
+    ) {
         super.setCompoundDrawables(left, top, right, bottom)
         if (!isAttachedToWindow) {
             return
@@ -70,7 +76,12 @@ class DrawableTextView @JvmOverloads constructor(
         refreshDrawablesSize()
     }
 
-    override fun setCompoundDrawablesRelative(start: Drawable?, top: Drawable?, end: Drawable?, bottom: Drawable?) {
+    override fun setCompoundDrawablesRelative(
+        start: Drawable?,
+        top: Drawable?,
+        end: Drawable?,
+        bottom: Drawable?
+    ) {
         super.setCompoundDrawablesRelative(start, top, end, bottom)
         if (!isAttachedToWindow) {
             return

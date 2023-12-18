@@ -2,9 +2,10 @@ package com.hjq.demo.ui.adapter
 
 import android.animation.ValueAnimator
 import android.animation.ValueAnimator.AnimatorUpdateListener
-import android.content.*
+import android.content.Context
 import android.util.TypedValue
-import android.view.*
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -129,17 +130,23 @@ class TabAdapter @JvmOverloads constructor(
         override fun onBindView(position: Int) {
             titleView?.text = getItem(position)
             titleView?.isSelected = (selectedPosition == position)
-            lineView?.visibility = if (selectedPosition == position) View.VISIBLE else View.INVISIBLE
+            lineView?.visibility =
+                if (selectedPosition == position) View.VISIBLE else View.INVISIBLE
         }
     }
 
-    inner class SlidingViewHolder : AppViewHolder(R.layout.tab_item_sliding), AnimatorUpdateListener {
+    inner class SlidingViewHolder : AppViewHolder(R.layout.tab_item_sliding),
+        AnimatorUpdateListener {
 
         private val titleView: TextView? by lazy { findViewById(R.id.tv_tab_sliding_title) }
         private val lineView: View? by lazy { findViewById(R.id.v_tab_sliding_line) }
 
-        private val mDefaultTextSize: Int by lazy { getResources().getDimension(R.dimen.sp_14).toInt() }
-        private val mSelectedTextSize: Int by lazy { getResources().getDimension(R.dimen.sp_15).toInt() }
+        private val mDefaultTextSize: Int by lazy {
+            getResources().getDimension(R.dimen.sp_14).toInt()
+        }
+        private val mSelectedTextSize: Int by lazy {
+            getResources().getDimension(R.dimen.sp_15).toInt()
+        }
 
         init {
             titleView?.setTextSize(TypedValue.COMPLEX_UNIT_PX, mDefaultTextSize.toFloat())
@@ -152,7 +159,8 @@ class TabAdapter @JvmOverloads constructor(
         }
 
         override fun onBindView(position: Int) {
-            lineView?.visibility = if (selectedPosition == position) View.VISIBLE else View.INVISIBLE
+            lineView?.visibility =
+                if (selectedPosition == position) View.VISIBLE else View.INVISIBLE
             titleView?.let {
                 it.text = getItem(position)
                 it.isSelected = (selectedPosition == position)
@@ -177,7 +185,10 @@ class TabAdapter @JvmOverloads constructor(
         }
 
         override fun onAnimationUpdate(animation: ValueAnimator) {
-            titleView?.setTextSize(TypedValue.COMPLEX_UNIT_PX, (animation.animatedValue as Int).toFloat())
+            titleView?.setTextSize(
+                TypedValue.COMPLEX_UNIT_PX,
+                (animation.animatedValue as Int).toFloat()
+            )
         }
     }
 

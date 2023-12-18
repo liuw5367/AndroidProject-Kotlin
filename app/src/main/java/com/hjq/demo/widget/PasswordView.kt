@@ -16,8 +16,10 @@ import com.hjq.demo.R
  *    desc   : 密码遮挡自定义控件
  */
 class PasswordView @JvmOverloads constructor
-    (context: Context?, attrs: AttributeSet? = null,
-     defStyleAttr: Int = 0, defStyleRes: Int = 0) :
+    (
+    context: Context?, attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0, defStyleRes: Int = 0
+) :
     View(context, attrs, defStyleAttr, defStyleRes) {
 
     companion object {
@@ -72,12 +74,16 @@ class PasswordView @JvmOverloads constructor
         var finalHeightMeasureSpec: Int = heightMeasureSpec
         when (MeasureSpec.getMode(finalWidthMeasureSpec)) {
             MeasureSpec.AT_MOST, MeasureSpec.UNSPECIFIED ->
-                finalWidthMeasureSpec = MeasureSpec.makeMeasureSpec(itemWidth * PASSWORD_COUNT, MeasureSpec.EXACTLY)
+                finalWidthMeasureSpec =
+                    MeasureSpec.makeMeasureSpec(itemWidth * PASSWORD_COUNT, MeasureSpec.EXACTLY)
+
             MeasureSpec.EXACTLY -> {}
         }
         when (MeasureSpec.getMode(finalHeightMeasureSpec)) {
             MeasureSpec.AT_MOST, MeasureSpec.UNSPECIFIED ->
-                finalHeightMeasureSpec = MeasureSpec.makeMeasureSpec(itemHeight, MeasureSpec.EXACTLY)
+                finalHeightMeasureSpec =
+                    MeasureSpec.makeMeasureSpec(itemHeight, MeasureSpec.EXACTLY)
+
             MeasureSpec.EXACTLY -> {}
         }
         setMeasuredDimension(finalWidthMeasureSpec, finalHeightMeasureSpec)
@@ -90,7 +96,13 @@ class PasswordView @JvmOverloads constructor
         // 画单个的分割线
         paint.strokeWidth = 3f
         for (index in 1 until PASSWORD_COUNT) {
-            canvas.drawLine((itemWidth * index).toFloat(), 0f, (itemWidth * index).toFloat(), itemHeight.toFloat(), paint)
+            canvas.drawLine(
+                (itemWidth * index).toFloat(),
+                0f,
+                (itemWidth * index).toFloat(),
+                itemHeight.toFloat(),
+                paint
+            )
         }
 
         // 绘制中间的小黑点

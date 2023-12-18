@@ -16,7 +16,8 @@ class UmengShare {
      */
     class ShareListenerWrapper internal constructor(
         platform: SHARE_MEDIA,
-        private var listener: OnShareListener?) : UMShareListener {
+        private var listener: OnShareListener?
+    ) : UMShareListener {
 
         private var platform: Platform = when (platform) {
             SHARE_MEDIA.QQ -> Platform.QQ

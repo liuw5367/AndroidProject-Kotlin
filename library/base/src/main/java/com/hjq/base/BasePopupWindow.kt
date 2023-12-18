@@ -10,14 +10,32 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.util.SparseArray
-import android.view.*
-import android.widget.*
-import androidx.annotation.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.PopupWindow
+import android.widget.TextView
+import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
+import androidx.annotation.FloatRange
+import androidx.annotation.IdRes
+import androidx.annotation.LayoutRes
+import androidx.annotation.StringRes
+import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
 import androidx.core.widget.PopupWindowCompat
-import com.hjq.base.action.*
+import com.hjq.base.action.ActivityAction
+import com.hjq.base.action.AnimAction
+import com.hjq.base.action.ClickAction
+import com.hjq.base.action.HandlerAction
+import com.hjq.base.action.KeyboardAction
+import com.hjq.base.action.ResourcesAction
 import java.lang.ref.SoftReference
-import java.util.*
 
 /**
  *    author : Android 轮子哥
@@ -25,7 +43,8 @@ import java.util.*
  *    time   : 2019/09/16
  *    desc   : PopupWindow 技术基类
  */
-open class BasePopupWindow constructor(private val context: Context) : PopupWindow(context), ActivityAction,
+open class BasePopupWindow constructor(private val context: Context) : PopupWindow(context),
+    ActivityAction,
     HandlerAction, ClickAction, AnimAction, KeyboardAction, PopupWindow.OnDismissListener {
 
     private var popupBackground: PopupBackground? = null
@@ -220,7 +239,7 @@ open class BasePopupWindow constructor(private val context: Context) : PopupWind
         companion object {
             private const val DEFAULT_ANCHORED_GRAVITY: Int = Gravity.TOP or Gravity.START
         }
-        
+
         /** PopupWindow 对象 */
         private var popupWindow: BasePopupWindow? = null
 
@@ -370,7 +389,8 @@ open class BasePopupWindow constructor(private val context: Context) : PopupWind
          */
         open fun setGravity(gravity: Int): B {
             // 适配布局反方向
-            this.gravity = Gravity.getAbsoluteGravity(gravity, getResources().configuration.layoutDirection)
+            this.gravity =
+                Gravity.getAbsoluteGravity(gravity, getResources().configuration.layoutDirection)
             return this as B
         }
 
@@ -531,7 +551,8 @@ open class BasePopupWindow constructor(private val context: Context) : PopupWind
             }
             clickArray!!.put(id, listener as OnClickListener<View>)
             if (isCreated()) {
-                popupWindow?.findViewById<View?>(id)?.setOnClickListener(ViewClickWrapper(popupWindow, listener))
+                popupWindow?.findViewById<View?>(id)
+                    ?.setOnClickListener(ViewClickWrapper(popupWindow, listener))
             }
             return this as B
         }
@@ -583,8 +604,8 @@ open class BasePopupWindow constructor(private val context: Context) : PopupWind
                 clickArray?.let { array ->
                     var i = 0
                     while (i < array.size()) {
-                        contentView!!.findViewById<View?>(array.keyAt(i))?.
-                        setOnClickListener(ViewClickWrapper(popupWindow, array.valueAt(i)))
+                        contentView!!.findViewById<View?>(array.keyAt(i))
+                            ?.setOnClickListener(ViewClickWrapper(popupWindow, array.valueAt(i)))
                         i++
                     }
                 }
@@ -727,8 +748,10 @@ open class BasePopupWindow constructor(private val context: Context) : PopupWind
     /**
      * PopupWindow 生命周期绑定
      */
-    private class PopupWindowLifecycle constructor(private var activity: Activity?,
-                                                   private var popupWindow: BasePopupWindow?) :
+    private class PopupWindowLifecycle constructor(
+        private var activity: Activity?,
+        private var popupWindow: BasePopupWindow?
+    ) :
         ActivityLifecycleCallbacks, OnShowListener, OnDismissListener {
 
         companion object {
@@ -814,7 +837,7 @@ open class BasePopupWindow constructor(private val context: Context) : PopupWind
     private class PopupBackground : OnShowListener, OnDismissListener {
 
         private var alpha: Float = 0f
-        
+
         fun setAlpha(alpha: Float) {
             this.alpha = alpha
         }
@@ -846,7 +869,8 @@ open class BasePopupWindow constructor(private val context: Context) : PopupWind
     private class ViewClickWrapper constructor(
 
         private val popupWindow: BasePopupWindow?,
-        private val listener: OnClickListener<View>?) : View.OnClickListener {
+        private val listener: OnClickListener<View>?
+    ) : View.OnClickListener {
 
         override fun onClick(view: View) {
             listener?.onClick(popupWindow, view)
@@ -869,7 +893,8 @@ open class BasePopupWindow constructor(private val context: Context) : PopupWind
      */
     private class ShowPostDelayedWrapper constructor(
         private val runnable: Runnable,
-        private val delayMillis: Long) : OnShowListener {
+        private val delayMillis: Long
+    ) : OnShowListener {
 
         override fun onShow(popupWindow: BasePopupWindow?) {
             popupWindow?.removeOnShowListener(this)
@@ -882,7 +907,8 @@ open class BasePopupWindow constructor(private val context: Context) : PopupWind
      */
     private class ShowPostAtTimeWrapper constructor(
         private val runnable: Runnable,
-        private val uptimeMillis: Long) : OnShowListener {
+        private val uptimeMillis: Long
+    ) : OnShowListener {
 
         override fun onShow(popupWindow: BasePopupWindow?) {
             popupWindow?.removeOnShowListener(this)

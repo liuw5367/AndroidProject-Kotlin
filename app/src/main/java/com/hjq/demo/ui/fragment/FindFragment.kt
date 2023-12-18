@@ -57,7 +57,12 @@ class FindFragment : TitleBarFragment<HomeActivity>(),
             // 显示圆角的 ImageView
             GlideApp.with(this)
                 .load(R.drawable.update_app_top_bg)
-                .transform(MultiTransformation(CenterCrop(), RoundedCorners(resources.getDimension(R.dimen.dp_10).toInt())))
+                .transform(
+                    MultiTransformation(
+                        CenterCrop(),
+                        RoundedCorners(resources.getDimension(R.dimen.dp_10).toInt())
+                    )
+                )
                 .into(it)
         }
     }

@@ -2,7 +2,6 @@ package com.hjq.demo.app
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.*
 import androidx.annotation.StringRes
 import com.gyf.immersionbar.ImmersionBar
 import com.hjq.bar.TitleBar
@@ -11,9 +10,9 @@ import com.hjq.base.BaseDialog
 import com.hjq.demo.R
 import com.hjq.demo.action.TitleBarAction
 import com.hjq.demo.action.ToastAction
+import com.hjq.demo.http.model.HttpData
 import com.hjq.demo.ui.dialog.WaitDialog
 import com.hjq.http.listener.OnHttpListener
-import com.hjq.demo.http.model.HttpData
 import okhttp3.Call
 
 /**

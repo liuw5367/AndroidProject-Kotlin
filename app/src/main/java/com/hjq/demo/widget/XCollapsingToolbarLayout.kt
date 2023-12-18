@@ -11,7 +11,8 @@ import com.google.android.material.appbar.CollapsingToolbarLayout
  *    desc   : 支持监听渐变的 CollapsingToolbarLayout
  */
 class XCollapsingToolbarLayout @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) :
     CollapsingToolbarLayout(context, attrs, defStyleAttr) {
 
     /** 渐变监听 */

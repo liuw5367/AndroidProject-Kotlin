@@ -1,6 +1,6 @@
 package com.hjq.demo.other
 
-import android.content.*
+import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.widget.TextView

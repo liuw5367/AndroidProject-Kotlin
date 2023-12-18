@@ -1,6 +1,6 @@
 package com.hjq.widget.view
 
-import android.content.*
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.text.TextUtils
 import android.util.AttributeSet
@@ -14,7 +14,8 @@ import androidx.appcompat.widget.AppCompatTextView
  */
 class SmartTextView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null,
-    defStyleAttr: Int = android.R.attr.textViewStyle) :
+    defStyleAttr: Int = android.R.attr.textViewStyle
+) :
     AppCompatTextView(context, attrs, defStyleAttr) {
 
     init {
@@ -26,12 +27,22 @@ class SmartTextView @JvmOverloads constructor(
         refreshVisibilityStatus()
     }
 
-    override fun setCompoundDrawables(left: Drawable?, top: Drawable?, right: Drawable?, bottom: Drawable?) {
+    override fun setCompoundDrawables(
+        left: Drawable?,
+        top: Drawable?,
+        right: Drawable?,
+        bottom: Drawable?
+    ) {
         super.setCompoundDrawables(left, top, right, bottom)
         refreshVisibilityStatus()
     }
 
-    override fun setCompoundDrawablesRelative(start: Drawable?, top: Drawable?, end: Drawable?, bottom: Drawable?) {
+    override fun setCompoundDrawablesRelative(
+        start: Drawable?,
+        top: Drawable?,
+        end: Drawable?,
+        bottom: Drawable?
+    ) {
         super.setCompoundDrawablesRelative(start, top, end, bottom)
         refreshVisibilityStatus()
     }

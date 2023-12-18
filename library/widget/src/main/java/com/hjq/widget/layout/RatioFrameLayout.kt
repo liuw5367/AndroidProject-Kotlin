@@ -15,7 +15,8 @@ import com.hjq.widget.R
  */
 class RatioFrameLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0, defStyleRes: Int = 0) :
+    defStyleAttr: Int = 0, defStyleRes: Int = 0
+) :
     FrameLayout(context, attrs, defStyleAttr, defStyleRes) {
 
     /** 宽高比例 */
@@ -36,7 +37,8 @@ class RatioFrameLayout @JvmOverloads constructor(
             // 这样会有可能重新触发一次 onMeasure 方法，这个时候传入测量模式的就不是 MeasureSpec.AT_MOST（自适应） 模式，而是 MeasureSpec.EXACTLY（固定值）模式
             // 所以我们要进行双重判断，首先判断 LayoutParams，再判断测量模式，这样就能避免因为修改了测量模式触发对宽高的重新计算，最终导致计算结果和上次计算的不同
             if ((layoutParams.width != LayoutParams.WRAP_CONTENT) && (layoutParams.height != LayoutParams.WRAP_CONTENT) &&
-                (widthSpecMode == MeasureSpec.EXACTLY) && (heightSpecMode == MeasureSpec.EXACTLY)) {
+                (widthSpecMode == MeasureSpec.EXACTLY) && (heightSpecMode == MeasureSpec.EXACTLY)
+            ) {
                 // 如果当前宽度和高度都是写死的
                 if (widthSpecSize / sizeRatio <= heightSpecSize) {
                     // 如果宽度经过比例换算不超过原有的高度
@@ -103,10 +105,12 @@ class RatioFrameLayout @JvmOverloads constructor(
                     widthRatio = arrays[0].toFloat()
                     heightRatio = 1f
                 }
+
                 2 -> {
                     widthRatio = arrays[0].toFloat()
                     heightRatio = arrays[1].toFloat()
                 }
+
                 else -> throw IllegalArgumentException("are you ok?")
             }
         }

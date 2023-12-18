@@ -7,9 +7,11 @@ package com.hjq.demo.aop
  *    desc   : 权限申请注解
  */
 @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
-@Target(AnnotationTarget.FUNCTION,
+@Target(
+    AnnotationTarget.FUNCTION,
     AnnotationTarget.PROPERTY_GETTER,
-    AnnotationTarget.PROPERTY_SETTER)
+    AnnotationTarget.PROPERTY_SETTER
+)
 annotation class Permissions constructor(
     /**
      * 需要申请权限的集合

@@ -1,8 +1,9 @@
 package com.hjq.base
 
-import android.content.*
+import android.content.Context
 import android.util.SparseArray
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
 import android.view.View.OnLongClickListener
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
@@ -17,7 +18,7 @@ import com.hjq.base.action.ResourcesAction
  *    desc   : RecyclerView 适配器技术基类
  */
 @Suppress("LeakingThis")
-abstract class BaseAdapter<VH : BaseAdapter<VH>.BaseViewHolder> (private val context: Context) :
+abstract class BaseAdapter<VH : BaseAdapter<VH>.BaseViewHolder>(private val context: Context) :
     RecyclerView.Adapter<VH>(), ResourcesAction {
 
     /** RecyclerView 对象 */

@@ -22,7 +22,10 @@ import kotlin.math.min
  *    time   : 2020/08/01
  *    desc   : 球脉冲底部加载组件
  */
-class SmartBallPulseFooter @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
+class SmartBallPulseFooter @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null
+) :
     SimpleComponent(context, attrs, 0), RefreshFooter {
 
     private val interpolator: TimeInterpolator = AccelerateDecelerateInterpolator()
@@ -36,7 +39,8 @@ class SmartBallPulseFooter @JvmOverloads constructor(context: Context, attrs: At
     private var animatingColor: IntArray = intArrayOf(
         Color.parseColor("#30B399"),
         Color.parseColor("#FF4600"),
-        Color.parseColor("#142DCC"))
+        Color.parseColor("#142DCC")
+    )
 
     private val circleSpacing: Float
     private var startTime: Long = 0
@@ -59,8 +63,10 @@ class SmartBallPulseFooter @JvmOverloads constructor(context: Context, attrs: At
         val height: Int = height
         if (noMoreData) {
             paint.color = Color.parseColor("#898989")
-            canvas.drawText(context.getString(R.string.common_no_more_data),
-                (width - textWidth) / 2, (height - paint.textSize) / 2, paint)
+            canvas.drawText(
+                context.getString(R.string.common_no_more_data),
+                (width - textWidth) / 2, (height - paint.textSize) / 2, paint
+            )
         } else {
             val radius: Float = (min(width, height) - circleSpacing * 2) / 7
             val x: Float = width / 2f - (radius * 2 + circleSpacing)

@@ -14,13 +14,13 @@ import com.hjq.demo.aop.SingleClick
 import com.hjq.demo.app.AppActivity
 import com.hjq.demo.http.api.UpdateImageApi
 import com.hjq.demo.http.glide.GlideApp
+import com.hjq.demo.http.model.HttpData
 import com.hjq.demo.ui.dialog.AddressDialog
 import com.hjq.demo.ui.dialog.InputDialog
 import com.hjq.http.EasyHttp
 import com.hjq.http.listener.OnHttpListener
 import com.hjq.http.model.FileContentResolver
 import com.hjq.widget.layout.SettingBar
-import com.hjq.demo.http.model.HttpData
 import java.io.File
 import java.net.URI
 import java.net.URISyntaxException
@@ -123,7 +123,12 @@ class PersonalDataActivity : AppActivity() {
                 //.setIgnoreArea()
                 .setListener(object : AddressDialog.OnListener {
 
-                    override fun onSelected(dialog: BaseDialog?, province: String, city: String, area: String) {
+                    override fun onSelected(
+                        dialog: BaseDialog?,
+                        province: String,
+                        city: String,
+                        area: String
+                    ) {
                         addressView?.let {
                             val address: String = province + city + area
                             if (it.getRightText() != address) {

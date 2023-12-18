@@ -1,6 +1,6 @@
 package com.hjq.demo.ui.fragment
 
-import android.view.*
+import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hjq.base.BaseAdapter
@@ -12,7 +12,6 @@ import com.hjq.widget.layout.WrapRecyclerView
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
-import java.util.*
 
 /**
  *    author : Android 轮子哥
@@ -20,7 +19,8 @@ import java.util.*
  *    time   : 2020/07/10
  *    desc   : 加载案例 Fragment
  */
-class StatusFragment : TitleBarFragment<AppActivity>(), OnRefreshLoadMoreListener, BaseAdapter.OnItemClickListener {
+class StatusFragment : TitleBarFragment<AppActivity>(), OnRefreshLoadMoreListener,
+    BaseAdapter.OnItemClickListener {
 
     companion object {
 

@@ -1,7 +1,7 @@
 package com.hjq.demo.other
 
-import com.hjq.toast.ToastParams
 import com.hjq.demo.action.ToastAction
+import com.hjq.toast.ToastParams
 import com.hjq.toast.Toaster
 import com.hjq.toast.config.IToastInterceptor
 import timber.log.Timber
@@ -28,7 +28,8 @@ class ToastLogInterceptor : IToastInterceptor {
                 // 获取类的全路径
                 val className: String = stackTrace[i].className
                 if (((lineNumber <= 0) || className.startsWith(Toaster::class.java.name) ||
-                                className.startsWith(ToastAction::class.java.name))) {
+                        className.startsWith(ToastAction::class.java.name))
+                ) {
                     i++
                     continue
                 }

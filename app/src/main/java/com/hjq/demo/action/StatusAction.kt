@@ -60,12 +60,17 @@ interface StatusAction {
      */
     fun showError(listener: OnRetryListener?) {
         getStatusLayout()?.let {
-            val manager: ConnectivityManager? = ContextCompat.getSystemService(it.context, ConnectivityManager::class.java)
+            val manager: ConnectivityManager? =
+                ContextCompat.getSystemService(it.context, ConnectivityManager::class.java)
             if (manager != null) {
                 val info: NetworkInfo? = manager.activeNetworkInfo
                 // 判断网络是否连接
                 if (info == null || !info.isConnected) {
-                    showLayout(R.drawable.status_network_ic, R.string.status_layout_error_network, listener)
+                    showLayout(
+                        R.drawable.status_network_ic,
+                        R.string.status_layout_error_network,
+                        listener
+                    )
                     return
                 }
             }
@@ -76,9 +81,17 @@ interface StatusAction {
     /**
      * 显示自定义提示
      */
-    fun showLayout(@DrawableRes drawableId: Int, @StringRes stringId: Int, listener: OnRetryListener?) {
+    fun showLayout(
+        @DrawableRes drawableId: Int,
+        @StringRes stringId: Int,
+        listener: OnRetryListener?
+    ) {
         getStatusLayout()?.let {
-            showLayout(ContextCompat.getDrawable(it.context, drawableId), it.context.getString(stringId), listener)
+            showLayout(
+                ContextCompat.getDrawable(it.context, drawableId),
+                it.context.getString(stringId),
+                listener
+            )
         }
     }
 

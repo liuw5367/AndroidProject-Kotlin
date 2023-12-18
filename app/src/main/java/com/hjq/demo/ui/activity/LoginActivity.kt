@@ -22,6 +22,7 @@ import com.hjq.demo.aop.SingleClick
 import com.hjq.demo.app.AppActivity
 import com.hjq.demo.http.api.LoginApi
 import com.hjq.demo.http.glide.GlideApp
+import com.hjq.demo.http.model.HttpData
 import com.hjq.demo.manager.InputTextManager
 import com.hjq.demo.other.KeyboardWatcher
 import com.hjq.demo.ui.fragment.MineFragment
@@ -33,7 +34,6 @@ import com.hjq.umeng.Platform
 import com.hjq.umeng.UmengClient
 import com.hjq.umeng.UmengLogin
 import com.hjq.widget.view.SubmitButton
-import com.hjq.demo.http.model.HttpData
 import okhttp3.Call
 
 /**

@@ -1,10 +1,12 @@
 package com.hjq.demo.widget
 
-import android.content.*
+import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View.OnClickListener
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.DrawableRes
@@ -22,7 +24,8 @@ import com.hjq.demo.R
  */
 class StatusLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0, defStyleRes: Int = 0) :
+    defStyleAttr: Int = 0, defStyleRes: Int = 0
+) :
     FrameLayout(context, attrs, defStyleAttr, defStyleRes) {
 
     /** 主布局 */
@@ -45,7 +48,7 @@ class StatusLayout @JvmOverloads constructor(
      */
     fun show() {
         if (mainLayout == null) {
-            //初始化布局
+            // 初始化布局
             initLayout()
         }
         if (isShow()) {
@@ -63,7 +66,7 @@ class StatusLayout @JvmOverloads constructor(
         if (mainLayout == null || !isShow()) {
             return
         }
-        //隐藏布局
+        // 隐藏布局
         mainLayout!!.visibility = INVISIBLE
     }
 
@@ -117,13 +120,15 @@ class StatusLayout @JvmOverloads constructor(
      * 初始化提示的布局
      */
     private fun initLayout() {
-        mainLayout = LayoutInflater.from(context).inflate(R.layout.widget_status_layout, this, false) as ViewGroup
+        mainLayout = LayoutInflater.from(context)
+            .inflate(R.layout.widget_status_layout, this, false) as ViewGroup
         lottieView = mainLayout!!.findViewById(R.id.iv_status_icon)
         textView = mainLayout!!.findViewById(R.id.iv_status_text)
         retryView = mainLayout!!.findViewById(R.id.iv_status_retry)
         if (mainLayout!!.background == null) {
             // 默认使用 windowBackground 作为背景
-            val typedArray: TypedArray = context.obtainStyledAttributes(intArrayOf(android.R.attr.windowBackground))
+            val typedArray: TypedArray =
+                context.obtainStyledAttributes(intArrayOf(android.R.attr.windowBackground))
             mainLayout!!.background = typedArray.getDrawable(0)
             mainLayout!!.isClickable = true
             typedArray.recycle()
@@ -145,7 +150,8 @@ class StatusLayout @JvmOverloads constructor(
     /**
      * 点击事件包装类
      */
-    private val clickWrapper: OnClickListener = OnClickListener { listener?.onRetry(this@StatusLayout) }
+    private val clickWrapper: OnClickListener =
+        OnClickListener { listener?.onRetry(this@StatusLayout) }
 
     /**
      * 重试监听器

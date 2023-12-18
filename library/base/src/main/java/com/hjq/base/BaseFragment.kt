@@ -43,7 +43,11 @@ abstract class BaseFragment<A : BaseActivity> : Fragment(),
         activity = requireActivity() as A
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         if (getLayoutId() <= 0) {
             return null
         }
@@ -167,7 +171,11 @@ abstract class BaseFragment<A : BaseActivity> : Fragment(),
         activity?.startActivityForResult(intent, null, callback)
     }
 
-    open fun startActivityForResult(intent: Intent, options: Bundle?, callback: OnActivityCallback?) {
+    open fun startActivityForResult(
+        intent: Intent,
+        options: Bundle?,
+        callback: OnActivityCallback?
+    ) {
         activity?.startActivityForResult(intent, options, callback)
     }
 

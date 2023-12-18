@@ -7,8 +7,10 @@ package com.hjq.demo.aop
  *    desc   : Debug 日志注解
  */
 @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
-@Target(AnnotationTarget.FUNCTION,
+@Target(
+    AnnotationTarget.FUNCTION,
     AnnotationTarget.PROPERTY_GETTER,
     AnnotationTarget.PROPERTY_SETTER,
-    AnnotationTarget.CONSTRUCTOR)
+    AnnotationTarget.CONSTRUCTOR
+)
 annotation class Log constructor(val value: String = "AppLog")

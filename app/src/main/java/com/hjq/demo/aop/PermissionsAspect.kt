@@ -25,7 +25,8 @@ class PermissionsAspect {
      * 方法切入点
      */
     @Pointcut("execution(@com.hjq.demo.aop.Permissions * *(..))")
-    fun method() {}
+    fun method() {
+    }
 
     /**
      * 在连接点进行方法替换
@@ -53,7 +54,11 @@ class PermissionsAspect {
         requestPermissions(joinPoint, activity, permissions.value)
     }
 
-    private fun requestPermissions(joinPoint: ProceedingJoinPoint, activity: Activity, permissions: Array<out String>) {
+    private fun requestPermissions(
+        joinPoint: ProceedingJoinPoint,
+        activity: Activity,
+        permissions: Array<out String>
+    ) {
         XXPermissions.with(activity)
             .permission(*permissions)
             .request(object : PermissionCallback() {

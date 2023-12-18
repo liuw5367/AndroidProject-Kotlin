@@ -23,11 +23,13 @@ import com.hjq.widget.R
 @Suppress("ClickableViewAccessibility")
 class ClearEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null,
-    defStyleAttr: Int = android.R.attr.editTextStyle) :
+    defStyleAttr: Int = android.R.attr.editTextStyle
+) :
     RegexEditText(context, attrs, defStyleAttr),
     OnTouchListener, OnFocusChangeListener, TextWatcher {
 
-    private val clearDrawable: Drawable = DrawableCompat.wrap(ContextCompat.getDrawable(context, R.drawable.input_delete_ic)!!)
+    private val clearDrawable: Drawable =
+        DrawableCompat.wrap(ContextCompat.getDrawable(context, R.drawable.input_delete_ic)!!)
     private var touchListener: OnTouchListener? = null
     private var focusChangeListener: OnFocusChangeListener? = null
 
@@ -45,8 +47,10 @@ class ClearEditText @JvmOverloads constructor(
         }
         clearDrawable.setVisible(visible, false)
         val drawables: Array<Drawable> = compoundDrawablesRelative
-        setCompoundDrawablesRelative(drawables[0], drawables[1],
-            if (visible) clearDrawable else null, drawables[3])
+        setCompoundDrawablesRelative(
+            drawables[0], drawables[1],
+            if (visible) clearDrawable else null, drawables[3]
+        )
     }
 
     override fun setOnFocusChangeListener(onFocusChangeListener: OnFocusChangeListener?) {
@@ -77,7 +81,8 @@ class ClearEditText @JvmOverloads constructor(
         val layoutDirection: Int = layoutDirection
         if (layoutDirection == LAYOUT_DIRECTION_LTR) {
             // 从左往右
-            touchDrawable = x > width - clearDrawable.intrinsicWidth - paddingEnd && x < width - paddingEnd
+            touchDrawable =
+                x > width - clearDrawable.intrinsicWidth - paddingEnd && x < width - paddingEnd
         } else if (layoutDirection == LAYOUT_DIRECTION_RTL) {
             // 从右往左
             touchDrawable = x > paddingStart && x < paddingStart + clearDrawable.intrinsicWidth

@@ -1,20 +1,23 @@
 package com.hjq.demo.ui.activity
 
-import android.view.*
-import android.view.animation.*
+import android.view.KeyEvent
+import android.view.View
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
 import com.hjq.demo.R
 import com.hjq.demo.aop.SingleClick
 import com.hjq.demo.app.AppActivity
 import com.hjq.demo.http.api.GetCodeApi
 import com.hjq.demo.http.api.VerifyCodeApi
+import com.hjq.demo.http.model.HttpData
 import com.hjq.demo.manager.InputTextManager
 import com.hjq.http.EasyHttp
 import com.hjq.http.listener.OnHttpListener
 import com.hjq.widget.view.CountdownView
-import com.hjq.demo.http.model.HttpData
 
 /**
  *    author : Android 轮子哥
@@ -87,18 +90,32 @@ class PasswordForgetActivity : AppActivity(), OnEditorActionListener {
         } else if (view === commitView) {
 
             if (phoneView?.text.toString().length != 11) {
-                phoneView?.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake_anim))
+                phoneView?.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        getContext(),
+                        R.anim.shake_anim
+                    )
+                )
                 toast(R.string.common_phone_input_error)
                 return
             }
 
             if (codeView?.text.toString().length != resources.getInteger(R.integer.sms_code_length)) {
-                codeView?.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake_anim))
+                codeView?.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        getContext(),
+                        R.anim.shake_anim
+                    )
+                )
                 toast(R.string.common_code_error_hint)
                 return
             }
             if (true) {
-                PasswordResetActivity.start(this, phoneView?.text.toString(), codeView?.text.toString())
+                PasswordResetActivity.start(
+                    this,
+                    phoneView?.text.toString(),
+                    codeView?.text.toString()
+                )
                 finish()
                 return
             }
@@ -112,8 +129,10 @@ class PasswordForgetActivity : AppActivity(), OnEditorActionListener {
                 .request(object : OnHttpListener<HttpData<Void?>> {
 
                     override fun onHttpSuccess(result: HttpData<Void?>?) {
-                        PasswordResetActivity.start(this@PasswordForgetActivity,
-                            phoneView?.text.toString(), codeView?.text.toString())
+                        PasswordResetActivity.start(
+                            this@PasswordForgetActivity,
+                            phoneView?.text.toString(), codeView?.text.toString()
+                        )
                         finish()
                     }
 

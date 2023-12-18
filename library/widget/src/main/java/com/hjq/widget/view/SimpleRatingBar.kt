@@ -21,7 +21,8 @@ import kotlin.math.min
  *    desc   : 自定义评分控件（系统的 RatingBar 不好用）
  */
 class SimpleRatingBar @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) :
     View(context, attrs, defStyleAttr) {
 
     /** 默认的星星图标 */
@@ -59,25 +60,42 @@ class SimpleRatingBar @JvmOverloads constructor(
 
     init {
         val array: TypedArray = context.obtainStyledAttributes(attrs, R.styleable.SimpleRatingBar)
-        normalDrawable = ContextCompat.getDrawable(getContext(), array.getResourceId(
-            R.styleable.SimpleRatingBar_normalDrawable, R.drawable.rating_star_off_ic))!!
-        halfDrawable = ContextCompat.getDrawable(getContext(), array.getResourceId(
-            R.styleable.SimpleRatingBar_halfDrawable, R.drawable.rating_star_half_ic))
-        fillDrawable = ContextCompat.getDrawable(getContext(), array.getResourceId(
-            R.styleable.SimpleRatingBar_fillDrawable, R.drawable.rating_star_fill_ic))!!
+        normalDrawable = ContextCompat.getDrawable(
+            getContext(), array.getResourceId(
+                R.styleable.SimpleRatingBar_normalDrawable, R.drawable.rating_star_off_ic
+            )
+        )!!
+        halfDrawable = ContextCompat.getDrawable(
+            getContext(), array.getResourceId(
+                R.styleable.SimpleRatingBar_halfDrawable, R.drawable.rating_star_half_ic
+            )
+        )
+        fillDrawable = ContextCompat.getDrawable(
+            getContext(), array.getResourceId(
+                R.styleable.SimpleRatingBar_fillDrawable, R.drawable.rating_star_fill_ic
+            )
+        )!!
 
         // 两张图片的宽高不一致
         if ((normalDrawable.intrinsicWidth != fillDrawable.intrinsicWidth) || (
-                    normalDrawable.intrinsicWidth != halfDrawable?.intrinsicWidth) || (
-                    normalDrawable.intrinsicHeight != fillDrawable.intrinsicHeight) || (
-                    normalDrawable.intrinsicHeight != halfDrawable?.intrinsicHeight)) {
+                normalDrawable.intrinsicWidth != halfDrawable?.intrinsicWidth) || (
+                normalDrawable.intrinsicHeight != fillDrawable.intrinsicHeight) || (
+                normalDrawable.intrinsicHeight != halfDrawable?.intrinsicHeight)
+        ) {
             throw IllegalStateException("The width and height of the picture do not agree")
         }
         currentGrade = array.getFloat(R.styleable.SimpleRatingBar_grade, 0f)
         gradeCount = array.getInt(R.styleable.SimpleRatingBar_gradeCount, 5)
-        gradeWidth = array.getDimensionPixelSize(R.styleable.SimpleRatingBar_gradeWidth, normalDrawable.intrinsicWidth)
-        gradeHeight = array.getDimensionPixelSize(R.styleable.SimpleRatingBar_gradeHeight, fillDrawable.intrinsicHeight)
-        gradeSpace = array.getDimension(R.styleable.SimpleRatingBar_gradeSpace, gradeWidth / 4f).toInt()
+        gradeWidth = array.getDimensionPixelSize(
+            R.styleable.SimpleRatingBar_gradeWidth,
+            normalDrawable.intrinsicWidth
+        )
+        gradeHeight = array.getDimensionPixelSize(
+            R.styleable.SimpleRatingBar_gradeHeight,
+            fillDrawable.intrinsicHeight
+        )
+        gradeSpace =
+            array.getDimension(R.styleable.SimpleRatingBar_gradeSpace, gradeWidth / 4f).toInt()
         gradeStep = when (array.getInt(R.styleable.SimpleRatingBar_gradeStep, 0)) {
             0x01 -> GradleStep.ONE
             0x00 -> GradleStep.HALF
@@ -89,8 +107,10 @@ class SimpleRatingBar @JvmOverloads constructor(
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val measuredWidth: Int = (gradeWidth * gradeCount) + (gradeSpace * (gradeCount + 1))
         val measuredHeight: Int = gradeHeight
-        setMeasuredDimension(measuredWidth + paddingLeft + paddingRight,
-            measuredHeight + paddingTop + paddingBottom)
+        setMeasuredDimension(
+            measuredWidth + paddingLeft + paddingRight,
+            measuredHeight + paddingTop + paddingBottom
+        )
     }
 
     @Suppress("ClickableViewAccessibility")
@@ -137,7 +157,8 @@ class SimpleRatingBar @JvmOverloads constructor(
             gradeBounds.bottom = gradeBounds.top + gradeHeight
             if (currentGrade > i) {
                 if ((halfDrawable != null) && (gradeStep == GradleStep.HALF) && (
-                            currentGrade.toInt() == i) && (currentGrade - currentGrade.toInt() == 0.5f)) {
+                        currentGrade.toInt() == i) && (currentGrade - currentGrade.toInt() == 0.5f)
+                ) {
                     halfDrawable!!.bounds = gradeBounds
                     halfDrawable!!.draw(canvas)
                 } else {
@@ -151,17 +172,28 @@ class SimpleRatingBar @JvmOverloads constructor(
         }
     }
 
-    fun setRatingDrawable(@DrawableRes normalDrawableId: Int, @DrawableRes halfDrawableId: Int, @DrawableRes fillDrawableId: Int) {
-        setRatingDrawable(ContextCompat.getDrawable(context, normalDrawableId)!!,
+    fun setRatingDrawable(
+        @DrawableRes normalDrawableId: Int,
+        @DrawableRes halfDrawableId: Int,
+        @DrawableRes fillDrawableId: Int
+    ) {
+        setRatingDrawable(
+            ContextCompat.getDrawable(context, normalDrawableId)!!,
             ContextCompat.getDrawable(context, halfDrawableId),
-            ContextCompat.getDrawable(context, fillDrawableId)!!)
+            ContextCompat.getDrawable(context, fillDrawableId)!!
+        )
     }
 
-    fun setRatingDrawable(normalDrawable: Drawable, halfDrawable: Drawable?, fillDrawable: Drawable) {
+    fun setRatingDrawable(
+        normalDrawable: Drawable,
+        halfDrawable: Drawable?,
+        fillDrawable: Drawable
+    ) {
 
         // 两张图片的宽高不一致
         if (normalDrawable.intrinsicWidth != fillDrawable.intrinsicWidth ||
-            normalDrawable.intrinsicHeight != fillDrawable.intrinsicHeight) {
+            normalDrawable.intrinsicHeight != fillDrawable.intrinsicHeight
+        ) {
             throw IllegalStateException("The width and height of the picture do not agree")
         }
         this.normalDrawable = normalDrawable

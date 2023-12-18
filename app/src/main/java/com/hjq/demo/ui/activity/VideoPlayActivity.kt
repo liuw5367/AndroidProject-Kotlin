@@ -1,7 +1,8 @@
 package com.hjq.demo.ui.activity
 
 import android.app.Activity
-import android.content.*
+import android.content.Context
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Parcel
@@ -222,10 +223,12 @@ open class VideoPlayActivity : AppActivity(), OnPlayListener {
                     context,
                     Landscape::class.java
                 )
+
                 ActivityInfo.SCREEN_ORIENTATION_PORTRAIT -> intent.setClass(
                     context,
                     Portrait::class.java
                 )
+
                 else -> intent.setClass(context, VideoPlayActivity::class.java)
             }
             intent.putExtra(INTENT_KEY_PARAMETERS, this)

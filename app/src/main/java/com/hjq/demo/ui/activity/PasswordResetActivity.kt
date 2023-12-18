@@ -1,11 +1,15 @@
 package com.hjq.demo.ui.activity
 
 import android.app.Activity
-import android.content.*
-import android.view.*
-import android.view.animation.*
+import android.content.Context
+import android.content.Intent
+import android.view.KeyEvent
+import android.view.View
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
 import com.hjq.base.BaseDialog
 import com.hjq.demo.R
@@ -13,11 +17,11 @@ import com.hjq.demo.aop.Log
 import com.hjq.demo.aop.SingleClick
 import com.hjq.demo.app.AppActivity
 import com.hjq.demo.http.api.PasswordApi
+import com.hjq.demo.http.model.HttpData
 import com.hjq.demo.manager.InputTextManager
 import com.hjq.demo.ui.dialog.TipsDialog
 import com.hjq.http.EasyHttp
 import com.hjq.http.listener.OnHttpListener
-import com.hjq.demo.http.model.HttpData
 
 /**
  *    author : Android 轮子哥
@@ -79,8 +83,18 @@ class PasswordResetActivity : AppActivity(), OnEditorActionListener {
     override fun onClick(view: View) {
         if (view === commitView) {
             if (firstPassword?.text.toString() != secondPassword?.text.toString()) {
-                firstPassword?.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake_anim))
-                secondPassword?.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake_anim))
+                firstPassword?.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        getContext(),
+                        R.anim.shake_anim
+                    )
+                )
+                secondPassword?.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        getContext(),
+                        R.anim.shake_anim
+                    )
+                )
                 toast(R.string.common_password_input_unlike)
                 return
             }

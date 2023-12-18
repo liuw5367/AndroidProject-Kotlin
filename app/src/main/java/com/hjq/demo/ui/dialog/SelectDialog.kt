@@ -95,9 +95,15 @@ class SelectDialog {
                         autoDismiss()
                         listener?.onSelfSelected(getDialog(), data)
                     } else {
-                        Toaster.show(String.format(getString(R.string.select_min_hint)!!, adapter.getMinSelect()))
+                        Toaster.show(
+                            String.format(
+                                getString(R.string.select_min_hint)!!,
+                                adapter.getMinSelect()
+                            )
+                        )
                     }
                 }
+
                 R.id.tv_ui_cancel -> {
                     autoDismiss()
                     listener?.onCancel(getDialog())
@@ -108,7 +114,17 @@ class SelectDialog {
         /**
          * [View.OnLayoutChangeListener]
          */
-        override fun onLayoutChange(v: View, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int) {
+        override fun onLayoutChange(
+            v: View,
+            left: Int,
+            top: Int,
+            right: Int,
+            bottom: Int,
+            oldLeft: Int,
+            oldTop: Int,
+            oldRight: Int,
+            oldBottom: Int
+        ) {
             recyclerView?.removeOnLayoutChangeListener(this)
             // 这里一定要加延迟，如果不加在 Android 9.0 上面会导致 setLayoutParams 无效
             post(this)
@@ -142,7 +158,8 @@ class SelectDialog {
         }
     }
 
-    private class SelectAdapter(context: Context) : AppAdapter<Any>(context), BaseAdapter.OnItemClickListener {
+    private class SelectAdapter(context: Context) : AppAdapter<Any>(context),
+        BaseAdapter.OnItemClickListener {
 
         /** 最小选择数量 */
         private var minSelect = 1

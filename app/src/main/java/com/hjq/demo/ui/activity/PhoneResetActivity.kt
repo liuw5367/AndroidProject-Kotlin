@@ -1,11 +1,15 @@
 package com.hjq.demo.ui.activity
 
 import android.app.Activity
-import android.content.*
-import android.view.*
-import android.view.animation.*
+import android.content.Context
+import android.content.Intent
+import android.view.KeyEvent
+import android.view.View
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
 import com.hjq.base.BaseDialog
 import com.hjq.demo.R
@@ -14,13 +18,13 @@ import com.hjq.demo.aop.SingleClick
 import com.hjq.demo.app.AppActivity
 import com.hjq.demo.http.api.GetCodeApi
 import com.hjq.demo.http.api.PhoneApi
+import com.hjq.demo.http.model.HttpData
 import com.hjq.demo.manager.InputTextManager
 import com.hjq.demo.ui.dialog.TipsDialog
 import com.hjq.http.EasyHttp
 import com.hjq.http.listener.OnHttpListener
 import com.hjq.toast.Toaster
 import com.hjq.widget.view.CountdownView
-import com.hjq.demo.http.model.HttpData
 
 /**
  *    author : Android 轮子哥
@@ -77,7 +81,12 @@ class PhoneResetActivity : AppActivity(), OnEditorActionListener {
     override fun onClick(view: View) {
         if (view === countdownView) {
             if (phoneView?.text.toString().length != 11) {
-                phoneView?.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake_anim))
+                phoneView?.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        getContext(),
+                        R.anim.shake_anim
+                    )
+                )
                 toast(R.string.common_phone_input_error)
                 return
             }
@@ -105,7 +114,12 @@ class PhoneResetActivity : AppActivity(), OnEditorActionListener {
         } else if (view === commitView) {
 
             if (phoneView?.text.toString().length != 11) {
-                phoneView?.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake_anim))
+                phoneView?.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        getContext(),
+                        R.anim.shake_anim
+                    )
+                )
                 toast(R.string.common_phone_input_error)
                 return
             }

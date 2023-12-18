@@ -1,7 +1,8 @@
 package com.hjq.demo.ui.activity
 
 import android.app.Activity
-import android.content.*
+import android.content.Context
+import android.content.Intent
 import com.hjq.demo.R
 import com.hjq.demo.app.AppActivity
 

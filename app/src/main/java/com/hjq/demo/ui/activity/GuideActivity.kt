@@ -65,7 +65,11 @@ class GuideActivity : AppActivity() {
 
     private val mCallback: OnPageChangeCallback = object : OnPageChangeCallback() {
 
-        override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+        override fun onPageScrolled(
+            position: Int,
+            positionOffset: Float,
+            positionOffsetPixels: Int
+        ) {
             if (viewPager?.currentItem != adapter.getCount() - 1 || positionOffsetPixels <= 0) {
                 return
             }
@@ -83,7 +87,8 @@ class GuideActivity : AppActivity() {
             completeView?.visibility = if (lastItem) View.VISIBLE else View.INVISIBLE
             if (lastItem) {
                 // 按钮呼吸动效
-                val animation = ScaleAnimation(1.0f, 1.1f, 1.0f, 1.1f,
+                val animation = ScaleAnimation(
+                    1.0f, 1.1f, 1.0f, 1.1f,
                     Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f
                 )
                 animation.duration = 350

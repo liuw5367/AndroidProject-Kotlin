@@ -53,7 +53,10 @@ class HomeFragment : TitleBarFragment<HomeActivity>(), OnTabListener,
     override fun initView() {
         pagerAdapter = FragmentPagerAdapter(this)
         pagerAdapter!!.addFragment(StatusFragment.newInstance(), "列表演示")
-        pagerAdapter!!.addFragment(BrowserFragment.newInstance("https://github.com/getActivity"), "网页演示")
+        pagerAdapter!!.addFragment(
+            BrowserFragment.newInstance("https://github.com/getActivity"),
+            "网页演示"
+        )
         viewPager?.adapter = pagerAdapter
         viewPager?.addOnPageChangeListener(this)
         tabAdapter = TabAdapter(getAttachActivity()!!)
@@ -108,11 +111,25 @@ class HomeFragment : TitleBarFragment<HomeActivity>(), OnTabListener,
     @Suppress("RestrictedApi")
     override fun onScrimsStateChange(layout: XCollapsingToolbarLayout?, shown: Boolean) {
         getStatusBarConfig().statusBarDarkFont(shown).init()
-        addressView?.setTextColor(ContextCompat.getColor(getAttachActivity()!!, if (shown) R.color.black else R.color.white))
+        addressView?.setTextColor(
+            ContextCompat.getColor(
+                getAttachActivity()!!,
+                if (shown) R.color.black else R.color.white
+            )
+        )
         hintView?.setBackgroundResource(if (shown) R.drawable.home_search_bar_gray_bg else R.drawable.home_search_bar_transparent_bg)
-        hintView?.setTextColor(ContextCompat.getColor(getAttachActivity()!!, if (shown) R.color.black60 else R.color.white60))
-        searchView?.supportImageTintList = ColorStateList.valueOf(ContextCompat.getColor(getAttachActivity()!!,
-            if (shown) R.color.common_icon_color else R.color.white))
+        hintView?.setTextColor(
+            ContextCompat.getColor(
+                getAttachActivity()!!,
+                if (shown) R.color.black60 else R.color.white60
+            )
+        )
+        searchView?.supportImageTintList = ColorStateList.valueOf(
+            ContextCompat.getColor(
+                getAttachActivity()!!,
+                if (shown) R.color.common_icon_color else R.color.white
+            )
+        )
     }
 
     override fun onDestroy() {
