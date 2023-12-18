@@ -2,8 +2,8 @@ package com.hjq.demo.app
 
 import com.hjq.base.BaseFragment
 import com.hjq.demo.action.ToastAction
-import com.hjq.demo.http.model.HttpData
 import com.hjq.http.listener.OnHttpListener
+import com.hjq.demo.http.model.HttpData
 import okhttp3.Call
 
 /**
@@ -40,22 +40,23 @@ abstract class AppFragment<A : AppActivity> : BaseFragment<A>(),
     /**
      * [OnHttpListener]
      */
-    override fun onStart(call: Call) {
+    override fun onHttpStart(call: Call?) {
         showDialog()
     }
 
-    override fun onSucceed(result: Any) {
+    override fun onHttpSuccess(result: Any?) {
         if (result !is HttpData<*>) {
             return
         }
         toast(result.getMessage())
+
     }
 
-    override fun onFail(e: Exception) {
-        toast(e.message)
+    override fun onHttpFail(throwable: Throwable?) {
+        toast(throwable?.message)
     }
 
-    override fun onEnd(call: Call) {
+    override fun onHttpEnd(call: Call?) {
         hideDialog()
     }
 }

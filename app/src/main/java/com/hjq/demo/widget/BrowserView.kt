@@ -107,6 +107,7 @@ class BrowserView  @JvmOverloads constructor(
             Lifecycle.Event.ON_RESUME -> onResume()
             Lifecycle.Event.ON_STOP -> onPause()
             Lifecycle.Event.ON_DESTROY -> onDestroy()
+            else -> {}
         }
     }
 
@@ -332,7 +333,7 @@ class BrowserView  @JvmOverloads constructor(
                             .permission(Permission.ACCESS_COARSE_LOCATION)
                             .request(object : PermissionCallback() {
                                 override fun onGranted(
-                                    permissions: MutableList<String?>?,
+                                    permissions: MutableList<String>,
                                     all: Boolean
                                 ) {
                                     if (all) {

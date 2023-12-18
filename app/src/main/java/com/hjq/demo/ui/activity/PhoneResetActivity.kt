@@ -14,13 +14,13 @@ import com.hjq.demo.aop.SingleClick
 import com.hjq.demo.app.AppActivity
 import com.hjq.demo.http.api.GetCodeApi
 import com.hjq.demo.http.api.PhoneApi
-import com.hjq.demo.http.model.HttpData
 import com.hjq.demo.manager.InputTextManager
 import com.hjq.demo.ui.dialog.TipsDialog
 import com.hjq.http.EasyHttp
-import com.hjq.http.listener.HttpCallback
-import com.hjq.toast.ToastUtils
+import com.hjq.http.listener.OnHttpListener
+import com.hjq.toast.Toaster
 import com.hjq.widget.view.CountdownView
+import com.hjq.demo.http.model.HttpData
 
 /**
  *    author : Android 轮子哥
@@ -92,10 +92,13 @@ class PhoneResetActivity : AppActivity(), OnEditorActionListener {
                 .api(GetCodeApi().apply {
                     setPhone(phoneView?.text.toString())
                 })
-                .request(object : HttpCallback<HttpData<Void?>>(this) {
-                    override fun onSucceed(data: HttpData<Void?>) {
+                .request(object : OnHttpListener<HttpData<Void?>> {
+                    override fun onHttpSuccess(result: HttpData<Void?>?) {
                         toast(R.string.common_code_send_hint)
                         countdownView?.start()
+                    }
+
+                    override fun onHttpFail(throwable: Throwable?) {
                     }
                 })
 
@@ -107,7 +110,7 @@ class PhoneResetActivity : AppActivity(), OnEditorActionListener {
                 return
             }
             if (codeView?.text.toString().length != resources.getInteger(R.integer.sms_code_length)) {
-                ToastUtils.show(R.string.common_code_error_hint)
+                Toaster.show(R.string.common_code_error_hint)
                 return
             }
 
@@ -135,9 +138,9 @@ class PhoneResetActivity : AppActivity(), OnEditorActionListener {
                     setPhone(phoneView?.text.toString())
                     setCode(codeView?.text.toString())
                 })
-                .request(object : HttpCallback<HttpData<Void?>>(this) {
+                .request(object : OnHttpListener<HttpData<Void?>> {
 
-                    override fun onSucceed(data: HttpData<Void?>) {
+                    override fun onHttpSuccess(result: HttpData<Void?>?) {
                         TipsDialog.Builder(this@PhoneResetActivity)
                             .setIcon(TipsDialog.ICON_FINISH)
                             .setMessage(R.string.phone_reset_commit_succeed)
@@ -149,6 +152,9 @@ class PhoneResetActivity : AppActivity(), OnEditorActionListener {
                                 }
                             })
                             .show()
+                    }
+
+                    override fun onHttpFail(throwable: Throwable?) {
                     }
                 })
         }

@@ -11,9 +11,14 @@ import com.hjq.umeng.UmengShare.OnShareListener
 import com.hjq.umeng.UmengShare.ShareListenerWrapper
 import com.umeng.analytics.MobclickAgent
 import com.umeng.commonsdk.UMConfigure
+import com.umeng.message.PushAgent
+import com.umeng.message.UmengMessageHandler
+import com.umeng.message.api.UPushRegisterCallback
+import com.umeng.message.entity.UMessage
 import com.umeng.socialize.PlatformConfig
 import com.umeng.socialize.ShareAction
 import com.umeng.socialize.UMShareAPI
+import timber.log.Timber
 
 /**
  *    author : Android 轮子哥
@@ -31,9 +36,45 @@ object UmengClient {
     fun init(application: Application?, logEnable: Boolean) {
         preInit(application, logEnable)
         // 友盟统计：https://developer.umeng.com/docs/66632/detail/101814#h1-u521Du59CBu5316u53CAu901Au7528u63A5u53E32
-        UMConfigure.init(application, BuildConfig.UM_KEY, "umeng", UMConfigure.DEVICE_TYPE_PHONE, "")
+        UMConfigure.init(
+            application,
+            BuildConfig.UM_KEY,
+            "umeng",
+            UMConfigure.DEVICE_TYPE_PHONE,
+            BuildConfig.UM_MESSAGE_SECRET
+        )
         // 获取设备的 oaid
         UMConfigure.getOaid(application) { oaid: String? -> deviceOaid = oaid }
+
+        val pushAgent = PushAgent.getInstance(application)
+        // 注册推送服务，每次调用register方法都会回调该接口
+        pushAgent.register(object : UPushRegisterCallback {
+            override fun onSuccess(deviceToken: String) {
+                // 注册成功会返回deviceToken deviceToken是推送消息的唯一标志
+                Timber.d("UmengPush: onSuccess 注册成功：deviceToken：-------->  $deviceToken")
+            }
+
+            override fun onFailure(s: String, s1: String) {
+                Timber.d("UmengPush: onFailure 注册失败：-------->  s:$s,s1:$s1")
+            }
+        })
+
+        pushAgent.messageHandler = object : UmengMessageHandler() {
+            override fun dealWithCustomMessage(context: Context?, msg: UMessage?) {
+                super.dealWithCustomMessage(context, msg)
+                Timber.w(msg.toString())
+                Timber.w(msg?.title)
+                Timber.w(msg?.text)
+            }
+
+            override fun dealWithNotificationMessage(context: Context?, msg: UMessage?) {
+                super.dealWithNotificationMessage(context, msg)
+                Timber.w(msg.toString())
+                Timber.w(msg?.title)
+                Timber.w(msg?.text)
+            }
+        }
+        pushAgent.onAppStart()
     }
 
     /**
@@ -65,7 +106,12 @@ object UmengClient {
      * @param action                分享意图
      * @param listener              分享监听
      */
-    fun share(activity: Activity?, platform: Platform?, action: ShareAction?, listener: OnShareListener?) {
+    fun share(
+        activity: Activity?,
+        platform: Platform?,
+        action: ShareAction?,
+        listener: OnShareListener?
+    ) {
         if (platform == null) {
             return
         }

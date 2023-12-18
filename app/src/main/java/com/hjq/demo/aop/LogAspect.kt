@@ -63,7 +63,7 @@ class LogAspect {
         // 方法参数值集合
         val parameterValues: Array<Any?> = joinPoint.args
 
-        //记录并打印方法的信息
+        // 记录并打印方法的信息
         val builder: StringBuilder =
             getMethodLogInfo(className, methodName, parameterNames, parameterValues)
         log(log.value, builder.toString())
@@ -79,7 +79,12 @@ class LogAspect {
      * @param parameterNames    方法参数名集合
      * @param parameterValues   方法参数值集合
      */
-    private fun getMethodLogInfo(className: String, methodName: String, parameterNames: Array<String?>, parameterValues: Array<Any?>): StringBuilder {
+    private fun getMethodLogInfo(
+        className: String,
+        methodName: String,
+        parameterNames: Array<String?>,
+        parameterValues: Array<Any?>
+    ): StringBuilder {
         val builder: StringBuilder = StringBuilder("\u21E2 ")
         builder.append(className)
             .append(".")
@@ -105,7 +110,12 @@ class LogAspect {
      * @param result            方法执行后的结果
      * @param lengthMillis      执行方法所需要的时间
      */
-    private fun exitMethod(joinPoint: ProceedingJoinPoint, log: Log, result: Any?, lengthMillis: Long) {
+    private fun exitMethod(
+        joinPoint: ProceedingJoinPoint,
+        log: Log,
+        result: Any?,
+        lengthMillis: Long
+    ) {
         Trace.endSection()
         val signature: Signature = joinPoint.signature
         val className: String? = signature.declaringType.name
@@ -127,7 +137,6 @@ class LogAspect {
     }
 
     private fun log(tag: String?, msg: String?) {
-        Timber.tag(tag)
-        Timber.d(msg)
+        Timber.tag(tag ?: "LogAspect").d(msg)
     }
 }

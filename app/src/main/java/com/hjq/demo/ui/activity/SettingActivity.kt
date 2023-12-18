@@ -10,7 +10,6 @@ import com.hjq.demo.aop.SingleClick
 import com.hjq.demo.app.AppActivity
 import com.hjq.demo.http.api.LogoutApi
 import com.hjq.demo.http.glide.GlideApp
-import com.hjq.demo.http.model.HttpData
 import com.hjq.demo.manager.ActivityManager
 import com.hjq.demo.manager.CacheDataManager
 import com.hjq.demo.other.AppConfig
@@ -18,9 +17,10 @@ import com.hjq.demo.ui.dialog.MenuDialog
 import com.hjq.demo.ui.dialog.SafeDialog
 import com.hjq.demo.ui.dialog.UpdateDialog
 import com.hjq.http.EasyHttp
-import com.hjq.http.listener.HttpCallback
+import com.hjq.http.listener.OnHttpListener
 import com.hjq.widget.layout.SettingBar
 import com.hjq.widget.view.SwitchButton
+import com.hjq.demo.http.model.HttpData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -159,12 +159,15 @@ class SettingActivity : AppActivity(), SwitchButton.OnCheckedChangeListener {
                 // 退出登录
                 EasyHttp.post(this)
                     .api(LogoutApi())
-                    .request(object : HttpCallback<HttpData<Void?>>(this) {
+                    .request(object : OnHttpListener<HttpData<Void?>> {
 
-                        override fun onSucceed(data: HttpData<Void?>?) {
+                        override fun onHttpSuccess(result: HttpData<Void?>?) {
                             startActivity(LoginActivity::class.java)
                             // 进行内存优化，销毁除登录页之外的所有界面
                             ActivityManager.getInstance().finishAllActivities(LoginActivity::class.java)
+                        }
+
+                        override fun onHttpFail(throwable: Throwable?) {
                         }
                     })
             }

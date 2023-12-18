@@ -14,13 +14,13 @@ import com.hjq.demo.aop.SingleClick
 import com.hjq.demo.app.AppActivity
 import com.hjq.demo.http.api.UpdateImageApi
 import com.hjq.demo.http.glide.GlideApp
-import com.hjq.demo.http.model.HttpData
 import com.hjq.demo.ui.dialog.AddressDialog
 import com.hjq.demo.ui.dialog.InputDialog
 import com.hjq.http.EasyHttp
-import com.hjq.http.listener.HttpCallback
+import com.hjq.http.listener.OnHttpListener
 import com.hjq.http.model.FileContentResolver
 import com.hjq.widget.layout.SettingBar
+import com.hjq.demo.http.model.HttpData
 import java.io.File
 import java.net.URI
 import java.net.URISyntaxException
@@ -172,7 +172,11 @@ class PersonalDataActivity : AppActivity() {
      */
     private fun updateCropImage(file: File, deleteFile: Boolean) {
         if (true) {
-            avatarUrl = if (file is FileContentResolver) { file.contentUri } else { Uri.fromFile(file) }
+            avatarUrl = if (file is FileContentResolver) {
+                file.contentUri
+            } else {
+                Uri.fromFile(file)
+            }
             avatarView?.let {
                 GlideApp.with(this)
                     .load(avatarUrl)
@@ -186,9 +190,9 @@ class PersonalDataActivity : AppActivity() {
             .api(UpdateImageApi().apply {
                 setImage(file)
             })
-            .request(object : HttpCallback<HttpData<String?>>(this) {
-                override fun onSucceed(data: HttpData<String?>) {
-                    avatarUrl = Uri.parse(data.getData())
+            .request(object : OnHttpListener<HttpData<String?>> {
+                override fun onHttpSuccess(result: HttpData<String?>?) {
+                    avatarUrl = Uri.parse(result?.getData())
                     avatarView?.let {
                         GlideApp.with(this@PersonalDataActivity)
                             .load(avatarUrl)
@@ -198,6 +202,9 @@ class PersonalDataActivity : AppActivity() {
                     if (deleteFile) {
                         file.delete()
                     }
+                }
+
+                override fun onHttpFail(throwable: Throwable?) {
                 }
             })
     }

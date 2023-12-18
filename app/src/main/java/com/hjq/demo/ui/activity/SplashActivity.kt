@@ -9,11 +9,11 @@ import com.gyf.immersionbar.ImmersionBar
 import com.hjq.demo.R
 import com.hjq.demo.app.AppActivity
 import com.hjq.demo.http.api.UserInfoApi
-import com.hjq.demo.http.model.HttpData
 import com.hjq.demo.other.AppConfig
 import com.hjq.http.EasyHttp
-import com.hjq.http.listener.HttpCallback
+import com.hjq.http.listener.OnHttpListener
 import com.hjq.widget.view.SlantedTextView
+import com.hjq.demo.http.model.HttpData
 import java.util.*
 
 /**
@@ -58,11 +58,13 @@ class SplashActivity : AppActivity() {
         // 刷新用户信息
         EasyHttp.post(this)
             .api(UserInfoApi())
-            .request(object : HttpCallback<HttpData<UserInfoApi.Bean?>>(this) {
-
-                override fun onSucceed(data: HttpData<UserInfoApi.Bean?>) {
-
+            .request(object : OnHttpListener<HttpData<UserInfoApi.Bean?>> {
+                override fun onHttpSuccess(result: HttpData<UserInfoApi.Bean?>?) {
                 }
+
+                override fun onHttpFail(throwable: Throwable?) {
+                }
+
             })
     }
 

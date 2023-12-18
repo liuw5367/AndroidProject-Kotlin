@@ -13,11 +13,11 @@ import com.hjq.demo.aop.Log
 import com.hjq.demo.aop.SingleClick
 import com.hjq.demo.app.AppActivity
 import com.hjq.demo.http.api.PasswordApi
-import com.hjq.demo.http.model.HttpData
 import com.hjq.demo.manager.InputTextManager
 import com.hjq.demo.ui.dialog.TipsDialog
 import com.hjq.http.EasyHttp
-import com.hjq.http.listener.HttpCallback
+import com.hjq.http.listener.OnHttpListener
+import com.hjq.demo.http.model.HttpData
 
 /**
  *    author : Android 轮子哥
@@ -109,9 +109,9 @@ class PasswordResetActivity : AppActivity(), OnEditorActionListener {
                     setCode(verifyCode)
                     setPassword(firstPassword?.text.toString())
                 })
-                .request(object : HttpCallback<HttpData<Void?>>(this) {
+                .request(object : OnHttpListener<HttpData<Void?>> {
 
-                    override fun onSucceed(data: HttpData<Void?>) {
+                    override fun onHttpSuccess(result: HttpData<Void?>?) {
                         TipsDialog.Builder(this@PasswordResetActivity)
                             .setIcon(TipsDialog.ICON_FINISH)
                             .setMessage(R.string.password_reset_success)
@@ -123,6 +123,9 @@ class PasswordResetActivity : AppActivity(), OnEditorActionListener {
                                 }
                             })
                             .show()
+                    }
+
+                    override fun onHttpFail(throwable: Throwable?) {
                     }
                 })
         }

@@ -3,6 +3,7 @@ package com.hjq.demo.ui.activity
 import android.content.Intent
 import android.view.*
 import android.widget.*
+import com.hjq.bar.TitleBar
 import com.hjq.base.BaseDialog
 import com.hjq.base.BasePopupWindow
 import com.hjq.base.action.AnimAction
@@ -444,7 +445,7 @@ class DialogActivity : AppActivity() {
             R.id.btn_dialog_custom -> {
 
                 // 自定义对话框
-                BaseDialog.Builder<BaseDialog.Builder<*>>(this)
+                BaseDialog.Builder(this)
                     .setContentView(R.layout.custom_dialog)
                     .setAnimStyle(AnimAction.ANIM_SCALE) //.setText(id, "我是预设置的文本")
                     .setOnClickListener(R.id.btn_dialog_custom_ok, object : BaseDialog.OnClickListener<Button> {
@@ -507,7 +508,7 @@ class DialogActivity : AppActivity() {
         }
     }
 
-    override fun onRightClick(view: View) {
+    override fun onRightClick(titleBar: TitleBar?) {
         // 菜单弹窗
         ListPopup.Builder(this)
             .setList("选择拍照", "选取相册")
@@ -529,7 +530,7 @@ class DialogActivity : AppActivity() {
                     toast("点击了：$data")
                 }
             })
-            .showAsDropDown(view)
+            .showAsDropDown(titleBar?.rightView)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

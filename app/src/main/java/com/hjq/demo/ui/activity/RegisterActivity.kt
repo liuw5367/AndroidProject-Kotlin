@@ -15,12 +15,12 @@ import com.hjq.demo.aop.SingleClick
 import com.hjq.demo.app.AppActivity
 import com.hjq.demo.http.api.GetCodeApi
 import com.hjq.demo.http.api.RegisterApi
-import com.hjq.demo.http.model.HttpData
 import com.hjq.demo.manager.InputTextManager
 import com.hjq.http.EasyHttp
-import com.hjq.http.listener.HttpCallback
+import com.hjq.http.listener.OnHttpListener
 import com.hjq.widget.view.CountdownView
 import com.hjq.widget.view.SubmitButton
+import com.hjq.demo.http.model.HttpData
 import okhttp3.Call
 
 /**
@@ -113,15 +113,14 @@ class RegisterActivity : AppActivity(), OnEditorActionListener {
                 .api(GetCodeApi().apply {
                     setPhone(phoneView?.text.toString())
                 })
-                .request(object : HttpCallback<HttpData<Void?>>(this) {
+                .request(object : OnHttpListener<HttpData<Void?>> {
 
-                    override fun onSucceed(data: HttpData<Void?>) {
+                    override fun onHttpSuccess(result: HttpData<Void?>?) {
                         toast(R.string.common_code_send_hint)
                         countdownView?.start()
                     }
 
-                    override fun onFail(e: Exception?) {
-                        super.onFail(e)
+                    override fun onHttpFail(throwable: Throwable?) {
                         countdownView?.start()
                     }
                 })
@@ -173,15 +172,13 @@ class RegisterActivity : AppActivity(), OnEditorActionListener {
                     setCode(codeView?.text.toString())
                     setPassword(firstPassword?.text.toString())
                 })
-                .request(object : HttpCallback<HttpData<RegisterApi.Bean?>>(this) {
+                .request(object : OnHttpListener<HttpData<RegisterApi.Bean?>> {
 
-                    override fun onStart(call: Call) {
+                    override fun onHttpStart(call: Call?) {
                         commitView?.showProgress()
                     }
 
-                    override fun onEnd(call: Call) {}
-
-                    override fun onSucceed(data: HttpData<RegisterApi.Bean?>) {
+                    override fun onHttpSuccess(result: HttpData<RegisterApi.Bean?>?) {
                         postDelayed({
                             commitView?.showSucceed()
                             postDelayed({
@@ -193,8 +190,7 @@ class RegisterActivity : AppActivity(), OnEditorActionListener {
                         }, 1000)
                     }
 
-                    override fun onFail(e: Exception?) {
-                        super.onFail(e)
+                    override fun onHttpFail(throwable: Throwable?) {
                         postDelayed({ commitView?.showError(3000) }, 1000)
                     }
                 })

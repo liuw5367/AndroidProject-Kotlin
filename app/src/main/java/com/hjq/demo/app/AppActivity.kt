@@ -11,9 +11,9 @@ import com.hjq.base.BaseDialog
 import com.hjq.demo.R
 import com.hjq.demo.action.TitleBarAction
 import com.hjq.demo.action.ToastAction
-import com.hjq.demo.http.model.HttpData
 import com.hjq.demo.ui.dialog.WaitDialog
 import com.hjq.http.listener.OnHttpListener
+import com.hjq.demo.http.model.HttpData
 import okhttp3.Call
 
 /**
@@ -156,7 +156,7 @@ abstract class AppActivity : BaseActivity(),
         return titleBar
     }
 
-    override fun onLeftClick(view: View) {
+    override fun onLeftClick(titleBar: TitleBar?) {
         onBackPressed()
     }
 
@@ -173,21 +173,21 @@ abstract class AppActivity : BaseActivity(),
     /**
      * [OnHttpListener]
      */
-    override fun onStart(call: Call) {
+    override fun onHttpStart(call: Call?) {
         showDialog()
     }
 
-    override fun onSucceed(result: Any) {
+    override fun onHttpSuccess(result: Any?) {
         if (result is HttpData<*>) {
             toast(result.getMessage())
         }
     }
 
-    override fun onFail(e: Exception) {
-        toast(e.message)
+    override fun onHttpFail(throwable: Throwable?) {
+        toast(throwable?.message)
     }
 
-    override fun onEnd(call: Call) {
+    override fun onHttpEnd(call: Call?) {
         hideDialog()
     }
 

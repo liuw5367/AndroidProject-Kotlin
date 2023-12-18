@@ -1,8 +1,9 @@
 package com.hjq.demo.http.model
 
+import com.hjq.http.config.IRequestBodyStrategy
 import com.hjq.demo.other.AppConfig
 import com.hjq.http.config.IRequestServer
-import com.hjq.http.model.BodyType
+import com.hjq.http.model.RequestBodyType
 
 /**
  *    author : Android 轮子哥
@@ -16,12 +17,8 @@ class RequestServer : IRequestServer {
         return AppConfig.getHostUrl()
     }
 
-    override fun getPath(): String {
-        return "api/"
-    }
-
-    override fun getType(): BodyType {
+    override fun getBodyType(): IRequestBodyStrategy {
         // 以表单的形式提交参数
-        return BodyType.FORM
+        return RequestBodyType.FORM
     }
 }

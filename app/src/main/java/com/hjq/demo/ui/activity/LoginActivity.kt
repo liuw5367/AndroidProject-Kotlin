@@ -15,24 +15,25 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.gyf.immersionbar.ImmersionBar
+import com.hjq.bar.TitleBar
 import com.hjq.demo.R
 import com.hjq.demo.aop.Log
 import com.hjq.demo.aop.SingleClick
 import com.hjq.demo.app.AppActivity
 import com.hjq.demo.http.api.LoginApi
 import com.hjq.demo.http.glide.GlideApp
-import com.hjq.demo.http.model.HttpData
 import com.hjq.demo.manager.InputTextManager
 import com.hjq.demo.other.KeyboardWatcher
 import com.hjq.demo.ui.fragment.MineFragment
 import com.hjq.demo.wxapi.WXEntryActivity
 import com.hjq.http.EasyConfig
 import com.hjq.http.EasyHttp
-import com.hjq.http.listener.HttpCallback
+import com.hjq.http.listener.OnHttpListener
 import com.hjq.umeng.Platform
 import com.hjq.umeng.UmengClient
 import com.hjq.umeng.UmengLogin
 import com.hjq.widget.view.SubmitButton
+import com.hjq.demo.http.model.HttpData
 import okhttp3.Call
 
 /**
@@ -119,7 +120,7 @@ class LoginActivity : AppActivity(), UmengLogin.OnLoginListener,
         passwordView?.setText(getString(INTENT_KEY_IN_PASSWORD))
     }
 
-    override fun onRightClick(view: View) {
+    override fun onRightClick(titleBar: TitleBar?) {
         // 跳转到注册界面
         RegisterActivity.start(this, phoneView?.text.toString(), passwordView?.text.toString(),
             object : RegisterActivity.OnRegisterListener {
@@ -173,18 +174,20 @@ class LoginActivity : AppActivity(), UmengLogin.OnLoginListener,
                     setPhone(phoneView?.text.toString())
                     setPassword(passwordView?.text.toString())
                 })
-                .request(object : HttpCallback<HttpData<LoginApi.Bean?>>(this) {
+                .request(object : OnHttpListener<HttpData<LoginApi.Bean?>> {
 
-                    override fun onStart(call: Call) {
+                    override fun onHttpStart(call: Call?) {
                         commitView?.showProgress()
                     }
 
-                    override fun onEnd(call: Call) {}
+                    override fun onHttpEnd(call: Call?) {
+                        super.onHttpEnd(call)
+                    }
 
-                    override fun onSucceed(data: HttpData<LoginApi.Bean?>) {
+                    override fun onHttpSuccess(result: HttpData<LoginApi.Bean?>?) {
                         // 更新 Token
                         EasyConfig.getInstance()
-                            .addParam("token", data.getData()?.getToken())
+                            .addParam("token", result?.getData()?.getToken())
                         postDelayed({
                             commitView?.showSucceed()
                             postDelayed({
@@ -195,8 +198,7 @@ class LoginActivity : AppActivity(), UmengLogin.OnLoginListener,
                         }, 1000)
                     }
 
-                    override fun onFail(e: Exception?) {
-                        super.onFail(e)
+                    override fun onHttpFail(throwable: Throwable?) {
                         postDelayed({ commitView?.showError(3000) }, 1000)
                     }
                 })
@@ -209,6 +211,7 @@ class LoginActivity : AppActivity(), UmengLogin.OnLoginListener,
                 view === qqView -> {
                     platform = Platform.QQ
                 }
+
                 view === weChatView -> {
                     if (packageName.endsWith(".debug")) {
                         toast("当前 buildType 不支持进行微信登录")
@@ -217,6 +220,7 @@ class LoginActivity : AppActivity(), UmengLogin.OnLoginListener,
                     platform = Platform.WECHAT
                     toast("也别忘了改微信 " + WXEntryActivity::class.java.simpleName + " 类所在的包名哦")
                 }
+
                 else -> {
                     throw IllegalStateException("are you ok?")
                 }
@@ -249,9 +253,12 @@ class LoginActivity : AppActivity(), UmengLogin.OnLoginListener,
             Platform.QQ -> {
 
             }
+
             Platform.WECHAT -> {
 
             }
+
+            else -> {}
         }
 
         logoView?.let {
@@ -261,10 +268,12 @@ class LoginActivity : AppActivity(), UmengLogin.OnLoginListener,
                 .into(it)
         }
 
-        toast(("昵称：" + data?.getName() + "\n" +
-                    "性别：" + data?.getSex() + "\n" +
-                    "id：" + data?.getId() + "\n" +
-                    "token：" + data?.getToken()))
+        toast(
+            ("昵称：" + data?.getName() + "\n" +
+                "性别：" + data?.getSex() + "\n" +
+                "id：" + data?.getId() + "\n" +
+                "token：" + data?.getToken())
+        )
     }
 
     /**
@@ -283,8 +292,10 @@ class LoginActivity : AppActivity(), UmengLogin.OnLoginListener,
     override fun onSoftKeyboardOpened(keyboardHeight: Int) {
         // 执行位移动画
         bodyLayout?.let {
-            val objectAnimator: ObjectAnimator = ObjectAnimator.ofFloat(it,
-                "translationY", 0f, (-(commitView?.height?.toFloat() ?: 0f)))
+            val objectAnimator: ObjectAnimator = ObjectAnimator.ofFloat(
+                it,
+                "translationY", 0f, (-(commitView?.height?.toFloat() ?: 0f))
+            )
             objectAnimator.duration = animTime.toLong()
             objectAnimator.interpolator = AccelerateDecelerateInterpolator()
             objectAnimator.start()
@@ -297,8 +308,10 @@ class LoginActivity : AppActivity(), UmengLogin.OnLoginListener,
             val animatorSet = AnimatorSet()
             val scaleX = ObjectAnimator.ofFloat(it, "scaleX", 1f, logoScale)
             val scaleY = ObjectAnimator.ofFloat(it, "scaleY", 1f, logoScale)
-            val translationY = ObjectAnimator.ofFloat(it, "translationY",
-                0f, (-(commitView?.height?.toFloat() ?: 0f)))
+            val translationY = ObjectAnimator.ofFloat(
+                it, "translationY",
+                0f, (-(commitView?.height?.toFloat() ?: 0f))
+            )
             animatorSet.play(translationY).with(scaleX).with(scaleY)
             animatorSet.duration = animTime.toLong()
             animatorSet.start()
@@ -308,8 +321,10 @@ class LoginActivity : AppActivity(), UmengLogin.OnLoginListener,
     override fun onSoftKeyboardClosed() {
         // 执行位移动画
         bodyLayout?.let {
-            val objectAnimator: ObjectAnimator = ObjectAnimator.ofFloat(it,
-                "translationY", it.translationY, 0f)
+            val objectAnimator: ObjectAnimator = ObjectAnimator.ofFloat(
+                it,
+                "translationY", it.translationY, 0f
+            )
             objectAnimator.duration = animTime.toLong()
             objectAnimator.interpolator = AccelerateDecelerateInterpolator()
             objectAnimator.start()
@@ -327,8 +342,10 @@ class LoginActivity : AppActivity(), UmengLogin.OnLoginListener,
             val animatorSet = AnimatorSet()
             val scaleX: ObjectAnimator = ObjectAnimator.ofFloat(it, "scaleX", logoScale, 1f)
             val scaleY: ObjectAnimator = ObjectAnimator.ofFloat(it, "scaleY", logoScale, 1f)
-            val translationY: ObjectAnimator = ObjectAnimator.ofFloat(it,
-                "translationY", it.translationY, 0f)
+            val translationY: ObjectAnimator = ObjectAnimator.ofFloat(
+                it,
+                "translationY", it.translationY, 0f
+            )
             animatorSet.play(translationY).with(scaleX).with(scaleY)
             animatorSet.duration = animTime.toLong()
             animatorSet.start()
